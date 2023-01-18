@@ -1,5 +1,5 @@
 # OpenIntent
-[**OpenIntent**] (https://github.com/google/openintent) is a collaborative
+[**OpenIntent**](https://github.com/google/openintent) is a collaborative
 effort by network operators, vendors, and tooling companies to develop an
 interoperability standard schema to describe the necessary information needed to
 deploy network equipment.  The initial focus and effort on OpenIntent is
