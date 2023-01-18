@@ -13,4 +13,4 @@ material developed by the OpenIntent group.  As tooling is developed, it will
 appear in other repositories.
 
 For information on how to contribute to OpenIntent see
-[Contributing](doc/contibuting.md)
+[Contributing](docs/contibuting.md)
