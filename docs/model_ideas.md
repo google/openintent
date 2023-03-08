@@ -3,15 +3,14 @@
 This is just a place to track model ideas that include some visual components.
 
 
-## Top level Models
 
-
-### Floorplan
+## Floorplan
 In order to reference which floorplan the AP lives on, we need to establish the floorplan object.
 
 Requirements:
- * dimensions in a coordinate schema
- * references between coordinate systems
+ * references to convert between coordinate systems
+ * Wall segments and walls
+ * Some sort of coordinate reference
 
  `openintent-floorplan.yang`
 
@@ -30,22 +29,22 @@ erDiagram
         container wall_segments
         container references
     }
-    Floorplan ||..|| wall_segment : uses
+    Floorplan ||..o{ wall_segment : uses
 
-    Floorplan_raster ||..|| Floorplan : augments
+    Floorplan_raster }o..|| Floorplan : augments
     Floorplan_raster {
         int width "Dimension pixels in X from LL" 
         int length "Dimension pixels in Y from LL"
         int height "Dimension pixels of floor height"
         float scale_px_to_m "Number of pixels to 1m (for all dimensions)"
     }
-    Floorplan_GEO ||..|| Floorplan: augments
+    Floorplan_GEO }o..|| Floorplan: augments
     Floorplan_GEO {
         float lattitude
         float longitude
         float elevation_m
     }
-    Floorplan ||..|| reference : uses
+    Floorplan ||..o{ reference : uses
     reference{
         float x
         float y
@@ -68,7 +67,7 @@ erDiagram
     }
 ```
 
-### Device and accessPoint
+## Device and accessPoint
 
 `openintent-access-point.yang`
 ```mermaid
@@ -125,6 +124,8 @@ erDiagram
 ```
 
 
+
+## Coordinate System Work
 ```mermaid
 
 erDiagram
