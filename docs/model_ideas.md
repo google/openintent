@@ -27,8 +27,10 @@ erDiagram
         string map_url "if you can retrieve map from url"
         int floor_num "Floor number"
         float rotation "Rotation of map from native orientation"
+        container wall_segments
+        container references
     }
-
+    Floorplan ||..|| wall_segment : uses
 
     Floorplan_raster ||..|| Floorplan : augments
     Floorplan_raster {
@@ -43,10 +45,26 @@ erDiagram
         float longitude
         float elevation_m
     }
-    Floorplan ||..|| References : uses
-    References {
-        container reference[]
+    Floorplan ||..|| reference : uses
+    reference{
+        float x
+        float y
+        float latitude
+        float longitude
+
         
+    }
+
+    wall_segment {
+        string type
+        wall_point start "Start point"
+        wall_point end "End point"
+
+    }
+    wall_segment ||..|| wall_point : uses
+    wall_point {
+        float x "x-coordinate"
+        float y "y-coordinate"
     }
 ```
 
@@ -73,7 +91,7 @@ erDiagram
         string model
         
     }
-    AccessPoint ||..|| dot11_radio: uses
+    AccessPoint ||..||dot11_radio: uses
     dot11_radio {
         int id
         enum frequency
@@ -81,10 +99,29 @@ erDiagram
         enum channel_width
         int power
     }
-
+    AccessPoint ||..|| antenna : uses
     antenna {
+        string vendor
+        string model
+        float gain
 
     }
+
+    AccessPoint ||..|| mounting : uses
+    antenna ||..|| mounting : uses
+
+    antenna ||..|| orientation : uses
+    AccessPoint ||..|| orientation : uses
+    orientation {
+        float rotation "yaw: 0 pointing toward x on map 0-360"
+        float downtilt "pitch: 0 aligned with horizontal"
+        float roll "roll"
+    }
+
+    mounting {
+        enum mount "CEILING, WALL, FLOOR, STAND, CUSTOM"
+    }
+
 ```
 
 
@@ -111,9 +148,5 @@ erDiagram
         float elevation
     }
 
-    orientation {
-        float rotation "yaw: 0 pointing toward x on map 0-360"
-        float downtilt "pitch: 0 aligned with horizontal"
-        float roll "roll"
-    }
+    
 ```
