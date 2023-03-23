@@ -38,24 +38,11 @@ erDiagram
         float length "y dimension"
         float width "x dimension"
         float height "z-dimension of floor height"
-        enum unit "pixel, meter, foot, etc"
+        enum unit "pixel, meter, feet, etc"
         float scale "scale of unit to other measurement e.g. pixels to meter"
-        enum scale_to_unit "pixel, meter, foot, etc"
+        enum scale_to_unit "pixel, meter, feet, etc"
     }
 
-    Floorplan_raster }o..|| Floorplan : augments
-    Floorplan_raster {
-        int width "Dimension pixels in X from LL" 
-        int length "Dimension pixels in Y from LL"
-        int height "Dimension pixels of floor height"
-        float scale_px_to_m "Number of pixels to 1m (for all dimensions)"
-    }
-    Floorplan_GEO }o..|| Floorplan: augments
-    Floorplan_GEO {
-        float lattitude
-        float longitude
-        float elevation_m
-    }
     reference {
         float x
         float y
@@ -101,6 +88,7 @@ erDiagram
         list[] ssids
         string vendor
         string model
+        list[] antennas
 
         
     }
@@ -197,4 +185,123 @@ erDiagram
     }
 
     
+```
+
+
+
+```yaml
+---
+access-point:
+    - name: device_01
+      fqdn: device_01.corp.com
+      floorplan:
+        $ref": /schemas/floorplan
+      asset_tag: abc0123456
+      serial_number: az123456789
+      mac_address: 00:00:00:00:00:00
+      claim_code: abcdefg123
+      ssids:
+        - ssid_1
+        - ssid_2
+        - ssid_3
+      vendor: arisco
+      model: AP123
+
+
+
+
+```
+```yaml
+---
+    $id: https://example.com/schema/access-point
+    $schema: https://json-schema.org/draft/2020-12/schema
+    description: representation of an access-point
+    type: object
+    properties:
+        name:
+            type: string
+            description: unique name of access point.
+        floorplan_name:
+            type: string
+            description: name of floorplan to which this access-point belongs.
+        asset_tag:
+            type: string
+            description: asset tag belonging to this access point.
+        serial_number:
+            type: string
+            description: serial number of this access point.
+        mac_address:
+            type: string
+            description: mac address of this access point.
+        manufacturer:
+            type: string
+            description: the manufacturer name for this access point.
+        model:
+            type: string
+            description: the model number of this particular access point
+        sku:
+            type: string
+            description: sku part number for this specific access-point.
+        radios:
+            type: array
+            items:
+                $ref: https://example.com/schema/radio.json
+        ssids:
+            type: array
+            items:
+                type: string
+        antennas:
+            type: array
+            items:
+                $ref: https://example.com/schema/antenna.json
+
+```
+```yaml
+---
+$id: https://example.com/schema/floorplan
+$schema: https://json-schema.org/draft/2020-12/schema
+description: representation of an floorplan
+type: object
+properties:
+    name:
+        type: string
+        description: unique name of floorplan
+    vendor_id:
+        type: string
+        description: vendor's ID for this floorplan
+    map_url:
+        type: string
+        description: url endpoint of where to retrieve the map.
+    floor_id:
+        type: string
+        description: string representation of the floor id.
+    rotation:
+        type: number
+        description: rotation of the floorplan from native orientation
+    dimensions:
+        type: array
+        description: dimensions of the floorplan
+        items:
+            $refs: "#/$defs/dimension"
+$defs:
+    dimension:
+        type: object
+        properties:
+            length:
+                type: number
+                description: y-dimension of the floorplan
+            width:
+                type: number
+                description: x-dimension of the floorplan
+            height:
+                type: number
+                description: z-dimension of the floor (default height)
+            unit:
+                type: string
+                description: the dimension unit for length, width, height.
+                enum:
+                    - pixel
+                    - meter
+                    - feet
+
 ```
