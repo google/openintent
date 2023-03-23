@@ -311,3 +311,98 @@ $defs:
                     - feet
 
 ```
+
+```yaml
+$id: https://example.com/schema/floorplan
+$schema: https://json-schema.org/draft/2020-12/schema
+description: representation of an floorplan
+type: object
+properties:
+    name:
+        type: string
+    vendor_id:
+        type: string
+    map_url:
+        type: string
+    floor_id:
+        type: string
+    rotation:
+        type: number
+    dimensions:
+        type: array
+        items:
+            $refs: "#/$defs/dimension"
+$defs:
+    dimension:
+        type: object
+        properties:
+            length:
+                type: number
+            width:
+                type: number
+            height:
+                type: number
+            unit:
+                type: string
+                enum:
+                    - pixel
+                    - meter
+                    - feet
+```
+
+
+```json
+{
+  "$id": "https://example.com/schema/floorplan",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "representation of an floorplan",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "vendor_id": {
+      "type": "string"
+    },
+    "map_url": {
+      "type": "string"
+    },
+    "floor_id": {
+      "type": "string"
+    },
+    "rotation": {
+      "type": "number"
+    },
+    "dimensions": {
+      "type": "array",
+      "items": {
+        "$refs": "#/$defs/dimension"
+      }
+    }
+  },
+  "$defs": {
+    "dimension": {
+      "type": "object",
+      "properties": {
+        "length": {
+          "type": "number"
+        },
+        "width": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        },
+        "unit": {
+          "type": "string",
+          "enum": [
+            "pixel",
+            "meter",
+            "feet"
+          ]
+        }
+      }
+    }
+  }
+}
+```
