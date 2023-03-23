@@ -211,6 +211,10 @@ access-point:
 
 
 ```
+
+## Access-point json-schema
+
+
 ```yaml
 ---
     $id: https://example.com/schema/access-point
@@ -256,6 +260,8 @@ access-point:
                 $ref: https://example.com/schema/antenna.json
 
 ```
+## floorplan json-schema
+
 ```yaml
 ---
 $id: https://example.com/schema/floorplan
