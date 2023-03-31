@@ -1,0 +1,74 @@
+---
+$id: https://example.com/schema/access_point
+$schema: https://json-schema.org/draft/2020-12/schema
+description: representation of an access-point
+Title: access_point
+type: object
+properties:
+    name:
+        type: string
+        description: unique name of access point.
+    floorplan_name:
+        type: string
+        description: name of floorplan to which this access-point belongs.
+    asset_tag:
+        type: string
+        description: asset tag belonging to this access point.
+    serial_number:
+        type: string
+        description: serial number of this access point.
+    mac_address:
+        type: string
+        description: mac address of this access point.
+    manufacturer:
+        type: string
+        description: the manufacturer name for this access point.
+    model:
+        type: string
+        description: the model number of this particular access point
+    sku:
+        type: string
+        description: sku part number for this specific access-point.
+    radios:
+        type: array
+        items:
+            $ref: "#/$defs/radio"
+    ssids:
+        type: array
+        items:
+            type: string
+    antennas:
+        type: array
+        items:
+            $ref: "#/$defs/antenna"
+    regulatory_domain:
+        type: string
+    ethernet_ports:
+        type: array
+$defs:
+    radio:
+        type: object
+        properties:
+            radio_type:
+                type: string
+                enum:
+                    - dot11
+                    - ble
+                    - lora
+    antenna:
+        type: object
+        properties:
+            vendor:
+                type: string
+            model:
+                type: string
+            frequencies:
+                type: array
+                items:
+                    type: string
+                    enum:
+                        - FREQ_WIFI_2GHZ
+                        - FREQ_WIFI_5GHZ
+                        - FREQ_WIFI_6GHZ
+
+            

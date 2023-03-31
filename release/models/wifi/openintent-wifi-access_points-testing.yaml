@@ -1,0 +1,21 @@
+---
+### Test Case 1: Just AP Name
+name: ap_0001
+---
+### Test Case 2: Adding validation for bulk of fields
+name: ap_0002
+floorplan_name: floor-01
+asset_tag: abcdef012345
+serial_number: abcdef12345
+mac_address: 00:00:00:00:00:00
+manufacturer: Aruba
+model: AP535
+sku: AP535-US
+ssids:
+    - wlan_1
+    - wlan_2
+    - guest_wlan
+regulatory_domain: FCC
+
+## TODO
+## Need to implement Radios and Antenna Fully.
