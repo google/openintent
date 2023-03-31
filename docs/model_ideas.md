@@ -46,8 +46,10 @@ erDiagram
     reference {
         float x
         float y
+        float z
         float latitude
         float longitude
+        float elevation
     }
     Floorplan ||..o{ reference : uses
 
@@ -217,47 +219,53 @@ access-point:
 
 ```yaml
 ---
-    $id: https://example.com/schema/access-point
-    $schema: https://json-schema.org/draft/2020-12/schema
-    description: representation of an access-point
-    type: object
-    properties:
-        name:
+$id: https://example.com/schema/access-point
+$schema: https://json-schema.org/draft/2020-12/schema
+description: representation of an access-point
+Title: access_point
+type: object
+properties:
+    name:
+        type: string
+        description: unique name of access point.
+    floorplan_name:
+        type: string
+        description: name of floorplan to which this access-point belongs.
+    asset_tag:
+        type: string
+        description: asset tag belonging to this access point.
+    serial_number:
+        type: string
+        description: serial number of this access point.
+    mac_address:
+        type: string
+        description: mac address of this access point.
+    manufacturer:
+        type: string
+        description: the manufacturer name for this access point.
+    model:
+        type: string
+        description: the model number of this particular access point
+    sku:
+        type: string
+        description: sku part number for this specific access-point.
+    radios:
+        type: array
+        items:
+            $ref: https://example.com/schema/radio.json
+    ssids:
+        type: array
+        items:
             type: string
-            description: unique name of access point.
-        floorplan_name:
-            type: string
-            description: name of floorplan to which this access-point belongs.
-        asset_tag:
-            type: string
-            description: asset tag belonging to this access point.
-        serial_number:
-            type: string
-            description: serial number of this access point.
-        mac_address:
-            type: string
-            description: mac address of this access point.
-        manufacturer:
-            type: string
-            description: the manufacturer name for this access point.
-        model:
-            type: string
-            description: the model number of this particular access point
-        sku:
-            type: string
-            description: sku part number for this specific access-point.
-        radios:
-            type: array
-            items:
-                $ref: https://example.com/schema/radio.json
-        ssids:
-            type: array
-            items:
-                type: string
-        antennas:
-            type: array
-            items:
-                $ref: https://example.com/schema/antenna.json
+    antennas:
+        type: array
+        items:
+            $ref: https://example.com/schema/antenna.json
+    regulatory_domain:
+        type: string
+    ethernet_ports:
+        type: array
+
 
 ```
 ## floorplan json-schema
@@ -268,6 +276,9 @@ $id: https://example.com/schema/floorplan
 $schema: https://json-schema.org/draft/2020-12/schema
 description: representation of an floorplan
 type: object
+required:
+    - name
+    - dimensions
 properties:
     name:
         type: string
@@ -287,11 +298,16 @@ properties:
     dimensions:
         type: array
         description: dimensions of the floorplan
+        minItems: 1
         items:
-            $refs: "#/$defs/dimension"
+            $ref: "#/$defs/dimension"
 $defs:
     dimension:
         type: object
+        required:
+          - length
+          - width
+          - unit
         properties:
             length:
                 type: number
@@ -306,48 +322,18 @@ $defs:
                 type: string
                 description: the dimension unit for length, width, height.
                 enum:
-                    - pixel
-                    - meter
+                    - pixels
+                    - meters
                     - feet
-
 ```
 
+### Floorplan Example
 ```yaml
-$id: https://example.com/schema/floorplan
-$schema: https://json-schema.org/draft/2020-12/schema
-description: representation of an floorplan
-type: object
-properties:
-    name:
-        type: string
-    vendor_id:
-        type: string
-    map_url:
-        type: string
-    floor_id:
-        type: string
-    rotation:
-        type: number
-    dimensions:
-        type: array
-        items:
-            $refs: "#/$defs/dimension"
-$defs:
-    dimension:
-        type: object
-        properties:
-            length:
-                type: number
-            width:
-                type: number
-            height:
-                type: number
-            unit:
-                type: string
-                enum:
-                    - pixel
-                    - meter
-                    - feet
+name: floor-01
+dimensions:
+    - length: 101
+      width: 102
+      unit: meters
 ```
 
 
@@ -355,6 +341,7 @@ $defs:
 {
   "$id": "https://example.com/schema/floorplan",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Floorplan"
   "description": "representation of an floorplan",
   "type": "object",
   "properties": {
