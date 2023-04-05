@@ -31,10 +31,10 @@ properties:
     sku:
         type: string
         description: sku part number for this specific access-point.
-    radios:
+    dot11_radios:
         type: array
         items:
-            $ref: "#/$defs/radio"
+            $ref: "#/$defs/dot11_radio"
     ssids:
         type: array
         items:
@@ -45,38 +45,131 @@ properties:
             $ref: "#/$defs/antenna"
     regulatory_domain:
         type: string
+    # Ethernet Needs some definitions around what is needed.
     ethernet_ports:
         type: array
         items:
             type: string
+    coorindate_xyz:
+        "$ref": "#/$defs/coordinate_xyz"
+    coordinate_latlong:
+        "$ref": "#/$defs/coordinate_latlng"
 $defs:
-    radio:
+    dot11_radio:
         type: object
+        description: a dot11 radio object
+        oneOf:
+            - required:
+                - id
+                - frequency
+                - channel
+                - channel_width
+                - transmit_power
+            - required:
+                - id
+                - frequency
+                - channel
+                - channel_width
+                - transmit_eirp
         properties:
-            radio_type:
-                type: string
-                enum:
-                    - dot11
-                    - ble
-                    - lora
             id:
                 type: integer
+                description: radio id if one is known
+            frequency:
+                type string:
+                enum:
+                    - FREQ_WIFI_2GHZ
+                    - FREQ_WIFI_5GHZ
+                    - FREQ_WIFI_6GHZ
+            channel:
+                type: integer
+                description: channel based on 802.11ac notation
+            channel-width:
+                type: string
+                enum:
+                    - "20"
+                    - "40"
+                    - "80"
+                    - "160"
+                    - "80+80"
+            transmit_power:
+                type: integer
+                description: conducted, per-chain power.
+            transmit_eirp:
+                type: number
+                description: EIRP, requires antenna gain to calculate               
     antenna:
         type: object
+        required:
+            - vendor
+            - model
         properties:
             vendor:
                 type: string
             model:
                 type: string
-            frequencies:
+            bands:
                 type: array
                 items:
-                    type: string
-                    enum:
-                        - FREQ_WIFI_2GHZ
-                        - FREQ_WIFI_5GHZ
-                        - FREQ_WIFI_6GHZ
+                    type: object
+                    properties:
+                        # Need to decide how we want to reference bands.
+                        # Concern: enum could grow a lot.
 
-            
+                        frequency:
+                            type: string
+                            enum:
+                                - FREQ_WIFI_2GHZ
+                                - FREQ_WIFI_5GHZ
+                                - FREQ_WIFI_6GHZ
+                        gain:
+                            type: number
+                            description: gain in dBi
+    coordinate_xyz:
+        type: object
+        description: >
+            A coordinate that references cartesian coordinates using
+            x,y,z and/or a geospatial coordinate using lat/long
+        required:
+                - "x"
+                - "y"
+        properties:
+            x:
+                type: number
+                description: "coordinate in X dimension represented as a number"
+                minimum: 0
+            y:
+                type: number
+                description: "coordinate in Y dimension represented as a number"
+                minimum: 0
+            z: 
+                type: number
+                description: >
+                    coordinate in Z dimension as height from floor
+                    represented as a number
+            ### TODO Do we need the ability for an AP height to be below the floor?  Thinking
+            ### Underfloor APs.  If not, add minimum number.  
+    coordinate_latlng:
+        type: object
+        description: >
+            A coordinate that references geospatial coordinates using
+            using lat/long and altitude
+        required:
+            - lattitude
+            - longitude
+        properties:
+            latitude:
+                type: number
+                description: "Latitude expressed as ISO 6709 in degrees"
+                minimum: -90
+                maximum: 90
+            longitude:
+                type: number
+                description: "Longitude expressed as ISO 6709 in degrees"
+                minimum: -180
+                maximum: 180
+            # Altitude or elevation?  Preference?
+            elevation:
+                type: number
+                description: "height in meters above sea level"       
 ## TODO ##
-## Fix Implement Radios and Antennas
