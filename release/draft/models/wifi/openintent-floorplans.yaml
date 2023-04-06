@@ -132,13 +132,13 @@ $defs:
                 description: >
                     coordinate in Z dimension as height from floor
                     represented as a number
-    coordinate_latlng:
+    coordinate_latlong:
         type: object
         description: >
             A coordinate that references geospatial coordinates using
             using lat/long and altitude
         required:
-            - lattitude
+            - latitude
             - longitude
         properties:
             latitude:
@@ -165,8 +165,8 @@ $defs:
         # Do we need an ID?  or does the reference text work for uniqueness?
             coordinate_xyz:
                 "$ref": "#/$defs/coordinate_xyz"
-            coordinate_latlng:
-                "$ref": "#/$defs/coordinate_latlng"
+            coordinate_latlong:
+                "$ref": "#/$defs/coordinate_latlong"
             reference_text:
                 type: string
                 description: text string from reference
