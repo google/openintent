@@ -36,6 +36,11 @@ properties:
         items:
             $ref: "#/$defs/wall_segment"
             minItems: 1
+    reference_markers:
+        type: array
+        description: list of reference markers
+        items:
+            $ref: "#/$defs/reference_marker"
 $defs:
     dimension:
         type: object
@@ -83,6 +88,9 @@ $defs:
             thickness:
                 type: number
                 description: thickness in meters of the wall.
+            height:
+                type: number
+                description: height of the wall in meters.
             start_point:
                 $ref: "#/$defs/wall_point"
                 description: Starting point of the segement
@@ -102,5 +110,64 @@ $defs:
             y:
                 type: number
                 description: y-coordinate of the point
-
+    coordinate_xyz:
+        type: object
+        description: >
+            A coordinate that references cartesian coordinates using
+            x,y,z and/or a geospatial coordinate using lat/long
+        required:
+                - "x"
+                - "y"
+        properties:
+            x:
+                type: number
+                description: "coordinate in X dimension represented as a number"
+                minimum: 0
+            y:
+                type: number
+                description: "coordinate in Y dimension represented as a number"
+                minimum: 0
+            z: 
+                type: number
+                description: >
+                    coordinate in Z dimension as height from floor
+                    represented as a number
+    coordinate_latlng:
+        type: object
+        description: >
+            A coordinate that references geospatial coordinates using
+            using lat/long and altitude
+        required:
+            - lattitude
+            - longitude
+        properties:
+            latitude:
+                type: number
+                description: "Latitude expressed as ISO 6709 in degrees"
+                minimum: -90
+                maximum: 90
+            longitude:
+                type: number
+                description: "Longitude expressed as ISO 6709 in degrees"
+                minimum: -180
+                maximum: 180
+            # Altitude or elevation?  Preference?
+            elevation:
+                type: number
+                description: "height in meters above sea level"       
+    reference_marker:
+        type: object
+        description: >
+            A reference marker to denote a location on the floorplan.
+            Can be used to provide notes, or a translation between coordinate
+            systems.
+        properties:
+        # Do we need an ID?  or does the reference text work for uniqueness?
+            coordinate_xyz:
+                "$ref": "#/$defs/coordinate_xyz"
+            coordinate_latlng:
+                "$ref": "#/$defs/coordinate_latlng"
+            reference_text:
+                type: string
+                description: text string from reference
 ### TODO Reference Markers

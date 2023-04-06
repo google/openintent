@@ -16,6 +16,44 @@ ssids:
     - wlan_2
     - guest_wlan
 regulatory_domain: FCC
+dot11_radios:
+    - id: 0
+      band: FREQ_5GHZ
+      channel: 36
+      channel_width: 40
+      transmit_power: 14
+    - id: 1
+      band: FREQ_2.4GHZ
+      channel: 1
+      channel_width: 20
+      transmit_power: 6
+    - id: 2
+      band: FREQ_6GHZ
+      channel: 5
+      channel_width: 80
+      transmit_power: 20
+antennas:
+    - vendor: Vencelltex
+      model: ABCDEFG
+      bands:
+        - band: FREQ_2.4GHZ
+          gain: 3
+        - band: FREQ_5GHZ
+          gain: 4
+        - band: FREQ_6GHZ
+          gain: 6
+coorindate_xyz:
+    x: 102
+    y: 308
+    z: 17
+    unit: pixels
+coordinate_latlong:
+    latitude: -10.00000
+    longitude: -116.00000
+    elevation: 2597
+
+
+
 
 ## TODO
 ## Need to implement Radios and Antenna Fully.

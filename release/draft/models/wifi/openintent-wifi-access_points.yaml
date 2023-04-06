@@ -33,6 +33,7 @@ properties:
         description: sku part number for this specific access-point.
     dot11_radios:
         type: array
+        minItems: 1
         items:
             $ref: "#/$defs/dot11_radio"
     ssids:
@@ -45,7 +46,7 @@ properties:
             $ref: "#/$defs/antenna"
     regulatory_domain:
         type: string
-    # Ethernet Needs some definitions around what is needed.
+    # Need some definitions around what ports are.
     ethernet_ports:
         type: array
         items:
@@ -53,7 +54,7 @@ properties:
     coorindate_xyz:
         "$ref": "#/$defs/coordinate_xyz"
     coordinate_latlong:
-        "$ref": "#/$defs/coordinate_latlng"
+        "$ref": "#/$defs/coordinate_latlong"
 $defs:
     dot11_radio:
         type: object
@@ -61,13 +62,13 @@ $defs:
         oneOf:
             - required:
                 - id
-                - frequency
+                - band
                 - channel
                 - channel_width
                 - transmit_power
             - required:
                 - id
-                - frequency
+                - band
                 - channel
                 - channel_width
                 - transmit_eirp
@@ -75,23 +76,29 @@ $defs:
             id:
                 type: integer
                 description: radio id if one is known
-            frequency:
-                type string:
-                enum:
-                    - FREQ_WIFI_2GHZ
-                    - FREQ_WIFI_5GHZ
-                    - FREQ_WIFI_6GHZ
+            band:
+                "$ref": "#/$defs/frequency_bands"
             channel:
                 type: integer
-                description: channel based on 802.11ac notation
-            channel-width:
-                type: string
+                description: channel based on 802.11ac notation (center channel)
+            channel_width:
+                type: 
+                    - integer
+                    - string
+                description: >
+                    channel width expressed as a number, except for 
+                    non-contiguous
                 enum:
-                    - "20"
-                    - "40"
-                    - "80"
-                    - "160"
+                    - 20
+                    - 40
+                    - 80
+                    - 160
                     - "80+80"
+                    - 320
+                    - "160+160"
+            secondary_channel:
+                type: integer
+                description: Used for non-contiguous secondary channel
             transmit_power:
                 type: integer
                 description: conducted, per-chain power.
@@ -113,15 +120,8 @@ $defs:
                 items:
                     type: object
                     properties:
-                        # Need to decide how we want to reference bands.
-                        # Concern: enum could grow a lot.
-
-                        frequency:
-                            type: string
-                            enum:
-                                - FREQ_WIFI_2GHZ
-                                - FREQ_WIFI_5GHZ
-                                - FREQ_WIFI_6GHZ
+                        band:
+                            "$ref": "#/$defs/frequency_bands"
                         gain:
                             type: number
                             description: gain in dBi
@@ -133,6 +133,7 @@ $defs:
         required:
                 - "x"
                 - "y"
+                - "unit"
         properties:
             x:
                 type: number
@@ -147,15 +148,19 @@ $defs:
                 description: >
                     coordinate in Z dimension as height from floor
                     represented as a number
-            ### TODO Do we need the ability for an AP height to be below the floor?  Thinking
-            ### Underfloor APs.  If not, add minimum number.  
-    coordinate_latlng:
+            unit:
+                type: string
+                enum:
+                    - feet
+                    - pixels
+                    - meters
+    coordinate_latlong:
         type: object
         description: >
             A coordinate that references geospatial coordinates using
             using lat/long and altitude
         required:
-            - lattitude
+            - latitude
             - longitude
         properties:
             latitude:
@@ -172,4 +177,11 @@ $defs:
             elevation:
                 type: number
                 description: "height in meters above sea level"       
+    frequency_bands:
+        type: string
+        description: bands that an antenna or radio operates in.
+        enum:
+            - FREQ_2.4GHZ
+            - FREQ_5GHZ
+            - FREQ_6GHZ
 ## TODO ##
