@@ -15,13 +15,16 @@ properties:
         description: name of floorplan to which this access-point belongs.
     asset_tag:
         type: string
-        description: asset tag belonging to this access point.
+        description: Assigned asset tag
     serial_number:
         type: string
         description: serial number of this access point.
     mac_address:
         type: string
-        description: mac address of this access point.
+        description: >
+            MAC Address of an access_point.  Should be described in the format:
+            01:23:45:67:89:0a where is is 2 characters seperated by colons and 
+            letters are lower case.
     manufacturer:
         type: string
         description: the manufacturer name for this access point.
@@ -185,3 +188,5 @@ $defs:
             - FREQ_5GHZ
             - FREQ_6GHZ
 ## TODO ##
+## Look at modelling IDF/PatchPanel/Jack info CableType
+## 
