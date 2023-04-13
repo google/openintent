@@ -9,11 +9,11 @@ properties:
         type: array
         description: An array of access_points
         items:
-            $ref: "https://raw.githubusercontent.com/google/openintent/parent_testing/release/draft/models/wifi/openintent-wifi-access_points.schema.json"
+            $ref: "/google/openintent/parent_testing/release/draft/models/wifi/openintent-wifi-access_points.schema.json"
             minItems: 1
 
     floorplans:
         type: array
         description: An array of floorplans
         items:
-            $ref: "https://raw.githubusercontent.com/google/openintent/parent_testing/release/draft/models/wifi/openintent-floorplans.schema.json"
+            $ref: "/google/openintent/parent_testing/release/draft/models/wifi/openintent-floorplans.schema.json"
