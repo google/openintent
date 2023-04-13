@@ -1,4 +1,4 @@
-$id: "https://raw.githubusercontent.com/google/openintent/main/release/draft/models/wifi/openintent-floorplans.schema.json"
+$id: "https://raw.githubusercontent.com/google/openintent/parent_testing/release/draft/models/wifi/openintent-floorplans.schema.json"
 $schema: https://json-schema.org/draft/2020-12/schema
 title: floorplan
 description: representation of an floorplan
