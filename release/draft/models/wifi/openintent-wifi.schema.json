@@ -1,1 +1,16 @@
-{"$id": "https://raw.githubusercontent.com/google/openintent/main/release/draft/models/wifi/openintent-wifi.schema.json", "$schema": "https://json-schema.org/draft/2020-12/schema", "description": "Wi-fi presentation schema", "Title": "WiFi", "properties": {"access_points": {"type": "array", "description": "An array of access_points", "items": {"$ref": "/openintent-wifi-access_points.schema.json", "minItems": 1}}, "floorplans": {"type": "array", "description": "An array of floorplans", "items": {"$ref": "/wifi"}}}}
+{
+	"$id": "https://github.com/google/openintent/blob/parent_testing/release/draft/models/wifi/openintent-wifi.schema.json",
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"description": "Wi-fi presentation schema",
+	"Title": "WiFi",
+	"properties": {
+		"access_points": {
+			"type": "array",
+			"description": "An array of access_points",
+			"items": {
+				"$ref": "https://raw.githubusercontent.com/google/openintent/parent_testing/release/draft/models/wifi/openintent-wifi-access_points.schema.json",
+				"minItems": 1
+			}
+		}
+	}
+}
