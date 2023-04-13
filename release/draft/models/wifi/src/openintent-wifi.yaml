@@ -1,5 +1,5 @@
 ---
-$id: "https://raw.githubusercontent.com/google/openintent/main/release/draft/models/wifi/openintent-floorplans.schema.json"
+$id: "https://raw.githubusercontent.com/google/openintent/main/release/draft/models/wifi/openintent-wifi.schema.json"
 $schema: https://json-schema.org/draft/2020-12/schema
 description: Wi-fi presentation schema
 Title: WiFi
