@@ -1,5 +1,5 @@
 ---
-$id: https://example.com/schema/access_point
+$id: "./openintent-wifi-access_points.schema.json"
 $schema: https://json-schema.org/draft/2020-12/schema
 description: representation of an access-point
 Title: access_point

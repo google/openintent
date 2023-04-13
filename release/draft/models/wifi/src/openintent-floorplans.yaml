@@ -1,5 +1,6 @@
-$id: https://example.com/schema/floorplan
+$id: "./openintent-floorplans.schema.json"
 $schema: https://json-schema.org/draft/2020-12/schema
+title: floorplan
 description: representation of an floorplan
 type: object
 required:
@@ -170,4 +171,3 @@ $defs:
             reference_text:
                 type: string
                 description: text string from reference
-### TODO Reference Markers
