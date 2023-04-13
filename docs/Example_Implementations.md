@@ -1,6 +1,14 @@
 # Examples
 This document is designed to show examples of how you can implement OpenIntent models using opensource libraries.
 
+## Prereqs
+This document assumes you have cloned the OpenIntent repo, and are in the `./releases/draft/models/wifi` directory.
+
+```bash
+git clone https://github.com/google/openintent.git
+
+cd ./openintent/release/draft/models/wifi
+```
 
 # Python:
 ## python-jsonschema-objects
@@ -13,7 +21,9 @@ This simple library allows you to instantiate objects in python based on the sch
 pip install python-jsonschema-objects
 ```
 
-### Basic Floorplan Example:
+### Create Python objects
+This will walk through how to instantiate a python object for the `floorplan` object based on the OpenIntent schema.
+
 ```python
 import json
 import yaml
@@ -22,13 +32,13 @@ import python_jsonschema_objects as pjs
 ### Using YAML source files
 with open("./openintent-floorplans.yaml") as file:
     floorplan_schema = yaml.safe_load(file)
+# Create Builder object
 builder = pjs.ObjectBuilder(floorplan_schema)
+# Create namespace object for classes
 ns = builder.build_classes()
-Floorplan = ns.Floorplan
-Dimension = ns.Dimension
-my_floor = Floorplan()
+my_floor = ns.Floorplan()
 my_floor.name = "my_floor01"
-my_floor.dimensions = [Dimension(length=100, width=200, unit="pixels")]
+my_floor.dimensions = [ns.Dimension(length=100, width=200, unit="pixels")]
 my_floor.serialize()
 
 ```
@@ -57,11 +67,9 @@ with open("./openintent-floorplans.yaml") as file:
     floorplan_schema = yaml.safe_load(file)
 builder = pjs.ObjectBuilder(floorplan_schema)
 ns = builder.build_classes()
-Floorplan = ns.Floorplan
-Dimension = ns.Dimension
-my_floor = Floorplan()
+my_floor = ns.Floorplan()
 my_floor.name = "my_floor01"
-my_floor.dimensions = [Dimension(length=100, width=200, unit="watchamacallits")]
+my_floor.dimensions = [ns.Dimension(length=100, width=200, unit="watchamacallits")]
 my_floor.serialize()
 
 ```
@@ -96,8 +104,6 @@ with open("./openintent-floorplans.yaml") as file:
     floorplan_schema = yaml.safe_load(file)
 builder = pjs.ObjectBuilder(floorplan_schema)
 ns = builder.build_classes()
-Floorplan = ns.Floorplan
-Dimension = ns.Dimension
 
 ### Load testing examples:
 floorplans = []
@@ -109,7 +115,7 @@ with open("./openintent-floorplans-testing.yaml", "r") as file:
         floorplan_examples.append(example)
 
 for floorplan_instance in floorplan_examples:
-    my_example = Floorplan.from_json(json.dumps(floorplan_instance))
+    my_example = ns.Floorplan.from_json(json.dumps(floorplan_instance))
     floorplans.append(my_example)
 [floor.validate() for floor in floorplans]
 [floor.serialize() for floor in floorplans]
