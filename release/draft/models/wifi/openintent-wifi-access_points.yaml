@@ -2,7 +2,7 @@
 $id: https://example.com/schema/access_point
 $schema: https://json-schema.org/draft/2020-12/schema
 description: representation of an access-point
-Title: access_point
+title: access_point
 required:
     - name
 type: object
@@ -19,6 +19,9 @@ properties:
     serial_number:
         type: string
         description: serial number of this access point.
+    claim_code:
+        type: string
+        description: vendor registration or claim code.
     mac_address:
         type: string
         description: >
@@ -54,10 +57,10 @@ properties:
         type: array
         items:
             type: string
-    coorindate_xyz:
+    coordinate_xyz:
         "$ref": "#/$defs/coordinate_xyz"
-    coordinate_latlong:
-        "$ref": "#/$defs/coordinate_latlong"
+    coordinate_lat_long:
+        "$ref": "#/$defs/coordinate_lat_long"
 $defs:
     dot11_radio:
         type: object
@@ -157,7 +160,7 @@ $defs:
                     - feet
                     - pixels
                     - meters
-    coordinate_latlong:
+    coordinate_lat_long:
         type: object
         description: >
             A coordinate that references geospatial coordinates using
