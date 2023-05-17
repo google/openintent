@@ -57,6 +57,8 @@ properties:
         type: array
         items:
             type: string
+    orientation:
+        $ref: "#/$defs/orientation"
     coordinate_xyz:
         "$ref": "#/$defs/coordinate_xyz"
     coordinate_lat_long:
@@ -131,6 +133,9 @@ $defs:
                         gain:
                             type: number
                             description: gain in dBi
+            orientation:
+                $ref: "#/$defs/orientation"
+
     coordinate_xyz:
         type: object
         description: >
@@ -190,6 +195,36 @@ $defs:
             - FREQ_2.4GHZ
             - FREQ_5GHZ
             - FREQ_6GHZ
+    orientation:
+        type: object
+        description: >
+            Object that describes the orientation of an object.  All descriptions
+            can be referenced as a plane in flight.
+        properties:
+            rotation:
+                type: number
+                description: >
+                Describes the rotation of the device in degrees where 0 is up on
+                the floorplan orientation.  For omnidirectional APs, if looking 
+                at the AP on the ceiling, the direction points toward the top of
+                the vendor logo.  For directional antennas/APs, the peak
+                beamwidth should point in this direction.  AKA yaw.
+            tilt:
+                type: number
+                description: >
+                Describes the tilt of the device in degrees. For integrated
+                antenna APs or omnidirectional antenna, 0 describes the default
+                orientation.  For directional APs, 0 describes the antenna as
+                pointed horizontal, with positive values tilting up, and
+                negative values pointing down.  AKA pitch.
+            roll:
+                type: number
+                description: >
+                Describes the rotation of the device in axis of rotation/tilt.
+                0 describes the devices default orientation.  This will normally
+                be zero in most scenarios.  Would be used to rotate and antenna
+                from vertical to horizontal polarization.  AKA roll.
+                
 ## TODO ##
 ## Look at modelling IDF/PatchPanel/Jack info CableType
 ## 
