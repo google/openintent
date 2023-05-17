@@ -1,4 +1,4 @@
-$id: "./openintent-floorplans.schema.json"
+$id: "openintent-floorplans.schema.json"
 $schema: https://json-schema.org/draft/2020-12/schema
 title: floorplan
 description: representation of an floorplan
@@ -13,7 +13,7 @@ properties:
     vendor_id:
         type: string
         description: vendor's ID for this floorplan
-    map_url:
+    map_uri:
         type: string
         description: url endpoint of where to retrieve the map.
     project_name:
