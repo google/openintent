@@ -88,25 +88,18 @@ $defs:
                 "$ref": "#/$defs/frequency_bands"
             channel:
                 type: integer
-                description: channel based on 802.11ac notation (center channel)
-            channel_width:
-                type: 
-                    - integer
-                    - string
                 description: >
-                    channel width expressed as a number, except for 
-                    non-contiguous
-                enum:
-                    - 20
-                    - 40
-                    - 80
-                    - 160
-                    - "80+80"
-                    - 320
-                    - "160+160"
+                channel based on 802.11ac notation (center channel). If the
+                channel is non-contiguous, you will need to specify the
+                secondary channel.
+            channel_width:
+                $ref: "#/$defs/channel_width"
             secondary_channel:
                 type: integer
-                description: Used for non-contiguous secondary channel
+                description: >
+                Secondary channel based on 802.11ac notation (center channel).
+                Used with 80+80 and 160+160 channel width configurations to 
+                describe the secondary channel (not containing primary channel).  
             transmit_power:
                 type: integer
                 description: conducted, per-chain power.
@@ -133,9 +126,43 @@ $defs:
                         gain:
                             type: number
                             description: gain in dBi
+            connectors:
+                type: array
+                items:
+                    $ref: "#/$defs/connectors"
             orientation:
                 $ref: "#/$defs/orientation"
-
+    rf_connector:
+        type: object
+        description: >
+            Details about rf connectors that would be present on an antenna or 
+            Accesspoint.
+        properties:
+            connector_type:
+                type: string
+                enum:
+                    - RP_SMA
+                    - RP_TNC
+                    - SMA
+                    - TNC
+                    - "N"
+            gender:
+                type: string
+                description: >
+                    
+                enum:
+    channel_width:
+        type: string
+        description: >
+            Represents channel width configurations as a string
+        enum:
+            - 20_MHz
+            - 40_MHz
+            - 80_MHz
+            - 160_MHz
+            - 320_MHz
+            - 80+80_MHz
+            - 160+160_MHz
     coordinate_xyz:
         type: object
         description: >
