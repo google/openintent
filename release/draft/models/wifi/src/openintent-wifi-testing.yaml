@@ -1,0 +1,84 @@
+---
+  access_points:
+    - name: ap_0001
+    - name: ap_0002
+      floorplan_name: floor-01
+      asset_tag: abcdef012345
+      serial_number: abcdef12345
+      mac_address: 00:00:00:00:00:00
+      manufacturer: Aruba
+      model: AP535
+      sku: AP535-US
+      ssids:
+          - wlan_1
+          - wlan_2
+          - guest_wlan
+      regulatory_domain: FCC
+      dot11_radios:
+          - id: 0
+            band: FREQ_5GHZ
+            channel: 36
+            channel_width: 40
+            transmit_power: 14
+          - id: 1
+            band: FREQ_2.4GHZ
+            channel: 1
+            channel_width: 20
+            transmit_power: 6
+          - id: 2
+            band: FREQ_6GHZ
+            channel: 5
+            channel_width: 80
+            transmit_power: 20
+      antennas:
+          - vendor: Vencelltex
+            model: ABCDEFG
+            bands:
+              - band: FREQ_2.4GHZ
+                gain: 3
+              - band: FREQ_5GHZ
+                gain: 4
+              - band: FREQ_6GHZ
+                gain: 6
+      coorindate_xyz:
+          x: 102
+          y: 308
+          z: 17
+          unit: pixels
+      coordinate_latlong:
+          latitude: -10.00000
+          longitude: -116.00000
+          elevation: 2597
+  floorplans:
+    - name: floor-01
+      dimensions:
+          - length: 101
+            width: 102
+            unit: meters
+    - name: floor-02
+      vendor_id: 000000-0000-0000-00000000000
+      map_url: https://www.example.com/maps/00000000-0000-0000-000000000000.png
+      floor_id: "1"
+      rotation: 0
+      dimensions:
+          - length: 101
+            width: 102
+            unit: meters
+    - name: floor-03
+      vendor_id: 000000-0000-0000-00000000000
+      map_url: https://www.example.com/maps/00000000-0000-0000-000000000000.png
+      floor_id: "1"
+      rotation: 0
+      dimensions:
+          - length: 101
+            width: 102
+            unit: meters
+      wall_segments:
+          - wall_type: brick
+            thickness: 0.5
+            start_point:
+              x: 0
+              y: 0
+            end_point:
+              x: 100
+              y: 100

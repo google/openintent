@@ -1,0 +1,23 @@
+{
+  "$id": "openintent-wifi",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Wi-fi presentation schema",
+  "title": "WiFi",
+  "properties": {
+    "access_points": {
+      "type": "array",
+      "description": "An array of access_points",
+      "items": {
+        "$ref": "file:wifi/access_point.schema.json",
+        "minItems": 1
+      }
+    },
+    "floorplans": {
+      "type": "array",
+      "description": "An array of floorplans",
+      "items": {
+        "$ref": "file:building/openintent-floorplans.schema.json"
+      }
+    }
+  }
+}

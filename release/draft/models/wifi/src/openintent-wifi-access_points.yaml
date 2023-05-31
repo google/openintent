@@ -1,8 +1,7 @@
 ---
-$id: "https://raw.githubusercontent.com/google/openintent/parent_testing/release/draft/models/wifi/openintent-wifi-access_points.schema.json"
 $schema: https://json-schema.org/draft/2020-12/schema
 description: representation of an access-point
-Title: access_point
+Title: access_points
 required:
     - name
 type: object
@@ -23,7 +22,7 @@ properties:
         type: string
         description: >
             MAC Address of an access_point.  Should be described in the format:
-            01:23:45:67:89:0a where is is 2 characters seperated by colons and 
+            01:23:45:67:89:0a where is is 2 characters seperated by colons and
             letters are lower case.
     manufacturer:
         type: string
@@ -38,7 +37,7 @@ properties:
         type: array
         minItems: 1
         items:
-            $ref: "#/$defs/dot11_radio"
+            $ref: "access_points#definitions/dot11_radio"
     ssids:
         type: array
         items:
@@ -46,7 +45,7 @@ properties:
     antennas:
         type: array
         items:
-            $ref: "#/$defs/antenna"
+            $ref: "access_points#/definitions/antenna"
     regulatory_domain:
         type: string
     # Need some definitions around what ports are.
@@ -55,10 +54,10 @@ properties:
         items:
             type: string
     coorindate_xyz:
-        "$ref": "#/$defs/coordinate_xyz"
+        "$ref": "access_points#/definitions/coordinate_xyz"
     coordinate_latlong:
-        "$ref": "#/$defs/coordinate_latlong"
-$defs:
+        "$ref": "access_points#/definitions/coordinate_latlong"
+definitions:
     dot11_radio:
         type: object
         description: a dot11 radio object
@@ -73,16 +72,16 @@ $defs:
                 type: integer
                 description: radio id if one is known
             band:
-                "$ref": "#/$defs/frequency_bands"
+                "$ref": "access_points#/definitions/frequency_bands"
             channel:
                 type: integer
                 description: channel based on 802.11ac notation (center channel)
             channel_width:
-                type: 
+                type:
                     - integer
                     - string
                 description: >
-                    channel width expressed as a number, except for 
+                    channel width expressed as a number, except for
                     non-contiguous
                 enum:
                     - 20
@@ -100,7 +99,7 @@ $defs:
                 description: conducted, per-chain power.
             transmit_eirp:
                 type: number
-                description: EIRP, requires antenna gain to calculate               
+                description: EIRP, requires antenna gain to calculate
     antenna:
         type: object
         required:
@@ -117,7 +116,7 @@ $defs:
                     type: object
                     properties:
                         band:
-                            "$ref": "#/$defs/frequency_bands"
+                            "$ref": "access_points#/definitions/frequency_bands"
                         gain:
                             type: number
                             description: gain in dBi
@@ -139,7 +138,7 @@ $defs:
                 type: number
                 description: "coordinate in Y dimension represented as a number"
                 minimum: 0
-            z: 
+            z:
                 type: number
                 description: >
                     coordinate in Z dimension as height from floor
@@ -172,7 +171,7 @@ $defs:
             # Altitude or elevation?  Preference?
             elevation:
                 type: number
-                description: "height in meters above sea level"       
+                description: "height in meters above sea level"
     frequency_bands:
         type: string
         description: bands that an antenna or radio operates in.
@@ -182,4 +181,4 @@ $defs:
             - FREQ_6GHZ
 ## TODO ##
 ## Look at modelling IDF/PatchPanel/Jack info CableType
-## 
+##
