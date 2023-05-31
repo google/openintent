@@ -50,6 +50,14 @@ properties:
         type: array
         items:
             $ref: "#/$defs/antenna"
+    antenna_type:
+        type: string
+        description: >
+            Describes if the antenna is integrated into the AP, or the AP
+            is connectorized to allow for external antennas.
+        enum:
+            - CONNECTORIZED
+            - INTEGRATED
     regulatory_domain:
         type: string
     # Need some definitions around what ports are.
@@ -116,6 +124,14 @@ $defs:
                 type: string
             model:
                 type: string
+            antenna_type:
+                type: string
+                description: >
+                    Indicateds if the antenna is classified as an omnidirectional
+                    or a directional antenna.
+                enum:
+                    - OMNIDIRECTIONAL
+                    - DIRECTIONAL
             bands:
                 type: array
                 items:
@@ -129,7 +145,7 @@ $defs:
             connectors:
                 type: array
                 items:
-                    $ref: "#/$defs/connectors"
+                    $ref: "#/$defs/rf_connector"
             orientation:
                 $ref: "#/$defs/orientation"
     rf_connector:
@@ -145,12 +161,17 @@ $defs:
                     - RP_TNC
                     - SMA
                     - TNC
-                    - "N"
+                    - Type-N
             gender:
                 type: string
                 description: >
-                    
+                    Describes the gender of the RF connector
                 enum:
+                    - CONNECTOR_MALE
+                    - CONNECTOR_FEMALE
+            frequency_bands:
+                type: array
+                items: "#/defs/frequency_bands"
     channel_width:
         type: string
         description: >
