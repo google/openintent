@@ -1,7 +1,7 @@
 ---
 $schema: https://json-schema.org/draft/2020-12/schema
 description: representation of an access-point
-Title: access_points
+title: accesspoint
 required:
     - name
 type: object
@@ -21,7 +21,7 @@ properties:
     mac_address:
         type: string
         description: >
-            MAC Address of an access_point.  Should be described in the format:
+            MAC Address of an accesspoint.  Should be described in the format:
             01:23:45:67:89:0a where is is 2 characters seperated by colons and
             letters are lower case.
     manufacturer:
@@ -37,7 +37,7 @@ properties:
         type: array
         minItems: 1
         items:
-            $ref: "access_points#definitions/dot11_radio"
+            $ref: "#/definitions/dot11_radio"
     ssids:
         type: array
         items:
@@ -45,7 +45,7 @@ properties:
     antennas:
         type: array
         items:
-            $ref: "access_points#/definitions/antenna"
+            $ref: "#/definitions/antenna"
     regulatory_domain:
         type: string
     # Need some definitions around what ports are.
@@ -54,9 +54,9 @@ properties:
         items:
             type: string
     coorindate_xyz:
-        "$ref": "access_points#/definitions/coordinate_xyz"
+        "$ref": "#/definitions/coordinate_xyz"
     coordinate_latlong:
-        "$ref": "access_points#/definitions/coordinate_latlong"
+        "$ref": "#/definitions/coordinate_latlong"
 definitions:
     dot11_radio:
         type: object
@@ -72,24 +72,23 @@ definitions:
                 type: integer
                 description: radio id if one is known
             band:
-                "$ref": "access_points#/definitions/frequency_bands"
+                "$ref": "#/definitions/frequency_bands"
             channel:
                 type: integer
                 description: channel based on 802.11ac notation (center channel)
             channel_width:
                 type:
-                    - integer
                     - string
                 description: >
                     channel width expressed as a number, except for
                     non-contiguous
                 enum:
-                    - 20
-                    - 40
-                    - 80
-                    - 160
+                    - "20"
+                    - "40"
+                    - "80"
+                    - "160"
                     - "80+80"
-                    - 320
+                    - "320"
                     - "160+160"
             secondary_channel:
                 type: integer
@@ -116,7 +115,7 @@ definitions:
                     type: object
                     properties:
                         band:
-                            "$ref": "access_points#/definitions/frequency_bands"
+                            "$ref": "#/definitions/frequency_bands"
                         gain:
                             type: number
                             description: gain in dBi

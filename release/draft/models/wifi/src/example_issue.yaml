@@ -1,0 +1,14 @@
+---
+$id: parentobject
+title: Parent
+properties:
+    parent_property1:
+        type: string
+    child_reference1:
+        type: array
+        items:
+            $ref: "memory:child1"
+    child_reference2:
+        type: array
+        items:
+            $ref: memory:child2

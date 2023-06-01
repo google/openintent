@@ -49,6 +49,7 @@
           latitude: -10.00000
           longitude: -116.00000
           elevation: 2597
+  access_points_version: draft
   floorplans:
     - name: floor-01
       dimensions:
@@ -82,3 +83,4 @@
             end_point:
               x: 100
               y: 100
+  floorplan_version: draft
