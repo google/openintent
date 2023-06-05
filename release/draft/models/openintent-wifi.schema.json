@@ -1,5 +1,5 @@
 {
-  "$id": "https://raw.githubusercontent.com/google/openintent/folder_structure_updates/release/draft/models/openintent.wifi.schema.json",
+  "$id": "https://raw.githubusercontent.com/google/openintent/folder_structure_updates/release/draft/models/openintent-wifi.schema.json",
   "description": "Wi-fi presentation schema",
   "title": "Wifi",
   "properties": {
