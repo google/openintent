@@ -57,7 +57,7 @@
       }
     }
   },
-  "definitions": {
+  "$defs": {
     "dimension": {
       "type": "object",
       "description": "dimension of a floorplan where the origin is located in the lower left corner, making all refences to location positive values\n",

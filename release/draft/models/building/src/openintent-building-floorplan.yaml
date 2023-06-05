@@ -42,7 +42,7 @@ properties:
         description: list of reference markers
         items:
             $ref: "#/$defs/reference_marker"
-definitions:
+$defs:
     dimension:
         type: object
         description: >
