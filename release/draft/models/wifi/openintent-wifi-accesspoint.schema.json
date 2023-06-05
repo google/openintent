@@ -94,25 +94,12 @@
     "dot11_radio": {
       "type": "object",
       "description": "a dot11 radio object",
-      "oneOf": [
-        {
-          "required": [
-            "id",
-            "band",
-            "channel",
-            "channel_width",
-            "transmit_power"
-          ]
-        },
-        {
-          "required": [
-            "id",
-            "band",
-            "channel",
-            "channel_width",
-            "transmit_eirp"
-          ]
-        }
+      "required": [
+        "id",
+        "band",
+        "channel",
+        "channel_width",
+        "transmit_power"
       ],
       "properties": {
         "id": {
