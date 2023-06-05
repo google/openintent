@@ -30,19 +30,19 @@ properties:
         description: dimensions of the floorplan
         minItems: 1
         items:
-            $ref: "#/$defs/dimension"
+            $ref: "floorplan#definitions/dimension"
     wall_segments:
         type: array
         description: segments of wall on floorplan
         items:
-            $ref: "#/$defs/wall_segment"
+            $ref: "floorplan#definitions/wall_segment"
             minItems: 1
     reference_markers:
         type: array
         description: list of reference markers
         items:
-            $ref: "#/$defs/reference_marker"
-$defs:
+            $ref: "floorplan#definitions/reference_marker"
+definitions:
     dimension:
         type: object
         description: >
@@ -93,10 +93,10 @@ $defs:
                 type: number
                 description: height of the wall in meters.
             start_point:
-                $ref: "#/$defs/wall_point"
+                $ref: "floorplan#definitions/wall_point"
                 description: Starting point of the segement
             end_point:
-                $ref: "#/$defs/wall_point"
+                $ref: "floorplan#definitions/wall_point"
                 description: Ending point of the segment
     wall_point:
         type: object
@@ -165,9 +165,9 @@ $defs:
         properties:
         # Do we need an ID?  or does the reference text work for uniqueness?
             coordinate_xyz:
-                "$ref": "#/$defs/coordinate_xyz"
+                $ref: "floorplan#definitions/coordinate_xyz"
             coordinate_latlong:
-                "$ref": "#/$defs/coordinate_latlong"
+                $ref: "floorplan#definitions/coordinate_latlong"
             reference_text:
                 type: string
                 description: text string from reference
