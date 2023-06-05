@@ -1,7 +1,7 @@
 {
-  "$id": "openintent-floorplans.schema.json",
+  "$id": "https://raw.githubusercontent.com/google/openintent/folder_structure_updates/release/draft/models/building/openintent-building-floorplan.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "floorplan",
+  "title": "floorplans",
   "description": "representation of an floorplan",
   "type": "object",
   "required": [
@@ -17,7 +17,7 @@
       "type": "string",
       "description": "vendor's ID for this floorplan"
     },
-    "map_uri": {
+    "map_url": {
       "type": "string",
       "description": "url endpoint of where to retrieve the map."
     },
@@ -38,14 +38,14 @@
       "description": "dimensions of the floorplan",
       "minItems": 1,
       "items": {
-        "$ref": "#/$defs/dimension"
+        "$ref": "floorplans#/definitions/dimension"
       }
     },
     "wall_segments": {
       "type": "array",
       "description": "segments of wall on floorplan",
       "items": {
-        "$ref": "#/$defs/wall_segment",
+        "$ref": "floorplans#/definitions/wall_segment",
         "minItems": 1
       }
     },
@@ -53,11 +53,11 @@
       "type": "array",
       "description": "list of reference markers",
       "items": {
-        "$ref": "#/$defs/reference_marker"
+        "$ref": "floorplans#/definitions/reference_marker"
       }
     }
   },
-  "$defs": {
+  "definitions": {
     "dimension": {
       "type": "object",
       "description": "dimension of a floorplan where the origin is located in the lower left corner, making all refences to location positive values\n",
@@ -115,11 +115,11 @@
           "description": "height of the wall in meters."
         },
         "start_point": {
-          "$ref": "#/$defs/wall_point",
+          "$ref": "floorplans#/definitions/wall_point",
           "description": "Starting point of the segement"
         },
         "end_point": {
-          "$ref": "#/$defs/wall_point",
+          "$ref": "floorplans#/definitions/wall_point",
           "description": "Ending point of the segment"
         }
       }
@@ -197,10 +197,10 @@
       "description": "A reference marker to denote a location on the floorplan. Can be used to provide notes, or a translation between coordinate systems.\n",
       "properties": {
         "coordinate_xyz": {
-          "$ref": "#/$defs/coordinate_xyz"
+          "$ref": "floorplans#/definitions/coordinate_xyz"
         },
         "coordinate_latlong": {
-          "$ref": "#/$defs/coordinate_latlong"
+          "$ref": "floorplans#/definitions/coordinate_latlong"
         },
         "reference_text": {
           "type": "string",

@@ -1,5 +1,5 @@
 {
-  "$id": "openintent-wifi-access_points.schema.json",
+  "$id": "https://raw.githubusercontent.com/google/openintent/folder_structure_updates/release/draft/models/wifi/openintent-wifi-accesspoint.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "description": "representation of an access-point",
   "title": "access_point",
