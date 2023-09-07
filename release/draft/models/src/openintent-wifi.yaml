@@ -78,6 +78,11 @@ definitions:
                 type: array
                 items:
                     $ref: "oi-wifi#definitions/rf_connector"
+            reference_markers:
+                type: array
+                description: list of reference markers
+                items:
+                    $ref: "oi-wifi#definitions/reference_marker"
             regulatory_domain:
                 type: string
             # Need some definitions around what ports are.
