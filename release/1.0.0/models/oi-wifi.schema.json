@@ -1,0 +1,574 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Wi-fi presentation schema",
+  "Title": "oi-wifi",
+  "properties": {
+    "accesspoints": {
+      "type": "array",
+      "description": "An array of access_points",
+      "items": {
+        "$ref": "oi-wifi#definitions/accesspoint",
+        "minItems": 1
+      }
+    },
+    "accesspoint_version": {
+      "description": "Version of the openintent-wifi-accesspoint model",
+      "type": "string"
+    },
+    "floorplans": {
+      "type": "array",
+      "description": "An array of floorplans",
+      "items": {
+        "$ref": "oi-wifi#definitions/floorplan",
+        "minItems": 1
+      }
+    },
+    "floorplan_version": {
+      "description": "Version of the openintent-floorplan model",
+      "type": "string"
+    }
+  },
+  "definitions": {
+    "accesspoint": {
+      "type": "object",
+      "description": "representation of an access-point",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "unique name of access point."
+        },
+        "floorplan_name": {
+          "type": "string",
+          "description": "name of floorplan to which this access-point belongs."
+        },
+        "asset_tag": {
+          "type": "string",
+          "description": "Assigned asset tag"
+        },
+        "serial_number": {
+          "type": "string",
+          "description": "serial number of this access point."
+        },
+        "claim_code": {
+          "type": "string",
+          "description": "vendor registration or claim code."
+        },
+        "mac_address": {
+          "type": "string",
+          "description": "MAC Address of an access_point.  Should be described in the format: 01:23:45:67:89:0a where is is 2 characters seperated by colons and  letters are lower case.\n",
+          "pattern": "^([a-f0-9]{2}:){5}[a-f0-9]{2}$"
+        },
+        "manufacturer": {
+          "type": "string",
+          "description": "the manufacturer name for this access point."
+        },
+        "model": {
+          "type": "string",
+          "description": "the model number of this particular access point"
+        },
+        "sku": {
+          "type": "string",
+          "description": "sku part number for this specific access-point."
+        },
+        "dot11_radios": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "oi-wifi#definitions/dot11_radio"
+          }
+        },
+        "ssids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "antennas": {
+          "type": "array",
+          "items": {
+            "$ref": "oi-wifi#definitions/antenna"
+          }
+        },
+        "rf_connectors": {
+          "type": "array",
+          "items": {
+            "$ref": "oi-wifi#definitions/rf_connector"
+          }
+        },
+        "reference_markers": {
+          "type": "array",
+          "description": "list of reference markers",
+          "items": {
+            "$ref": "oi-wifi#definitions/reference_marker"
+          }
+        },
+        "regulatory_domain": {
+          "type": "string"
+        },
+        "ethernet_ports": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "orientation": {
+          "$ref": "oi-wifi#definitions/orientation"
+        },
+        "coordinate_xyz": {
+          "$ref": "oi-wifi#definitions/coordinate_xyz"
+        },
+        "coordinate_lat_long": {
+          "$ref": "oi-wifi#definitions/coordinate_lat_long"
+        }
+      }
+    },
+    "floorplan": {
+      "type": "object",
+      "required": [
+        "name",
+        "dimensions"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "unique name of floorplan"
+        },
+        "vendor_id": {
+          "type": "string",
+          "description": "vendor's ID for this floorplan"
+        },
+        "map_uri": {
+          "type": "string",
+          "description": "url endpoint of where to retrieve the map."
+        },
+        "project_name": {
+          "type": "string",
+          "description": "Name of the project/file"
+        },
+        "floor_id": {
+          "type": "string",
+          "description": "string representation of the floor id."
+        },
+        "rotation": {
+          "type": "number",
+          "description": "rotation of the floorplan from native orientation"
+        },
+        "dimensions": {
+          "type": "array",
+          "description": "dimensions of the floorplan",
+          "minItems": 1,
+          "items": {
+            "$ref": "oi-wifi#definitions/dimension"
+          }
+        },
+        "wall_segments": {
+          "type": "array",
+          "description": "segments of wall on floorplan",
+          "items": {
+            "$ref": "oi-wifi#definitions/wall_segment",
+            "minItems": 1
+          }
+        },
+        "reference_markers": {
+          "type": "array",
+          "description": "list of reference markers",
+          "items": {
+            "$ref": "oi-wifi#definitions/reference_marker"
+          }
+        }
+      }
+    },
+    "dot11_radio": {
+      "type": "object",
+      "description": "a dot11 radio object",
+      "oneOf": [
+        {
+          "required": [
+            "id",
+            "band",
+            "channel",
+            "channel_width",
+            "transmit_power"
+          ]
+        },
+        {
+          "required": [
+            "id",
+            "band",
+            "channel",
+            "channel_width",
+            "transmit_eirp"
+          ]
+        }
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "radio id if one is known"
+        },
+        "radio_function": {
+          "type": "string",
+          "enum": [
+            "CLIENT_ACCESS",
+            "MONITORING",
+            "BACKHAUL",
+            "DISABLED"
+          ]
+        },
+        "band": {
+          "$ref": "oi-wifi#definitions/frequency_bands"
+        },
+        "channel": {
+          "type": "integer",
+          "description": "Channel is the primary 20MHZ channel\n"
+        },
+        "channel_width": {
+          "$ref": "oi-wifi#definitions/channel_width"
+        },
+        "secondary_channel": {
+          "type": "integer",
+          "description": "Secondary channel based on 802.11ac notation (center channel). Used with 80+80 and 160+160 channel width configurations to  describe the secondary channel (not containing primary channel).  \n"
+        },
+        "transmit_power": {
+          "type": "integer",
+          "description": "conducted, per-chain power."
+        },
+        "transmit_eirp": {
+          "type": "number",
+          "description": "EIRP, requires antenna gain to calculate"
+        },
+        "mimo_chains": {
+          "type": "integer",
+          "description": "Number of radio chains this radio is operating with\n"
+        }
+      }
+    },
+    "antenna": {
+      "type": "object",
+      "required": [
+        "vendor",
+        "model"
+      ],
+      "properties": {
+        "vendor": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "leads": {
+          "type": "integer",
+          "description": "The number of leads an antenna has.\n"
+        },
+        "extention": {
+          "type": "object",
+          "properties": {
+            "is_extended": {
+              "description": "Is the antenna extended with a rf extention cable?\n",
+              "type": "bool"
+            },
+            "type": "object",
+            "vendor": {
+              "type": "string"
+            },
+            "model": {
+              "type": "string"
+            },
+            "unit_length": {
+              "description": "Unit for describing the length of the extension\n",
+              "type": "string",
+              "enum": [
+                "feet",
+                "meters"
+              ]
+            },
+            "length": {
+              "description": "length of the extension in the unit_length\n",
+              "type": "number"
+            },
+            "losses": {
+              "description": "Array of losses per frequency band.\n",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "loss": {
+                    "type": "number",
+                    "description": "Loss in dB/100m\n"
+                  },
+                  "frequency": {
+                    "type": {
+                      "$ref": "oi-wifi#definitions/frequency_bands"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "antenna_type": {
+          "type": "string",
+          "description": "Indicateds if the antenna is classified as an omnidirectional or a directional antenna.\n",
+          "enum": [
+            "OMNIDIRECTIONAL",
+            "DIRECTIONAL"
+          ]
+        },
+        "bands": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "band": {
+                "$ref": "oi-wifi#definitions/frequency_bands"
+              },
+              "gain": {
+                "type": "number",
+                "description": "gain in dBi"
+              }
+            }
+          }
+        },
+        "rf_connectors": {
+          "type": "array",
+          "items": {
+            "$ref": "oi-wifi#definitions/rf_connector"
+          }
+        },
+        "orientation": {
+          "$ref": "oi-wifi#definitions/orientation"
+        }
+      }
+    },
+    "rf_connector": {
+      "type": "object",
+      "description": "Details about rf connectors that would be present on an antenna or  Accesspoint.\n",
+      "properties": {
+        "connector_type": {
+          "type": "string",
+          "enum": [
+            "RP_SMA",
+            "RP_TNC",
+            "SMA",
+            "TNC",
+            "Type-N"
+          ]
+        },
+        "gender": {
+          "type": "string",
+          "description": "Describes the gender of the RF connector\n",
+          "enum": [
+            "CONNECTOR_MALE",
+            "CONNECTOR_FEMALE"
+          ]
+        },
+        "frequency_bands": {
+          "type": "array",
+          "items": "#/defs/frequency_bands"
+        }
+      }
+    },
+    "channel_width": {
+      "type": "string",
+      "description": "Represents channel width configurations as a string\n",
+      "enum": [
+        "20_MHz",
+        "40_MHz",
+        "80_MHz",
+        "160_MHz",
+        "320_MHz",
+        "80+80_MHz",
+        "160+160_MHz"
+      ]
+    },
+    "coordinate_xyz": {
+      "type": "object",
+      "description": "A coordinate that references cartesian coordinates using x,y,z and/or a geospatial coordinate using lat/long\n",
+      "required": [
+        "x",
+        "y",
+        "unit"
+      ],
+      "properties": {
+        "x": {
+          "type": "number",
+          "description": "coordinate in X dimension represented as a number",
+          "minimum": 0
+        },
+        "y": {
+          "type": "number",
+          "description": "coordinate in Y dimension represented as a number",
+          "minimum": 0
+        },
+        "z": {
+          "type": "number",
+          "description": "coordinate in Z dimension as height from floor represented as a number\n"
+        },
+        "unit": {
+          "type": "string",
+          "enum": [
+            "feet",
+            "pixels",
+            "meters"
+          ]
+        }
+      }
+    },
+    "coordinate_lat_long": {
+      "type": "object",
+      "description": "A coordinate that references geospatial coordinates using using lat/long and altitude\n",
+      "required": [
+        "latitude",
+        "longitude"
+      ],
+      "properties": {
+        "latitude": {
+          "type": "number",
+          "description": "Latitude expressed as ISO 6709 in degrees",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "longitude": {
+          "type": "number",
+          "description": "Longitude expressed as ISO 6709 in degrees",
+          "minimum": -180,
+          "maximum": 180
+        },
+        "elevation": {
+          "type": "number",
+          "description": "height in meters above sea level"
+        }
+      }
+    },
+    "frequency_bands": {
+      "type": "string",
+      "description": "bands that an antenna or radio operates in.",
+      "enum": [
+        "FREQ_2.4GHZ",
+        "FREQ_5GHZ",
+        "FREQ_6GHZ"
+      ]
+    },
+    "orientation": {
+      "type": "object",
+      "description": "Object that describes the orientation of an object.  All descriptions can be referenced as a plane in flight.\n",
+      "properties": {
+        "rotation": {
+          "type": "number",
+          "description": "Describes the rotation of the device in degrees where 0 is up on the floorplan orientation.  For omnidirectional APs, if looking  at the AP on the ceiling, the direction points toward the top of the vendor logo.  For directional antennas/APs, the peak beamwidth should point in this direction.  AKA yaw.\n"
+        },
+        "tilt": {
+          "type": "number",
+          "description": "Describes the tilt of the device in degrees. For integrated antenna APs or omnidirectional antenna, 0 describes the default orientation.  For directional APs, 0 describes the antenna as pointed horizontal, with positive values tilting up, and negative values pointing down.  AKA pitch.\n"
+        },
+        "roll": {
+          "type": "number",
+          "description": "Describes the rotation of the device in axis of rotation/tilt. 0 describes the devices default orientation.  This will normally be zero in most scenarios.  Would be used to rotate and antenna from vertical to horizontal polarization.  AKA roll.\n"
+        }
+      }
+    },
+    "dimension": {
+      "type": "object",
+      "description": "dimension of a floorplan where the origin is located in the lower left corner, making all refences to location positive values\n",
+      "required": [
+        "length",
+        "width",
+        "unit"
+      ],
+      "properties": {
+        "length": {
+          "type": "number",
+          "description": "y-dimension of the floorplan",
+          "minimum": 0
+        },
+        "width": {
+          "type": "number",
+          "description": "x-dimension of the floorplan",
+          "minimum": 0
+        },
+        "height": {
+          "type": "number",
+          "description": "z-dimension of the floor (default height)",
+          "minimum": 0
+        },
+        "unit": {
+          "type": "string",
+          "description": "the dimension unit for length, width, height.",
+          "enum": [
+            "pixels",
+            "meters",
+            "feet"
+          ]
+        }
+      }
+    },
+    "wall_segment": {
+      "type": "object",
+      "description": "Represents a line segment of a wall on a floorplan.  Each segment requires a start, and end and a description for the wall type.\n",
+      "required": [
+        "wall_type",
+        "start_point",
+        "end_point"
+      ],
+      "properties": {
+        "wall_type": {
+          "type": "string",
+          "description": "Description of the wall type."
+        },
+        "thickness": {
+          "type": "number",
+          "description": "thickness in meters of the wall."
+        },
+        "height": {
+          "type": "number",
+          "description": "height of the wall in meters."
+        },
+        "start_point": {
+          "$ref": "#/$defs/wall_point",
+          "description": "Starting point of the segement"
+        },
+        "end_point": {
+          "$ref": "#/$defs/wall_point",
+          "description": "Ending point of the segment"
+        }
+      }
+    },
+    "wall_point": {
+      "type": "object",
+      "required": [
+        "x",
+        "y"
+      ],
+      "description": "Two-dimensional coordinate of a wall point",
+      "properties": {
+        "x": {
+          "type": "number",
+          "description": "x-coordinate of the point"
+        },
+        "y": {
+          "type": "number",
+          "description": "y-coordinate of the point"
+        }
+      }
+    },
+    "reference_marker": {
+      "type": "object",
+      "description": "A reference marker to denote a location on the floorplan. Can be used to provide notes, or a translation between coordinate systems.\n",
+      "properties": {
+        "coordinate_xyz": {
+          "$ref": "#/$defs/coordinate_xyz"
+        },
+        "coordinate_latlong": {
+          "$ref": "#/$defs/coordinate_latlong"
+        },
+        "reference_text": {
+          "type": "string",
+          "description": "text string from reference"
+        }
+      }
+    }
+  }
+}

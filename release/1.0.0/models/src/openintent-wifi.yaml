@@ -170,15 +170,15 @@ definitions:
             channel:
                 type: integer
                 description: >
-                Channel is the primary 20MHZ channel
+                    Channel is the primary 20MHZ channel
             channel_width:
                 $ref: "oi-wifi#definitions/channel_width"
             secondary_channel:
                 type: integer
                 description: >
-                Secondary channel based on 802.11ac notation (center channel).
-                Used with 80+80 and 160+160 channel width configurations to 
-                describe the secondary channel (not containing primary channel).  
+                    Secondary channel based on 802.11ac notation (center channel).
+                    Used with 80+80 and 160+160 channel width configurations to 
+                    describe the secondary channel (not containing primary channel).  
             transmit_power:
                 type: integer
                 description: conducted, per-chain power.
@@ -188,7 +188,7 @@ definitions:
             mimo_chains:
                 type: integer
                 description: >
-                Number of radio chains this radio is operating with
+                    Number of radio chains this radio is operating with
     antenna:
         type: object
         required:
@@ -374,26 +374,26 @@ definitions:
             rotation:
                 type: number
                 description: >
-                Describes the rotation of the device in degrees where 0 is up on
-                the floorplan orientation.  For omnidirectional APs, if looking 
-                at the AP on the ceiling, the direction points toward the top of
-                the vendor logo.  For directional antennas/APs, the peak
-                beamwidth should point in this direction.  AKA yaw.
+                    Describes the rotation of the device in degrees where 0 is up on
+                    the floorplan orientation.  For omnidirectional APs, if looking 
+                    at the AP on the ceiling, the direction points toward the top of
+                    the vendor logo.  For directional antennas/APs, the peak
+                    beamwidth should point in this direction.  AKA yaw.
             tilt:
                 type: number
                 description: >
-                Describes the tilt of the device in degrees. For integrated
-                antenna APs or omnidirectional antenna, 0 describes the default
-                orientation.  For directional APs, 0 describes the antenna as
-                pointed horizontal, with positive values tilting up, and
-                negative values pointing down.  AKA pitch.
+                    Describes the tilt of the device in degrees. For integrated
+                    antenna APs or omnidirectional antenna, 0 describes the default
+                    orientation.  For directional APs, 0 describes the antenna as
+                    pointed horizontal, with positive values tilting up, and
+                    negative values pointing down.  AKA pitch.
             roll:
                 type: number
                 description: >
-                Describes the rotation of the device in axis of rotation/tilt.
-                0 describes the devices default orientation.  This will normally
-                be zero in most scenarios.  Would be used to rotate and antenna
-                from vertical to horizontal polarization.  AKA roll.
+                    Describes the rotation of the device in axis of rotation/tilt.
+                    0 describes the devices default orientation.  This will normally
+                    be zero in most scenarios.  Would be used to rotate and antenna
+                    from vertical to horizontal polarization.  AKA roll.
     dimension:
         type: object
         description: > 
