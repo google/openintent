@@ -238,8 +238,8 @@ definitions:
                                     description: >
                                         Loss in dB/100m
                                 frequency:
-                                    type:
-                                        $ref: "oi-wifi#definitions/frequency_bands"
+                                    type: object
+                                    $ref: "oi-wifi#definitions/frequency_bands"
 
 
 

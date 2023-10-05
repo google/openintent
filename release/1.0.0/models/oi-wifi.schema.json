@@ -300,9 +300,8 @@
                     "description": "Loss in dB/100m\n"
                   },
                   "frequency": {
-                    "type": {
-                      "$ref": "oi-wifi#definitions/frequency_bands"
-                    }
+                    "type": "object",
+                    "$ref": "oi-wifi#definitions/frequency_bands"
                   }
                 }
               }
