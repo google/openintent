@@ -268,7 +268,7 @@
           "properties": {
             "is_extended": {
               "description": "Is the antenna extended with a rf extention cable?\n",
-              "type": "bool"
+              "type": "boolean"
             },
             "type": "object",
             "vendor": {
