@@ -8,7 +8,7 @@ properties:
         type: array
         description: An array of access_points
         items:
-            $ref: "#definitions/accesspoint"
+            $ref: "#/definitions/accesspoint"
             minItems: 1
     accesspoint_version:
         description: Version of the openintent-wifi-accesspoint model
@@ -18,7 +18,7 @@ properties:
         type: array
         description: An array of floorplans
         items:
-            $ref: "#definitions/floorplan"
+            $ref: "#/definitions/floorplan"
             minItems: 1
     floorplan_version:
         description: Version of the openintent-floorplan model
@@ -65,7 +65,7 @@ definitions:
                 type: array
                 minItems: 1
                 items:
-                    $ref: "#definitions/dot11_radio"
+                    $ref: "#/definitions/dot11_radio"
             ssids:
                 type: array
                 items:
@@ -73,16 +73,16 @@ definitions:
             antennas:
                 type: array
                 items:
-                    $ref: "#definitions/antenna"
+                    $ref: "#/definitions/antenna"
             rf_connectors:
                 type: array
                 items:
-                    $ref: "#definitions/rf_connector"
+                    $ref: "#/definitions/rf_connector"
             reference_markers:
                 type: array
                 description: list of reference markers
                 items:
-                    $ref: "#definitions/reference_marker"
+                    $ref: "#/definitions/reference_marker"
             regulatory_domain:
                 type: string
             # Need some definitions around what ports are.
@@ -91,11 +91,11 @@ definitions:
                 items:
                     type: string
             orientation:
-                $ref: "#definitions/orientation"
+                $ref: "#/definitions/orientation"
             coordinate_xyz:
-                "$ref": "#definitions/coordinate_xyz"
+                "$ref": "#/definitions/coordinate_xyz"
             coordinate_lat_long:
-                "$ref": "#definitions/coordinate_lat_long"
+                "$ref": "#/definitions/coordinate_lat_long"
     floorplan:
         type: object
         required:
@@ -125,18 +125,18 @@ definitions:
                 description: dimensions of the floorplan
                 minItems: 1
                 items:
-                    $ref: "#definitions/dimension"
+                    $ref: "#/definitions/dimension"
             wall_segments:
                 type: array
                 description: segments of wall on floorplan
                 items:
-                    $ref: "#definitions/wall_segment"
+                    $ref: "#/definitions/wall_segment"
                     minItems: 1
             reference_markers:
                 type: array
                 description: list of reference markers
                 items:
-                    $ref: "#definitions/reference_marker"
+                    $ref: "#/definitions/reference_marker"
     dot11_radio:
         type: object
         description: a dot11 radio object
@@ -166,13 +166,13 @@ definitions:
                     - DISABLED
                 # TODO Think about RADIO TYPES
             band:
-                "$ref": "#definitions/frequency_bands"
+                "$ref": "#/definitions/frequency_bands"
             channel:
                 type: integer
                 description: >
                     Channel is the primary 20MHZ channel
             channel_width:
-                $ref: "#definitions/channel_width"
+                $ref: "#/definitions/channel_width"
             secondary_channel:
                 type: integer
                 description: >
@@ -238,7 +238,7 @@ definitions:
                                         Loss in dB/100m
                                 frequency:
                                     type: object
-                                    $ref: "#definitions/frequency_bands"
+                                    $ref: "#/definitions/frequency_bands"
 
 
 
@@ -256,16 +256,16 @@ definitions:
                     type: object
                     properties:
                         band:
-                            "$ref": "#definitions/frequency_bands"
+                            "$ref": "#/definitions/frequency_bands"
                         gain:
                             type: number
                             description: gain in dBi
             rf_connectors:
                 type: array
                 items:
-                    $ref: "#definitions/rf_connector"
+                    $ref: "#/definitions/rf_connector"
             orientation:
-                $ref: "#definitions/orientation"
+                $ref: "#/definitions/orientation"
     rf_connector:
         type: object
         description: >
@@ -293,7 +293,7 @@ definitions:
             frequency_bands:
                 type: array
                 items: 
-                    $ref: "#definitions/frequency_bands"
+                    $ref: "#/definitions/frequency_bands"
     channel_width:
         type: string
         description: >
@@ -444,10 +444,10 @@ definitions:
                 type: number
                 description: height of the wall in meters.
             start_point:
-                $ref: "#definitions/wall_point"
+                $ref: "#/definitions/wall_point"
                 description: Starting point of the segement
             end_point:
-                $ref: "#definitions/wall_point"
+                $ref: "#/definitions/wall_point"
                 description: Ending point of the segment
     wall_point:
         type: object
@@ -471,9 +471,9 @@ definitions:
         properties:
         # Do we need an ID?  or does the reference text work for uniqueness?
             coordinate_xyz:
-                "$ref": "#definitions/coordinate_xyz"
+                "$ref": "#/definitions/coordinate_xyz"
             coordinate_latlong:
-                "$ref": "#definitions/coordinate_latlong"
+                "$ref": "#/definitions/coordinate_latlong"
             reference_text:
                 type: string
                 description: text string from reference
