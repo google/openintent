@@ -293,7 +293,8 @@ definitions:
                     - CONNECTOR_FEMALE
             frequency_bands:
                 type: array
-                items: "oi-wifi#definitions/frequency_bands"
+                items: 
+                    $ref: "oi-wifi#definitions/frequency_bands"
     channel_width:
         type: string
         description: >
