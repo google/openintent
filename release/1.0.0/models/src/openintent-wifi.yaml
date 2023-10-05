@@ -444,10 +444,10 @@ definitions:
                 type: number
                 description: height of the wall in meters.
             start_point:
-                $ref: "#/$defs/wall_point"
+                $ref: "oi-wifi#definitions/wall_point"
                 description: Starting point of the segement
             end_point:
-                $ref: "#/$defs/wall_point"
+                $ref: "oi-wifi#definitions/wall_point"
                 description: Ending point of the segment
     wall_point:
         type: object
@@ -471,9 +471,9 @@ definitions:
         properties:
         # Do we need an ID?  or does the reference text work for uniqueness?
             coordinate_xyz:
-                "$ref": "#/$defs/coordinate_xyz"
+                "$ref": "oi-wifi#definitions/coordinate_xyz"
             coordinate_latlong:
-                "$ref": "#/$defs/coordinate_latlong"
+                "$ref": "oi-wifi#definitions/coordinate_latlong"
             reference_text:
                 type: string
                 description: text string from reference
