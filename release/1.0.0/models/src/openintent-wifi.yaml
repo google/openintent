@@ -210,7 +210,6 @@ definitions:
                         description: >
                             Is the antenna extended with a rf extention cable?
                         type: boolean
-                    type: object
                     vendor:
                         type: string
                     model:
