@@ -7,7 +7,7 @@
       "type": "array",
       "description": "An array of access_points",
       "items": {
-        "$ref": "oi-wifi#definitions/accesspoint",
+        "$ref": "#definitions/accesspoint",
         "minItems": 1
       }
     },
@@ -19,7 +19,7 @@
       "type": "array",
       "description": "An array of floorplans",
       "items": {
-        "$ref": "oi-wifi#definitions/floorplan",
+        "$ref": "#definitions/floorplan",
         "minItems": 1
       }
     },
@@ -77,7 +77,7 @@
           "type": "array",
           "minItems": 1,
           "items": {
-            "$ref": "oi-wifi#definitions/dot11_radio"
+            "$ref": "#definitions/dot11_radio"
           }
         },
         "ssids": {
@@ -89,20 +89,20 @@
         "antennas": {
           "type": "array",
           "items": {
-            "$ref": "oi-wifi#definitions/antenna"
+            "$ref": "#definitions/antenna"
           }
         },
         "rf_connectors": {
           "type": "array",
           "items": {
-            "$ref": "oi-wifi#definitions/rf_connector"
+            "$ref": "#definitions/rf_connector"
           }
         },
         "reference_markers": {
           "type": "array",
           "description": "list of reference markers",
           "items": {
-            "$ref": "oi-wifi#definitions/reference_marker"
+            "$ref": "#definitions/reference_marker"
           }
         },
         "regulatory_domain": {
@@ -115,13 +115,13 @@
           }
         },
         "orientation": {
-          "$ref": "oi-wifi#definitions/orientation"
+          "$ref": "#definitions/orientation"
         },
         "coordinate_xyz": {
-          "$ref": "oi-wifi#definitions/coordinate_xyz"
+          "$ref": "#definitions/coordinate_xyz"
         },
         "coordinate_lat_long": {
-          "$ref": "oi-wifi#definitions/coordinate_lat_long"
+          "$ref": "#definitions/coordinate_lat_long"
         }
       }
     },
@@ -161,14 +161,14 @@
           "description": "dimensions of the floorplan",
           "minItems": 1,
           "items": {
-            "$ref": "oi-wifi#definitions/dimension"
+            "$ref": "#definitions/dimension"
           }
         },
         "wall_segments": {
           "type": "array",
           "description": "segments of wall on floorplan",
           "items": {
-            "$ref": "oi-wifi#definitions/wall_segment",
+            "$ref": "#definitions/wall_segment",
             "minItems": 1
           }
         },
@@ -176,7 +176,7 @@
           "type": "array",
           "description": "list of reference markers",
           "items": {
-            "$ref": "oi-wifi#definitions/reference_marker"
+            "$ref": "#definitions/reference_marker"
           }
         }
       }
@@ -219,14 +219,14 @@
           ]
         },
         "band": {
-          "$ref": "oi-wifi#definitions/frequency_bands"
+          "$ref": "#definitions/frequency_bands"
         },
         "channel": {
           "type": "integer",
           "description": "Channel is the primary 20MHZ channel\n"
         },
         "channel_width": {
-          "$ref": "oi-wifi#definitions/channel_width"
+          "$ref": "#definitions/channel_width"
         },
         "secondary_channel": {
           "type": "integer",
@@ -300,7 +300,7 @@
                   },
                   "frequency": {
                     "type": "object",
-                    "$ref": "oi-wifi#definitions/frequency_bands"
+                    "$ref": "#definitions/frequency_bands"
                   }
                 }
               }
@@ -321,7 +321,7 @@
             "type": "object",
             "properties": {
               "band": {
-                "$ref": "oi-wifi#definitions/frequency_bands"
+                "$ref": "#definitions/frequency_bands"
               },
               "gain": {
                 "type": "number",
@@ -333,11 +333,11 @@
         "rf_connectors": {
           "type": "array",
           "items": {
-            "$ref": "oi-wifi#definitions/rf_connector"
+            "$ref": "#definitions/rf_connector"
           }
         },
         "orientation": {
-          "$ref": "oi-wifi#definitions/orientation"
+          "$ref": "#definitions/orientation"
         }
       }
     },
@@ -366,7 +366,7 @@
         "frequency_bands": {
           "type": "array",
           "items": {
-            "$ref": "oi-wifi#definitions/frequency_bands"
+            "$ref": "#definitions/frequency_bands"
           }
         }
       }
@@ -527,11 +527,11 @@
           "description": "height of the wall in meters."
         },
         "start_point": {
-          "$ref": "oi-wifi#definitions/wall_point",
+          "$ref": "#definitions/wall_point",
           "description": "Starting point of the segement"
         },
         "end_point": {
-          "$ref": "oi-wifi#definitions/wall_point",
+          "$ref": "#definitions/wall_point",
           "description": "Ending point of the segment"
         }
       }
@@ -559,10 +559,10 @@
       "description": "A reference marker to denote a location on the floorplan. Can be used to provide notes, or a translation between coordinate systems.\n",
       "properties": {
         "coordinate_xyz": {
-          "$ref": "oi-wifi#definitions/coordinate_xyz"
+          "$ref": "#definitions/coordinate_xyz"
         },
         "coordinate_latlong": {
-          "$ref": "oi-wifi#definitions/coordinate_latlong"
+          "$ref": "#definitions/coordinate_latlong"
         },
         "reference_text": {
           "type": "string",
