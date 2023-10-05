@@ -270,7 +270,6 @@
               "description": "Is the antenna extended with a rf extention cable?\n",
               "type": "boolean"
             },
-            "type": "object",
             "vendor": {
               "type": "string"
             },
@@ -366,7 +365,9 @@
         },
         "frequency_bands": {
           "type": "array",
-          "items": "#/defs/frequency_bands"
+          "items": {
+            "$ref": "oi-wifi#definitions/frequency_bands"
+          }
         }
       }
     },
@@ -526,11 +527,11 @@
           "description": "height of the wall in meters."
         },
         "start_point": {
-          "$ref": "#/$defs/wall_point",
+          "$ref": "oi-wifi#definitions/wall_point",
           "description": "Starting point of the segement"
         },
         "end_point": {
-          "$ref": "#/$defs/wall_point",
+          "$ref": "oi-wifi#definitions/wall_point",
           "description": "Ending point of the segment"
         }
       }
@@ -558,10 +559,10 @@
       "description": "A reference marker to denote a location on the floorplan. Can be used to provide notes, or a translation between coordinate systems.\n",
       "properties": {
         "coordinate_xyz": {
-          "$ref": "#/$defs/coordinate_xyz"
+          "$ref": "oi-wifi#definitions/coordinate_xyz"
         },
         "coordinate_latlong": {
-          "$ref": "#/$defs/coordinate_latlong"
+          "$ref": "oi-wifi#definitions/coordinate_latlong"
         },
         "reference_text": {
           "type": "string",
