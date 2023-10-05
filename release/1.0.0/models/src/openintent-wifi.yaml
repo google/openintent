@@ -463,7 +463,7 @@ definitions:
             coordinate_xyz:
                 "$ref": "#/definitions/coordinate_xyz"
             coordinate_latlong:
-                "$ref": "#/definitions/coordinate_latlong"
+                "$ref": "#/definitions/coordinate_lat_long"
             reference_text:
                 type: string
                 description: text string from reference
