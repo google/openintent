@@ -2,6 +2,7 @@
 #$schema: https://json-schema.org/draft/2020-12/schema
 description: Wi-fi presentation schema
 Title: oi-wifi
+$id: oi-wifi
 
 properties:
     accesspoints:
