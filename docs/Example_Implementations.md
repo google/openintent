@@ -2,12 +2,12 @@
 This document is designed to show examples of how you can implement OpenIntent models using opensource libraries.
 
 ## Prereqs
-This document assumes you have cloned the OpenIntent repo, and are in the `./releases/draft/models/wifi` directory.
+This document assumes you have cloned the OpenIntent repo, and are in the `./releases/1.0.0/models/` directory.
 
 ```bash
 git clone https://github.com/google/openintent.git
 
-cd ./openintent/release/draft/models/wifi
+cd ./openintent/release/draft/models
 ```
 
 # Python:
@@ -26,20 +26,39 @@ This will walk through how to instantiate a python object for the `floorplan` ob
 
 ```python
 import json
-import yaml
+#import yaml
 import python_jsonschema_objects as pjs
 
 ### Using YAML source files
-with open("./openintent-floorplans.yaml") as file:
-    floorplan_schema = yaml.safe_load(file)
+with open("./oi-wifi.schema.json") as file:
+    wifi_schema = json.load(file)
 # Create Builder object
-builder = pjs.ObjectBuilder(floorplan_schema)
+builder = pjs.ObjectBuilder(wifi_schema)
 # Create namespace object for classes
 ns = builder.build_classes()
+oi = ns.OiWifi()
+
+# Instantiate a floorplan and add to oi object
 my_floor = ns.Floorplan()
 my_floor.name = "my_floor01"
 my_floor.dimensions = [ns.Dimension(length=100, width=200, unit="pixels")]
-my_floor.serialize()
+oi.floorplans = [my_floor]
+
+#instantiate access_point and add to oi object.
+my_ap = ns.Accesspoint(
+	**{
+		"name": "ap0001",
+		"floorplan_name": "my_floor01",
+		"manufacturer": "acmewireless",
+		"model": "wifi9000"
+	}
+)
+
+
+oi.accesspoints = [my_ap]
+
+oi.serialize()
+
 
 ```
 #### Output:
