@@ -64,12 +64,26 @@ oi.serialize()
 #### Output:
 ```json
 {
-	"name": "my_floor01",
-	"dimensions": [{
-		"length": 100,
-		"width": 200,
-		"unit": "pixels"
-	}]
+    "accesspoints": [
+        {
+            "name": "my_ap0001",
+            "floorplan_name": "my_floor01",
+            "manufacturer": "acmewireless",
+            "model": "wifi9000"
+        }
+    ],
+    "floorplans": [
+        {
+            "name": "my_floor01",
+            "dimensions": [
+                {
+                    "length": 100,
+                    "width": 200,
+                    "unit": "pixels"
+                }
+            ]
+        }
+    ]
 }
 ```
 
