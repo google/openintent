@@ -204,6 +204,10 @@ definitions:
                     $ref: "accesspoint#definitions/rf_connector"
             orientation:
                 $ref: "accesspoint#definitions/orientation"
+            coordinate_xyz:
+                "$ref": "accesspoint#definitions/coordinate_xyz"
+            coordinate_lat_long:
+                "$ref": "accesspoint#definitions/coordinate_lat_long"
     rf_connector:
         type: object
         description: >

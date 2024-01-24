@@ -65,14 +65,17 @@ definitions:
             dot11_radios:
                 type: array
                 minItems: 1
+                description: array of dot11_radio elements.
                 items:
                     $ref: "#/definitions/dot11_radio"
             ssids:
                 type: array
+                description: list of SSIDs available on this access-point
                 items:
                     type: string
             antennas:
                 type: array
+                description: array of antennas connected to this access-point.
                 items:
                     $ref: "#/definitions/antenna"
             rf_connectors:
@@ -92,6 +95,7 @@ definitions:
                 items:
                     type: string
             orientation:
+                description: If there are no antennas defined, or the antennas are integratied, the orientation for access-point should be used.
                 $ref: "#/definitions/orientation"
             coordinate_xyz:
                 "$ref": "#/definitions/coordinate_xyz"
@@ -257,6 +261,10 @@ definitions:
                     $ref: "#/definitions/rf_connector"
             orientation:
                 $ref: "#/definitions/orientation"
+            coordinate_xyz:
+                "$ref": "#/definitions/coordinate_xyz"
+            coordinate_lat_long:
+                "$ref": "#/definitions/coordinate_lat_long"
     rf_connector:
         type: object
         description: >
