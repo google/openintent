@@ -116,6 +116,9 @@ definitions:
             map_uri:
                 type: string
                 description: url endpoint of where to retrieve the map.
+            map_filepath:
+                type: string
+                description: Relative path to the map image.
             project_name:
                 type: string
                 description: Name of the project/file
