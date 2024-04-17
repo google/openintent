@@ -24,6 +24,10 @@ properties:
     floorplan_version:
         description: Version of the openintent-floorplan model
         type: string
+    wall_materials:
+        type: array
+        items:
+            "$ref": "#/definitions/wall_material"
 definitions:
     accesspoint:
         type: object
@@ -101,6 +105,9 @@ definitions:
                 "$ref": "#/definitions/coordinate_xyz"
             coordinate_lat_long:
                 "$ref": "#/definitions/coordinate_lat_long"
+            display_color:
+                type: string
+                description: Hex color code for visualizing access points.  Hos no inherint intent, but for visualization purposes.  Should start with "#" to indicate a hex color value. Example '#AC7400'
     floorplan:
         type: object
         required:
@@ -115,7 +122,7 @@ definitions:
                 description: vendor's ID for this floorplan
             map_uri:
                 type: string
-                description: url endpoint of where to retrieve the map.
+                description: uri where to retrieve the map. Not all URIs will be resolvable by all systems.
             project_name:
                 type: string
                 description: Name of the project/file
@@ -234,9 +241,6 @@ definitions:
                                 frequency:
                                     type: object
                                     $ref: "#/definitions/frequency_bands"
-
-
-
             antenna_type:
                 type: string
                 description: >
@@ -435,19 +439,31 @@ definitions:
         properties:
             wall_type:
                 type: string
-                description: Description of the wall type.
-            thickness:
-                type: number
-                description: thickness in meters of the wall.
-            height:
-                type: number
-                description: height of the wall in meters.
+                description: >
+                    Name of wall type.  Can be standalone or match a wall_material defined in main oi-wifi
+                    Preference is to define a wall type instead of specifying each value for each wall type.
             start_point:
                 $ref: "#/definitions/wall_point"
                 description: Starting point of the segement
             end_point:
                 $ref: "#/definitions/wall_point"
                 description: Ending point of the segment
+            display_color:
+                type: string
+                description: >
+                    Used if wall_material is not defined. Hex color code for visualizing access points.
+                    Has no inherint intent, but for visualization purposes.
+                    Should start with "#" to indicate a hex color value. Example '#AC7400'
+            thickness:
+                type: number
+                description: Used if wall_material is not defined. thickness in meters of the wall.
+            height:
+                type: number
+                description: Used if wall_material is not defined. height of the top of the wall from the floor.
+            bottom_height:
+                type: number
+                description: Used if wall_material is not defined. If wall does not start at floor, define at what height from floor 
+            
     wall_point:
         type: object
         required:
@@ -476,3 +492,37 @@ definitions:
             reference_text:
                 type: string
                 description: text string from reference
+    wall_material:
+        type: object
+        description: Object that defines the properties of wall material
+        properties:
+            name:
+                type: string
+                description: Name for wall material
+            itu_material_type:
+                type: string
+                description: ITU Wall Material if known
+            rf_properties:
+                type: array
+                items:
+                    "$ref": "#/definitions/rf_properties"
+            thickness_m:
+                type: number
+                description: >
+                    Thickness of the wall in meters.
+            bottom_height:
+                type: number
+                description: >
+                    
+    rf_properties:
+        type: object
+        properties:
+            attenuation_flat:
+                type: number
+                description: >
+                    Flat attenuation value. Object attenuates this value dB regardless of thickness.
+            attenuation_per_m:
+                type: number
+                description: >
+                    Attenuation in dB per meter of thickness.  Should multiple by thickness to calculate
+            
