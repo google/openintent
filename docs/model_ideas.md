@@ -1,5 +1,7 @@
 # Model Ideas Feb-2023
 
+## Note This is a legacy document and should be ignored for current purposes.
+
 This is just a place to track model ideas that include some visual components.
 
 
