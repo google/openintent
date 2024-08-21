@@ -41,6 +41,9 @@ definitions:
             floorplan_name:
                 type: string
                 description: name of floorplan to which this access-point belongs.
+            building_name:
+                type: string
+                description: name of the building with which to look for floorplan_name
             asset_tag:
                 type: string
                 description: Assigned asset tag
@@ -59,7 +62,8 @@ definitions:
                 pattern: "^([a-f0-9]{2}:){5}[a-f0-9]{2}$"
             manufacturer:
                 type: string
-                description: the manufacturer name for this access point.
+                description: >
+                The manufacturer name for this access point.
             model:
                 type: string
                 description: the model number of this particular access point
@@ -102,7 +106,16 @@ definitions:
                 description: If there are no antennas defined, or the antennas are integratied, the orientation for access-point should be used.
                 $ref: "#/definitions/orientation"
             coordinate_xyz:
+                description: Deprecated in 2.0 in favor of coordinates_xyz
                 "$ref": "#/definitions/coordinate_xyz"
+            coordinates_xyz:
+                type: array
+                items:
+                    "$ref": "#/definitions/coordinate_xyz"
+                description: >
+                Array of coordinates in the xyz coordinate system.
+                This allows you to specify multiples  coordinates for multiple systems.
+                Example, you may want to include XYZ in both pixels and meters.
             coordinate_lat_long:
                 "$ref": "#/definitions/coordinate_lat_long"
             display_color:
@@ -116,7 +129,7 @@ definitions:
         properties:
             name:
                 type: string
-                description: unique name of floorplan
+                description: unique name of floorplan (must be unique in the openintent payload.)
             vendor_id:
                 type: string
                 description: vendor's ID for this floorplan
@@ -128,7 +141,8 @@ definitions:
                 description: Name of the project/file
             floor_id:
                 type: string
-                description: string representation of the floor id.
+                description: >
+                    string representation of the floor id (Example: Ground, 1st, 3, etc)
             rotation:
                 type: number
                 description: rotation of the floorplan from native orientation
@@ -149,6 +163,21 @@ definitions:
                 description: list of reference markers
                 items:
                     $ref: "#/definitions/reference_marker"
+            attenuation_area:
+                type: array
+                desciption: list of areas on the floorplan
+                items:
+                    $ref: "#/definitions/attenuation_area"
+            coverage_areas:
+                type: array
+                desciption: list of coverage areas on the floorplan
+                items:
+                    $ref: "#/definitions/coverage_area"
+            holes_in_floor:
+                type: array
+                desciption: list of areas on the floorplan
+                items:
+                    $ref: "#/definitions/hole_in_floor"
     dot11_radio:
         type: object
         description: a dot11 radio object
@@ -175,6 +204,15 @@ definitions:
                     Channel is the primary 20MHZ channel
             channel_width:
                 $ref: "#/definitions/channel_width"
+            channel_assignment:
+                description: >
+                    This defines if APs are static or dynamically assigned
+                    channel. If vendor is performing automatic channel
+                    assignment.
+                type: string
+                enum:
+                    - DYNAMIC
+                    - STATIC
             secondary_channel:
                 type: integer
                 description: >
@@ -313,7 +351,7 @@ definitions:
         type: object
         description: >
             A coordinate that references cartesian coordinates using
-            x,y,z and/or a geospatial coordinate using lat/long
+            x,y,z
         required:
                 - "x"
                 - "y"
@@ -462,8 +500,7 @@ definitions:
                 description: Used if wall_material is not defined. height of the top of the wall from the floor.
             bottom_height:
                 type: number
-                description: Used if wall_material is not defined. If wall does not start at floor, define at what height from floor 
-            
+                description: Used if wall_material is not defined. If wall does not start at floor, define at what height from floor     
     wall_point:
         type: object
         required:
@@ -476,7 +513,7 @@ definitions:
                 description: x-coordinate of the point
             y:
                 type: number
-                description: y-coordinate of the point   
+                description: y-coordinate of the point
     reference_marker:
         type: object
         description: >
@@ -487,6 +524,13 @@ definitions:
         # Do we need an ID?  or does the reference text work for uniqueness?
             coordinate_xyz:
                 "$ref": "#/definitions/coordinate_xyz"
+                description: >
+                    Deprecated in 2.0 in favor of coordinates_xyz array
+                
+            coordinates_xyz:
+                type: array
+                items:
+                    "$ref": "#/definitions/coordinate_xyz"
             coordinate_latlong:
                 "$ref": "#/definitions/coordinate_lat_long"
             reference_text:
@@ -503,17 +547,24 @@ definitions:
                 type: string
                 description: ITU Wall Material if known
             rf_properties:
-                type: array
-                items:
-                    "$ref": "#/definitions/rf_properties"
+                "$ref": "#/definitions/rf_properties"
             thickness_m:
                 type: number
                 description: >
-                    Thickness of the wall in meters.
+                    Thickness of the wall in meters.  Do not fake wall thickness with arbitrary formulas.
+                    If wall thickness is not defined, omit and use flat attenuation values.
             bottom_height:
                 type: number
                 description: >
-                    
+                For wall materials, if the wall does not start at floor height, you can specify the height it starts at.
+            top_height:
+                type
+            display_color:
+                type: string
+                description: >
+                    Used if wall_material is not defined. Hex color code for visualizing access points.
+                    Has no inherint intent, but for visualization purposes.
+                    Should start with "#" to indicate a hex color value. Example '#AC7400'
     rf_properties:
         type: object
         properties:
@@ -524,5 +575,58 @@ definitions:
             attenuation_per_m:
                 type: number
                 description: >
-                    Attenuation in dB per meter of thickness.  Should multiple by thickness to calculate
-            
+                    Attenuation in dB per meter of thickness.  Should multiple by thickness to calculate flat attenuation
+    area:
+        type: object
+        description: >
+            Area describes a polygon area of a floorplan. which contains a list
+            of coordinates that describe the vertices of the area. Verticies
+            should be in sequential order, meaning each point is adjacent to the
+            point before, and the point after.  The last point and the first
+            point must also be adjacent. No Z is equal to 0, meaning  floor
+            height.
+        properties:
+            coordinates_xyz:
+                items:
+                    $ref: "#/definitions/coordinate_xyz"
+                    mintems: 3
+            coordinates_lat_long:
+                items:
+                    $ref: "#/definitions/coordinate_lat_long"
+                    minItems: 3
+    attenuation_area:
+        type: object
+        properties:
+            area:
+                ref: "#/definitions/area"
+            rf_properties:
+                ref: "#/definitions/rf_properties"
+    coverage_area:
+        type: object
+        properties:
+            area:
+                ref: "#/definitions/area"
+            exclusion:
+                description: >
+                    For exclusion areas, the flag would be true.
+                type: bool
+    hole_in_floor:
+        type: object
+        properties:
+            area:
+                ref: "#/definitions/area"
+            inverted:
+                description: >
+                    Inverted hole-in-floor objects are used to describe a hole
+                    that is everywhere but the defined area.  Example would be
+                    If you wanted to show a building, but wanted a hole in floor
+                    for to indicate that exterior to the building was a hole.
+                    When not present, assumption is the value is false.
+                type: bool                
+    # TODO define properties for capacity, list of device types and qty.
+        # define device capabilities. 
+    # TODO break area types into it's own top-level property under floorplan
+    # TODO Building top level object introduce floorplan offset. ()
+    # TODO Backlog: define properties for application requirements.
+    # TODO Backlog: define rf requirement profile, apply to areas.
+    # TODO Demand or load.  Peak mbps.
