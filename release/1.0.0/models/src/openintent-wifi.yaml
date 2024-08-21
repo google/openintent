@@ -63,7 +63,7 @@ definitions:
             manufacturer:
                 type: string
                 description: >
-                The manufacturer name for this access point.
+                    The manufacturer name for this access point.
             model:
                 type: string
                 description: the model number of this particular access point
@@ -113,9 +113,9 @@ definitions:
                 items:
                     "$ref": "#/definitions/coordinate_xyz"
                 description: >
-                Array of coordinates in the xyz coordinate system.
-                This allows you to specify multiples  coordinates for multiple systems.
-                Example, you may want to include XYZ in both pixels and meters.
+                    Array of coordinates in the xyz coordinate system.
+                    This allows you to specify multiples  coordinates for multiple systems.
+                    Example, you may want to include XYZ in both pixels and meters.
             coordinate_lat_long:
                 "$ref": "#/definitions/coordinate_lat_long"
             display_color:
@@ -555,9 +555,14 @@ definitions:
             bottom_height:
                 type: number
                 description: >
-                For wall materials, if the wall does not start at floor height, you can specify the height it starts at.
+                    For walls, if the wall does not start at the floor, this
+                    allows you to specify the height the bottom of the wall is
+                    at.
             top_height:
-                type
+                type: number
+                description: >
+                    For walls, the top_height is the height in meters of the top
+                    of the wall.
             display_color:
                 type: string
                 description: >
@@ -608,7 +613,7 @@ definitions:
             exclusion:
                 description: >
                     For exclusion areas, the flag would be true.
-                type: bool
+                type: boolean
     hole_in_floor:
         type: object
         properties:
@@ -621,7 +626,7 @@ definitions:
                     If you wanted to show a building, but wanted a hole in floor
                     for to indicate that exterior to the building was a hole.
                     When not present, assumption is the value is false.
-                type: bool                
+                type: boolean
     # TODO define properties for capacity, list of device types and qty.
         # define device capabilities. 
     # TODO break area types into it's own top-level property under floorplan
@@ -629,3 +634,4 @@ definitions:
     # TODO Backlog: define properties for application requirements.
     # TODO Backlog: define rf requirement profile, apply to areas.
     # TODO Demand or load.  Peak mbps.
+    # TODO top_height for walls.

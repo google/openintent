@@ -48,7 +48,7 @@ I would recommend that you use something that is very specific to your product/
 company to reduce the chances of it colliding with someone elses.
 
 Examples:
-- using `meraki_` instead of `m_`
+- using `meraki_` instead of `m_`, as `m_` could be confused with Mist.
 - use `haminaplanner` instead of `planner`
 
 
