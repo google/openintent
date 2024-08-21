@@ -206,13 +206,12 @@ definitions:
                 $ref: "#/definitions/channel_width"
             channel_assignment:
                 description: >
-                    This defines if APs are static or dynamically assigned
-                    channel. If vendor is performing automatic channel
-                    assignment.
+                    This defines if radios channels are manually assigned
+                    (human) or dynamically assigned by tooling.  
                 type: string
                 enum:
-                    - DYNAMIC
-                    - STATIC
+                    - AUTOMATIC
+                    - MANUAL
             secondary_channel:
                 type: integer
                 description: >
