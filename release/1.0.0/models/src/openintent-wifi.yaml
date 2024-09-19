@@ -600,13 +600,18 @@ definitions:
                     minItems: 3
     attenuation_area:
         type: object
+        required:
+            - area
         properties:
             area:
                 ref: "#/definitions/area"
             rf_properties:
                 ref: "#/definitions/rf_properties"
     coverage_area:
+        required:
+            - area
         type: object
+        description: Area included/excluded for wifi coverage
         properties:
             area:
                 ref: "#/definitions/area"
@@ -616,6 +621,8 @@ definitions:
                 type: boolean
     hole_in_floor:
         type: object
+        required:
+            - area
         properties:
             area:
                 ref: "#/definitions/area"
@@ -629,9 +636,50 @@ definitions:
                 type: boolean
     # TODO define properties for capacity, list of device types and qty.
         # define device capabilities. 
+    device_type:
+        type: object
+        required:
+            - name
+            - quantity
+        properties:
+            name:
+                type: string
+                description: Name of the device type
+            wifi_generation:
+                type: string
+                enum:
+                    - WIFI4
+                    - WIFI5
+                    - WIFI6
+                    - WIFI7
+            spatial_streams:
+                type: number
+                description: Number of spatial streams
+            max_bandwith:
+                type: number
+                description: Maximum channel bandwidth the client supports.
+            supported_bands:
+                type: array
+                items:
+                    ref: "#/definitions/frequency_bands"
+                minItems: 1
+            quantity:
+                type: number
+                description: number of devices
+    capacity_area:
+        required:
+            - area
+        properties:
+            area:
+                ref: "#/definitions/area"
+            devices:
+                type: array
+                items:
+                    $ref: "#/definitions/device_type"
+                minItems: 1
     # TODO break area types into it's own top-level property under floorplan
     # TODO Building top level object introduce floorplan offset. ()
     # TODO Backlog: define properties for application requirements.
-    # TODO Backlog: define rf requirement profile, apply to areas.
-    # TODO Demand or load.  Peak mbps.
-    # TODO top_height for walls.
+    # TODO Backlog: define rf requirement profile, apply to floorplans.
+    # TODO Backlog: discuss if we need this per-area.  Does anyone do this?
+    # TODO Backlog: Capacity/Device Demand or load.  Peak mbps?  Per app?
