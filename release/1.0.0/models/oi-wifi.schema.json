@@ -696,6 +696,9 @@
     },
     "attenuation_area": {
       "type": "object",
+      "required": [
+        "area"
+      ],
       "properties": {
         "area": {
           "ref": "#/definitions/area"
@@ -706,7 +709,11 @@
       }
     },
     "coverage_area": {
+      "required": [
+        "area"
+      ],
       "type": "object",
+      "description": "Area included/excluded for wifi coverage",
       "properties": {
         "area": {
           "ref": "#/definitions/area"
@@ -719,6 +726,9 @@
     },
     "hole_in_floor": {
       "type": "object",
+      "required": [
+        "area"
+      ],
       "properties": {
         "area": {
           "ref": "#/definitions/area"
@@ -726,6 +736,64 @@
         "inverted": {
           "description": "Inverted hole-in-floor objects are used to describe a hole that is everywhere but the defined area.  Example would be If you wanted to show a building, but wanted a hole in floor for to indicate that exterior to the building was a hole. When not present, assumption is the value is false.\n",
           "type": "boolean"
+        }
+      }
+    },
+    "device_type": {
+      "type": "object",
+      "required": [
+        "name",
+        "quantity"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the device type"
+        },
+        "wifi_generation": {
+          "type": "string",
+          "enum": [
+            "WIFI4",
+            "WIFI5",
+            "WIFI6",
+            "WIFI7"
+          ]
+        },
+        "spatial_streams": {
+          "type": "number",
+          "description": "Number of spatial streams"
+        },
+        "max_bandwith": {
+          "type": "number",
+          "description": "Maximum channel bandwidth the client supports."
+        },
+        "supported_bands": {
+          "type": "array",
+          "items": {
+            "ref": "#/definitions/frequency_bands"
+          },
+          "minItems": 1
+        },
+        "quantity": {
+          "type": "number",
+          "description": "number of devices"
+        }
+      }
+    },
+    "capacity_area": {
+      "required": [
+        "area"
+      ],
+      "properties": {
+        "area": {
+          "ref": "#/definitions/area"
+        },
+        "devices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/device_type"
+          },
+          "minItems": 1
         }
       }
     }
