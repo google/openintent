@@ -109,6 +109,14 @@ definitions:
             orientation:
                 description: If there are no antennas defined, or the antennas are integratied, the orientation for access-point should be used.
                 $ref: "#/definitions/orientation"
+            coordinates:
+                description: >
+                    Array of coordinate objects which contain both xyz and
+                    lat_long coordinate systems.  This allows all objects to
+                    share multi-coordinate systems.
+                type: array
+                items:
+                    "$ref": "#/definitions/coordinate"
             coordinate_xyz:
                 description: Deprecated in 2.0 in favor of coordinates_xyz
                 "$ref": "#/definitions/coordinate_xyz"
@@ -117,6 +125,7 @@ definitions:
                 items:
                     "$ref": "#/definitions/coordinate_xyz"
                 description: >
+                    Deprecated in 2.0 models in favor of coordinates
                     Array of coordinates in the xyz coordinate system.
                     This allows you to specify multiples  coordinates for multiple systems.
                     Example, you may want to include XYZ in both pixels and meters.
@@ -306,9 +315,13 @@ definitions:
                     $ref: "#/definitions/rf_connector"
             orientation:
                 $ref: "#/definitions/orientation"
+            coordinate:
+                $ref: "#/definitions/coordinate"
             coordinate_xyz:
+                description: Deprecated in 2.0 in favor of coordinate.
                 "$ref": "#/definitions/coordinate_xyz"
             coordinate_lat_long:
+                description: Deprecated in 2.0 in favor of coordinate.
                 "$ref": "#/definitions/coordinate_lat_long"
     rf_connector:
         type: object
@@ -401,7 +414,15 @@ definitions:
             # Altitude or elevation?  Preference?
             elevation:
                 type: number
-                description: "height in meters above sea level"       
+                description: "height in meters above sea level"
+    coordinate:
+        type: object
+        description: a coordinate with both sets of x/y/z and lat/long
+        properties:
+            coordinate_xyz:
+                ref: "#/definitions/coordinate_xyz"
+            coodinate_lat_long:
+                ref: "#/definitions/coordinate_lat_long"
     frequency_bands:
         type: string
         description: bands that an antenna or radio operates in.
@@ -525,17 +546,23 @@ definitions:
             systems.
         properties:
         # Do we need an ID?  or does the reference text work for uniqueness?
+            name:
+                type: string
+                description: unique name of the reference marker.
+            coordinate:
+                "$ref": "#/definitions/coordinate"
             coordinate_xyz:
                 "$ref": "#/definitions/coordinate_xyz"
                 description: >
                     Deprecated in 2.0 in favor of coordinates_xyz array
-                
             coordinates_xyz:
                 type: array
                 items:
                     "$ref": "#/definitions/coordinate_xyz"
+                description: deprecated in 2.0 in favor of coordinate
             coordinate_latlong:
                 "$ref": "#/definitions/coordinate_lat_long"
+                description: deprecated in 2.0 in favor of coordinate
             reference_text:
                 type: string
                 description: text string from reference
@@ -587,25 +614,22 @@ definitions:
     area:
         type: object
         description: >
-            Area describes a polygon area of a floorplan. which contains a list
-            of coordinates that describe the vertices of the area. Verticies
-            should be in sequential order, meaning each point is adjacent to the
-            point before, and the point after.  The last point and the first
-            point must also be adjacent. No Z is equal to 0, meaning  floor
-            height.
+            An area is defined as a polygon with a list of coordinates.
+            These coordinates must be colinear in order and the first and last
+            must be colinear with each other.
+        required:
+            - coordinates
         properties:
-            coordinates_xyz:
+            coordinates:
+                type: array
                 items:
-                    $ref: "#/definitions/coordinate_xyz"
-                    mintems: 3
-            coordinates_lat_long:
-                items:
-                    $ref: "#/definitions/coordinate_lat_long"
-                    minItems: 3
+                    $ref: "#/definitions/coordinate"
+                    min_items: 3
     attenuation_area:
         type: object
         required:
             - area
+            - area_material
         properties:
             area:
                 ref: "#/definitions/area"
@@ -640,47 +664,7 @@ definitions:
                 type: boolean
     # TODO define properties for capacity, list of device types and qty.
         # define device capabilities. 
-    device_type:
-        type: object
-        required:
-            - name
-            - quantity
-        properties:
-            name:
-                type: string
-                description: Name of the device type
-            wifi_generation:
-                type: string
-                enum:
-                    - WIFI4
-                    - WIFI5
-                    - WIFI6
-                    - WIFI7
-            spatial_streams:
-                type: number
-                description: Number of spatial streams
-            max_bandwith:
-                type: number
-                description: Maximum channel bandwidth the client supports.
-            supported_bands:
-                type: array
-                items:
-                    ref: "#/definitions/frequency_bands"
-                minItems: 1
-            quantity:
-                type: number
-                description: number of devices
-    capacity_area:
-        required:
-            - area
-        properties:
-            area:
-                ref: "#/definitions/area"
-            devices:
-                type: array
-                items:
-                    $ref: "#/definitions/device_type"
-                minItems: 1
+
     # TODO floor to floor attenuation values.
     # TODO break area types into it's own top-level property under floorplan
     # TODO Define raised floor.
