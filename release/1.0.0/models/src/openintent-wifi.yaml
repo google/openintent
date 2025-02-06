@@ -30,8 +30,8 @@ properties:
             "$ref": "#/definitions/material"
     area_materials:
         type: array
-            items:
-                "$ref": "#/definitions/material"
+        items:
+            "$ref": "#/definitions/material"
 definitions:
     accesspoint:
         type: object
