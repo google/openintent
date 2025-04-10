@@ -30,7 +30,8 @@ reduces the amount of work everyone has to do.
 If your vendor has a feature request portal, consider voting for support:
 
 [**Hamina**](https://hamina.featureupvote.com/suggestions/330924/hamina-project-importexport-via-open-intent-api)
-[**Aruba**](https://innovate.arubanetworks.com/ideas/NMS-I-3014)
+
+[**Aruba**](https://innovationzone.arubanetworking.hpe.com/ideas/CNX-I-155)
 
 ## Contributing
 This repository is primarily for publishing the models, documents and other
