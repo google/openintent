@@ -1,0 +1,69 @@
+---
+name: floor-01
+dimensions:
+    - length: 101
+      width: 102
+      unit: meters
+---
+name: floor-02
+vendor_id: 000000-0000-0000-00000000000
+map_url: https://www.example.com/maps/00000000-0000-0000-000000000000.png
+floor_id: "1"
+rotation: 0
+dimensions:
+    - length: 101
+      width: 102
+      unit: meters
+---
+name: floor-03
+vendor_id: 000000-0000-0000-00000000000
+map_url: https://www.example.com/maps/00000000-0000-0000-000000000000.png
+floor_id: "1"
+rotation: 0
+dimensions:
+    - length: 101
+      width: 102
+      unit: meters
+wall_segments:
+    - wall_type: brick
+      thickness: 0.5
+      start_point:
+        x: 0
+        y: 0
+      end_point:
+        x: 100
+        y: 100
+---
+name: floor-04
+vendor_id: 000000-0000-0000-00000000000
+map_url: https://www.example.com/maps/00000000-0000-0000-000000000000.png
+floor_id: "1"
+rotation: 0
+dimensions:
+    - length: 101
+      width: 102
+      unit: meters
+wall_segments:
+    - wall_type: brick
+      thickness: 0.5
+      start_point:
+          x: 0
+          y: 0
+      end_point:
+          x: 100
+          y: 100
+reference_markers:
+    - reference_text: marker_a
+      coordinate_xyz:
+          x: 100
+          y: 200
+      coordinate_latlong:
+          latitude: -10.00000
+          longitude: -100.0000
+    - reference_text: marker_b
+      coordinate_xyz:
+          x: 200
+          y: 100
+      coordinate_latlong:
+          latitude: -11.00000
+          longitude: -120.0000

@@ -1,0 +1,356 @@
+---
+$schema: https://json-schema.org/draft/2020-12/schema
+description: representation of an access-point
+title: accesspoint
+required:
+    - name
+type: object
+properties:
+    name:
+        type: string
+        description: unique name of access point.
+    floorplan_name:
+        type: string
+        description: name of floorplan to which this access-point belongs.
+    asset_tag:
+        type: string
+        description: Assigned asset tag
+    serial_number:
+        type: string
+        description: serial number of this access point.
+    claim_code:
+        type: string
+        description: vendor registration or claim code.
+    mac_address:
+        type: string
+        description: >
+            MAC Address of an access_point.  Should be described in the format:
+            01:23:45:67:89:0a where is is 2 characters seperated by colons and 
+            letters are lower case.
+        pattern: "^([a-f0-9]{2}:){5}[a-f0-9]{2}$"
+    manufacturer:
+        type: string
+        description: the manufacturer name for this access point.
+    model:
+        type: string
+        description: the model number of this particular access point
+    sku:
+        type: string
+        description: sku part number for this specific access-point.
+    dot11_radios:
+        type: array
+        minItems: 1
+        items:
+            $ref: "accesspoint#definitions/dot11_radio"
+    ssids:
+        type: array
+        items:
+            type: string
+    antennas:
+        type: array
+        items:
+            $ref: "accesspoint#definitions/antenna"
+    rf_connectors:
+        type: array
+        items:
+            $ref: "accesspoint#definitions/rf_connector"
+    reference_markers:
+        type: array
+        description: list of reference markers
+        items:
+            $ref: "accesspoint#definitions/reference_marker"
+    regulatory_domain:
+        type: string
+    # Need some definitions around what ports are.
+    ethernet_ports:
+        type: array
+        items:
+            type: string
+    orientation:
+        $ref: "accesspoint#definitions/orientation"
+    coordinate_xyz:
+        "$ref": "accesspoint#definitions/coordinate_xyz"
+    coordinate_lat_long:
+        "$ref": "accesspoint#definitions/coordinate_lat_long"
+
+definitions:
+    dot11_radio:
+        type: object
+        description: a dot11 radio object
+        oneOf:
+            - required:
+                - id
+                - band
+                - channel
+                - channel_width
+                - transmit_power
+            - required:
+                - id
+                - band
+                - channel
+                - channel_width
+                - transmit_eirp
+        properties:
+            id:
+                type: integer
+                description: radio id if one is known
+            radio_function:
+                type: string
+                enum: 
+                    - CLIENT_ACCESS
+                    - MONITORING
+                    - BACKHAUL
+                    - DISABLED
+                # TODO Think about RADIO TYPES
+            band:
+                "$ref": "accesspoint#definitions/frequency_bands"
+            channel:
+                type: integer
+                description: >
+                Channel is the primary 20MHZ channel
+            channel_width:
+                $ref: "accesspoint#definitions/channel_width"
+            secondary_channel:
+                type: integer
+                description: >
+                Secondary channel based on 802.11ac notation (center channel).
+                Used with 80+80 and 160+160 channel width configurations to 
+                describe the secondary channel (not containing primary channel).  
+            transmit_power:
+                type: integer
+                description: conducted, per-chain power.
+            transmit_eirp:
+                type: number
+                description: EIRP, requires antenna gain to calculate
+            mimo_chains:
+                type: integer
+                description: >
+                Number of radio chains this radio is operating with
+    antenna:
+        type: object
+        required:
+            - vendor
+            - model
+        properties:
+            vendor:
+                type: string
+            model:
+                type: string
+            leads:
+                type: integer
+                description: >
+                    The number of leads an antenna has.
+            extention:
+                type: object
+                properties:
+                    is_extended:
+                        description: >
+                            Is the antenna extended with a rf extention cable?
+                        type: boolean
+                    type: object
+                    vendor:
+                        type: string
+                    model:
+                        type: string
+                    unit_length:
+                        description: >
+                            Unit for describing the length of the extension
+                        type: string
+                        enum:
+                            - "feet"
+                            - "meters"
+                    length:
+                        description: >
+                            length of the extension in the unit_length
+                        type: number
+                    losses:
+                        description: >
+                            Array of losses per frequency band.
+                        type: array
+                        items:
+                            type: object
+                            properties:
+                                loss:
+                                    type: number
+                                    description: >
+                                        Loss in dB/100m
+                                frequency:
+                                    type:
+                                        $ref: "accesspoint#definitions/frequency_bands"
+
+
+
+            antenna_type:
+                type: string
+                description: >
+                    Indicateds if the antenna is classified as an omnidirectional
+                    or a directional antenna.
+                enum:
+                    - OMNIDIRECTIONAL
+                    - DIRECTIONAL
+            bands:
+                type: array
+                items:
+                    type: object
+                    properties:
+                        band:
+                            "$ref": "accesspoint#definitions/frequency_bands"
+                        gain:
+                            type: number
+                            description: gain in dBi
+            rf_connectors:
+                type: array
+                items:
+                    $ref: "accesspoint#definitions/rf_connector"
+            orientation:
+                $ref: "accesspoint#definitions/orientation"
+            coordinate_xyz:
+                "$ref": "accesspoint#definitions/coordinate_xyz"
+            coordinate_lat_long:
+                "$ref": "accesspoint#definitions/coordinate_lat_long"
+    rf_connector:
+        type: object
+        description: >
+            Details about rf connectors that would be present on an antenna or 
+            Accesspoint.
+        properties:
+            connector_type:
+                type: string
+                enum:
+                    - RP_SMA
+                    - RP_TNC
+                    - SMA
+                    - TNC
+                    - Type-N
+            gender:
+                type: string
+                description: >
+                    Describes the gender of the RF connector
+                # Are these inclusive terms to use? Consensus is that these
+                # are industry terms.  Can revisit if there are good
+                # alternatives
+                enum:
+                    - CONNECTOR_MALE
+                    - CONNECTOR_FEMALE
+            frequency_bands:
+                type: array
+                items: "#/defs/frequency_bands"
+    channel_width:
+        type: string
+        description: >
+            Represents channel width configurations as a string
+        enum:
+            - 20_MHz
+            - 40_MHz
+            - 80_MHz
+            - 160_MHz
+            - 320_MHz
+            - 80+80_MHz
+            - 160+160_MHz
+    coordinate_xyz:
+        type: object
+        description: >
+            A coordinate that references cartesian coordinates using
+            x,y,z and/or a geospatial coordinate using lat/long
+        required:
+                - "x"
+                - "y"
+                - "unit"
+        properties:
+            x:
+                type: number
+                description: "coordinate in X dimension represented as a number"
+                minimum: 0
+            y:
+                type: number
+                description: "coordinate in Y dimension represented as a number"
+                minimum: 0
+            z: 
+                type: number
+                description: >
+                    coordinate in Z dimension as height from floor
+                    represented as a number
+            unit:
+                type: string
+                enum:
+                    - feet
+                    - pixels
+                    - meters
+    coordinate_lat_long:
+        type: object
+        description: >
+            A coordinate that references geospatial coordinates using
+            using lat/long and altitude
+        required:
+            - latitude
+            - longitude
+        properties:
+            latitude:
+                type: number
+                description: "Latitude expressed as ISO 6709 in degrees"
+                minimum: -90
+                maximum: 90
+            longitude:
+                type: number
+                description: "Longitude expressed as ISO 6709 in degrees"
+                minimum: -180
+                maximum: 180
+            # Altitude or elevation?  Preference?
+            elevation:
+                type: number
+                description: "height in meters above sea level"       
+    frequency_bands:
+        type: string
+        description: bands that an antenna or radio operates in.
+        enum:
+            - FREQ_2.4GHZ
+            - FREQ_5GHZ
+            - FREQ_6GHZ
+    orientation:
+        type: object
+        description: >
+            Object that describes the orientation of an object.  All descriptions
+            can be referenced as a plane in flight.
+        properties:
+            rotation:
+                type: number
+                description: >
+                Describes the rotation of the device in degrees where 0 is up on
+                the floorplan orientation.  For omnidirectional APs, if looking 
+                at the AP on the ceiling, the direction points toward the top of
+                the vendor logo.  For directional antennas/APs, the peak
+                beamwidth should point in this direction.  AKA yaw.
+            tilt:
+                type: number
+                description: >
+                Describes the tilt of the device in degrees. For integrated
+                antenna APs or omnidirectional antenna, 0 describes the default
+                orientation.  For directional APs, 0 describes the antenna as
+                pointed horizontal, with positive values tilting up, and
+                negative values pointing down.  AKA pitch.
+            roll:
+                type: number
+                description: >
+                Describes the rotation of the device in axis of rotation/tilt.
+                0 describes the devices default orientation.  This will normally
+                be zero in most scenarios.  Would be used to rotate and antenna
+                from vertical to horizontal polarization.  AKA roll.
+    reference_marker:
+            type: object
+            description: >
+                A reference marker to denote a location on the floorplan.
+                Can be used to provide notes, or a translation between coordinate
+                systems.
+            properties:
+            # Do we need an ID?  or does the reference text work for uniqueness?
+                coordinate_xyz:
+                    "$ref": "floorplan#definitions/coordinate_xyz"
+                coordinate_latlong:
+                    "$ref": "accesspoint#definitions/coordinate_latlong"
+                reference_text:
+                    type: string
+                    description: text string from reference
+                
+## TODO ##
+## Look at modelling IDF/PatchPanel/Jack info CableType
+## 
