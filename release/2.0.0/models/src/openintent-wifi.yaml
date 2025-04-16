@@ -1,67 +1,84 @@
 ---
-#$schema: https://json-schema.org/draft/2020-12/schema
+$schema: https://json-schema.org/draft/2020-12/schema
 description: Wi-fi presentation schema
-Title: oi_wifi
+title: oi_wifi
 $id: oi_wifi
+
+type: object
+required:
+  - accesspoints
+  - accesspoint_version
+  - floorplans
+  - floorplan_version
 
 properties:
   accesspoints:
     type: array
     description: An array of access_points
+    minItems: 1
     items:
       $ref: "#/definitions/accesspoint"
-      minItems: 1
   accesspoint_version:
     description: Version of the openintent-wifi-accesspoint model
+    type: string
+
+  switches:
+    type: array
+    description: An array of network switches
+    items:
+      $ref: "#/definitions/switch"
+  switch_version:
+    description: Version of the openintent-wifi-switch model
     type: string
 
   floorplans:
     type: array
     description: An array of floorplans
+    minItems: 1
     items:
       $ref: "#/definitions/floorplan"
-      minItems: 1
   floorplan_version:
     description: Version of the openintent-floorplan model
     type: string
   wall_materials:
     type: array
     items:
-      "$ref": "#/definitions/material"
+      $ref: "#/definitions/material"
   area_materials:
     type: array
     items:
-      "$ref": "#/definitions/material"
+      $ref: "#/definitions/material"
+
 definitions:
   accesspoint:
     type: object
-    description: representation of an access-point
+    description: Representation of an access-point
     required:
       - name
     properties:
       name:
         type: string
-        description: unique name of access point.
+        description: Unique name of access point.
       floorplan_name:
         type: string
-        description: name of floorplan to which this access-point belongs.
+        description: Name of floorplan to which this access-point belongs.
       building_name:
         type: string
-        description: name of the building with which to look for floorplan_name
+        description: Name of the building with which to look for floorplan_name
       asset_tag:
         type: string
         description: Assigned asset tag
       serial_number:
         type: string
-        description: serial number of this access point.
+        description: Serial number of this access point.
       claim_code:
         type: string
-        description: vendor registration or claim code.
+        description: Vendor registration or claim code.
       mac_address:
         type: string
         description: >
-          MAC Address of an access_point.  Should be described in the format:
-          01:23:45:67:89:0a where is is 2 characters seperated by colons and 
+          MAC Address of an access_point. Should be described in the format:
+          01:23:45:67:89:0a where is is 2 characters seperated by colons and
           letters are lower case.
         pattern: "^([a-f0-9]{2}:){5}[a-f0-9]{2}$"
       manufacturer:
@@ -70,24 +87,40 @@ definitions:
           The manufacturer name for this access point.
       model:
         type: string
-        description: the model number of this particular access point
+        description: The model number of this particular access point
       sku:
         type: string
-        description: sku part number for this specific access-point.
+        description: SKU part number for this specific access-point.
+      connected_switch:
+        type: object
+        description: Information about the switch this access point is connected to
+        properties:
+          switch_name:
+            type: string
+            description: Reference to the name of the switch this access point is connected to
+          port:
+            type: string
+            description: The port on the switch that this access point is connected to
+          vlan:
+            type: integer
+            description: VLAN ID assigned to this access point connection
+          idf_name:
+            type: string
+            description: Name or identifier of the IDF where the connected switch is located
       dot11_radios:
         type: array
         minItems: 1
-        description: array of dot11_radio elements.
+        description: Array of dot11_radio elements.
         items:
           $ref: "#/definitions/dot11_radio"
       ssids:
         type: array
-        description: list of SSIDs available on this access-point
+        description: List of SSIDs available on this access-point
         items:
           type: string
       antennas:
         type: array
-        description: array of antennas connected to this access-point.
+        description: Array of antennas connected to this access-point.
         items:
           $ref: "#/definitions/antenna"
       rf_connectors:
@@ -96,44 +129,76 @@ definitions:
           $ref: "#/definitions/rf_connector"
       reference_markers:
         type: array
-        description: list of reference markers
+        description: List of reference markers
         items:
           $ref: "#/definitions/reference_marker"
       regulatory_domain:
         type: string
-      # Need some definitions around what ports are.
       ethernet_ports:
         type: array
         items:
           type: string
       orientation:
-        description: If there are no antennas defined, or the antennas are integratied, the orientation for access-point should be used.
+        description: If there are no antennas defined, or the antennas are integrated, the orientation for access-point should be used.
         $ref: "#/definitions/orientation"
       coordinates:
         description: >
           Array of coordinate objects which contain both xyz and
-          lat_long coordinate systems.  This allows all objects to
+          lat_long coordinate systems. This allows all objects to
           share multi-coordinate systems.
         type: array
         items:
-          "$ref": "#/definitions/coordinate"
-      coordinate_xyz:
-        description: Deprecated in 2.0 in favor of coordinates_xyz
-        "$ref": "#/definitions/coordinate_xyz"
-      coordinates_xyz:
-        type: array
-        items:
-          "$ref": "#/definitions/coordinate_xyz"
-        description: >
-          Deprecated in 2.0 models in favor of coordinates
-          Array of coordinates in the xyz coordinate system.
-          This allows you to specify multiples  coordinates for multiple systems.
-          Example, you may want to include XYZ in both pixels and meters.
-      coordinate_lat_long:
-        "$ref": "#/definitions/coordinate_lat_long"
+          $ref: "#/definitions/coordinate"
       display_color:
         type: string
-        description: Hex color code for visualizing access points.  Hos no inherint intent, but for visualization purposes.  Should start with "#" to indicate a hex color value. Example '#AC7400'
+        description: Hex color code for visualizing access points. Has no inherent intent, but for visualization purposes. Should start with "#" to indicate a hex color value. Example '#AC7400'
+        pattern: "^#[0-9A-Fa-f]{6}$"
+  switch:
+    type: object
+    description: Representation of a network switch
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        description: Unique name of switch.
+      floorplan_name:
+        type: string
+        description: Name of floorplan to which this switch belongs.
+      building_name:
+        type: string
+        description: Name of the building with which to look for floorplan_name
+      asset_tag:
+        type: string
+        description: Assigned asset tag
+      serial_number:
+        type: string
+        description: Serial number of this switch.
+      manufacturer:
+        type: string
+        description: The manufacturer name for this switch.
+      model:
+        type: string
+        description: The model number of this particular switch
+      sku:
+        type: string
+        description: SKU part number for this specific switch.
+      ip_address:
+        type: string
+        description: Management IP address of the switch
+        format: ipv4
+      idf_name:
+        type: string
+        description: Name or identifier of the IDF (Intermediate Distribution Frame) room/closet where this switch is located
+      coordinates:
+        description: Array of coordinate objects which contain both xyz and lat_long coordinate systems.
+        type: array
+        items:
+          $ref: "#/definitions/coordinate"
+      display_color:
+        type: string
+        description: Hex color code for visualizing the switch. Has no inherent intent, but for visualization purposes.
+        pattern: "^#[0-9A-Fa-f]{6}$"
   floorplan:
     type: object
     required:
@@ -142,75 +207,76 @@ definitions:
     properties:
       name:
         type: string
-        description: unique name of floorplan (must be unique in the openintent payload.)
+        description: Unique name of floorplan (must be unique in the openintent payload.)
       vendor_id:
         type: string
-        description: vendor's ID for this floorplan
+        description: Vendor's ID for this floorplan
       map_uri:
         type: string
-        description: uri where to retrieve the map. Not all URIs will be resolvable by all systems.
+        description: URI where to retrieve the map. Not all URIs will be resolvable by all systems.
+        format: uri
       project_name:
         type: string
         description: Name of the project/file
       floor_id:
         type: string
         description: >
-          string representation of the floor id (Example: Ground, 1st, 3, etc)
+          String representation of the floor id (Example: Ground, 1st, 3, etc)
       rotation:
         type: number
-        description: rotation of the floorplan from native orientation
+        description: Rotation of the floorplan from native orientation
       dimensions:
         type: array
-        description: dimensions of the floorplan
+        description: Dimensions of the floorplan
         minItems: 1
         items:
           $ref: "#/definitions/dimension"
       wall_segments:
         type: array
-        description: segments of wall on floorplan
+        description: Segments of wall on floorplan
+        minItems: 1
         items:
           $ref: "#/definitions/wall_segment"
-          minItems: 1
       reference_markers:
         type: array
-        description: list of reference markers
+        description: List of reference markers
         items:
           $ref: "#/definitions/reference_marker"
       attenuation_areas:
         type: array
-        desciption: list of areas on the floorplan
+        description: List of areas on the floorplan
         items:
           $ref: "#/definitions/attenuation_area"
       coverage_areas:
         type: array
-        desciption: list of coverage areas on the floorplan
+        description: List of coverage areas on the floorplan
         items:
           $ref: "#/definitions/coverage_area"
       holes_in_floor:
         type: array
-        desciption: list of areas on the floorplan
+        description: List of areas on the floorplan
         items:
           $ref: "#/definitions/hole_in_floor"
+
   dot11_radio:
     type: object
-    description: a dot11 radio object
+    description: A dot11 radio object
     required:
       - id
       - radio_function
     properties:
       id:
         type: integer
-        description: radio id if one is known
+        description: Radio id if one is known
       radio_function:
         type: string
-        enum: 
+        enum:
           - CLIENT_ACCESS
           - MONITORING
           - BACKHAUL
           - DISABLED
-        # TODO Think about RADIO TYPES
       band:
-        "$ref": "#/definitions/frequency_bands"
+        $ref: "#/definitions/frequency_bands"
       channel:
         type: integer
         description: >
@@ -220,7 +286,7 @@ definitions:
       channel_assignment:
         description: >
           This defines if radios channels are manually assigned
-          (human) or dynamically assigned by tooling.  
+          (human) or dynamically assigned by tooling.
         type: string
         enum:
           - AUTOMATIC
@@ -229,11 +295,11 @@ definitions:
         type: integer
         description: >
           Secondary channel based on 802.11ac notation (center channel).
-          Used with 80+80 and 160+160 channel width configurations to 
-          describe the secondary channel (not containing primary channel).  
+          Used with 80+80 and 160+160 channel width configurations to
+          describe the secondary channel (not containing primary channel).
       transmit_power:
         type: integer
-        description: conducted, per-chain power.
+        description: Conducted, per-chain power.
       transmit_eirp:
         type: number
         description: EIRP, requires antenna gain to calculate
@@ -241,6 +307,7 @@ definitions:
         type: integer
         description: >
           Number of radio chains this radio is operating with
+
   antenna:
     type: object
     required:
@@ -275,7 +342,7 @@ definitions:
               - "meters"
           length:
             description: >
-              length of the extension in the unit_length
+              Length of the extension in the unit_length
             type: number
           losses:
             description: >
@@ -289,12 +356,11 @@ definitions:
                   description: >
                     Loss in dB/100m
                 frequency:
-                  type: object
                   $ref: "#/definitions/frequency_bands"
       antenna_type:
         type: string
         description: >
-          Indicateds if the antenna is classified as an omnidirectional
+          Indicates if the antenna is classified as an omnidirectional
           or a directional antenna.
         enum:
           - OMNIDIRECTIONAL
@@ -305,10 +371,10 @@ definitions:
           type: object
           properties:
             band:
-              "$ref": "#/definitions/frequency_bands"
+              $ref: "#/definitions/frequency_bands"
             gain:
               type: number
-              description: gain in dBi
+              description: Gain in dBi
       rf_connectors:
         type: array
         items:
@@ -317,16 +383,11 @@ definitions:
         $ref: "#/definitions/orientation"
       coordinate:
         $ref: "#/definitions/coordinate"
-      coordinate_xyz:
-        description: Deprecated in 2.0 in favor of coordinate.
-        "$ref": "#/definitions/coordinate_xyz"
-      coordinate_lat_long:
-        description: Deprecated in 2.0 in favor of coordinate.
-        "$ref": "#/definitions/coordinate_lat_long"
+
   rf_connector:
     type: object
     description: >
-      Details about rf connectors that would be present on an antenna or 
+      Details about RF connectors that would be present on an antenna or
       Accesspoint.
     properties:
       connector_type:
@@ -341,16 +402,14 @@ definitions:
         type: string
         description: >
           Describes the gender of the RF connector
-        # Are these inclusive terms to use? Consensus is that these
-        # are industry terms.  Can revisit if there are good
-        # alternatives
         enum:
           - CONNECTOR_MALE
           - CONNECTOR_FEMALE
       frequency_bands:
         type: array
-        items: 
+        items:
           $ref: "#/definitions/frequency_bands"
+
   channel_width:
     type: string
     description: >
@@ -363,28 +422,29 @@ definitions:
       - 320_MHz
       - 80+80_MHz
       - 160+160_MHz
+
   coordinate_xyz:
     type: object
     description: >
       A coordinate that references cartesian coordinates using
       x,y,z
     required:
-        - "x"
-        - "y"
-        - "unit"
+      - "x"
+      - "y"
+      - "unit"
     properties:
       x:
         type: number
-        description: "coordinate in X dimension represented as a number"
+        description: "Coordinate in X dimension represented as a number"
         minimum: 0
       y:
         type: number
-        description: "coordinate in Y dimension represented as a number"
+        description: "Coordinate in Y dimension represented as a number"
         minimum: 0
-      z: 
+      z:
         type: number
         description: >
-          coordinate in Z dimension as height from floor
+          Coordinate in Z dimension as height from floor
           represented as a number
       unit:
         type: string
@@ -392,6 +452,7 @@ definitions:
           - feet
           - pixels
           - meters
+
   coordinate_lat_long:
     type: object
     description: >
@@ -411,59 +472,62 @@ definitions:
         description: "Longitude expressed as ISO 6709 in degrees"
         minimum: -180
         maximum: 180
-      # Altitude or elevation?  Preference?
       elevation:
         type: number
-        description: "height in meters above sea level"
+        description: "Height in meters above sea level"
+
   coordinate:
     type: object
-    description: a coordinate with both sets of x/y/z and lat/long
+    description: A coordinate with both sets of x/y/z and lat/long
     properties:
       coordinate_xyz:
-        ref: "#/definitions/coordinate_xyz"
-      coodinate_lat_long:
-        ref: "#/definitions/coordinate_lat_long"
+        $ref: "#/definitions/coordinate_xyz"
+      coordinate_lat_long:
+        $ref: "#/definitions/coordinate_lat_long"
+
   frequency_bands:
     type: string
-    description: bands that an antenna or radio operates in.
+    description: Bands that an antenna or radio operates in.
     enum:
       - FREQ_2.4GHZ
       - FREQ_5GHZ
       - FREQ_6GHZ
+
   orientation:
     type: object
     description: >
-      Object that describes the orientation of an object.  All descriptions
+      Object that describes the orientation of an object. All descriptions
       can be referenced as a plane in flight.
     properties:
       rotation:
         type: number
         description: >
           Describes the rotation of the device in degrees where 0 is up on
-          the floorplan orientation.  For omnidirectional APs, if looking 
+          the floorplan orientation. For omnidirectional APs, if looking
           at the AP on the ceiling, the direction points toward the top of
-          the vendor logo.  For directional antennas/APs, the peak
-          beamwidth should point in this direction.  AKA yaw.
+          the vendor logo. For directional antennas/APs, the peak
+          beamwidth should point in this direction. AKA yaw.
       tilt:
         type: number
         description: >
           Describes the tilt of the device in degrees. For integrated
           antenna APs or omnidirectional antenna, 0 describes the default
-          orientation.  For directional APs, 0 describes the antenna as
+          orientation. For directional APs, 0 describes the antenna as
           pointed horizontal, with positive values tilting up, and
-          negative values pointing down.  AKA pitch.
+          negative values pointing down. AKA pitch.
       roll:
         type: number
         description: >
           Describes the rotation of the device in axis of rotation/tilt.
-          0 describes the devices default orientation.  This will normally
-          be zero in most scenarios.  Would be used to rotate and antenna
-          from vertical to horizontal polarization.  AKA roll.
+          0 describes the devices default orientation. This will normally
+          be zero in most scenarios. Would be used to rotate and antenna
+          from vertical to horizontal polarization. AKA roll.
+
   dimension:
     type: object
-    description: > 
-      dimension of a floorplan where the origin is located in
-      the lower left corner, making all refences to location positive
+    description: >
+      Dimension of a floorplan where the origin is located in
+      the lower left corner, making all references to location positive
       values
     required:
       - length
@@ -484,15 +548,16 @@ definitions:
         minimum: 0
       unit:
         type: string
-        description: the dimension unit for length, width, height.
+        description: The dimension unit for length, width, height.
         enum:
           - pixels
           - meters
           - feet
+
   wall_segment:
     type: object
     description: >
-      Represents a line segment of a wall on a floorplan.  Each segment
+      Represents a line segment of a wall on a floorplan. Each segment
       requires a start, and end and a description for the wall type.
     required:
       - wall_type
@@ -502,11 +567,11 @@ definitions:
       wall_type:
         type: string
         description: >
-          Name of wall type.  Can be standalone or match a wall_material defined in main oi-wifi
+          Name of wall type. Can be standalone or match a wall_material defined in main oi-wifi
           Preference is to define a wall type instead of specifying each value for each wall type.
       start_point:
         $ref: "#/definitions/wall_point"
-        description: Starting point of the segement
+        description: Starting point of the segment
       end_point:
         $ref: "#/definitions/wall_point"
         description: Ending point of the segment
@@ -514,17 +579,22 @@ definitions:
         type: string
         description: >
           Used if wall_material is not defined. Hex color code for visualizing access points.
-          Has no inherint intent, but for visualization purposes.
+          Has no inherent intent, but for visualization purposes.
           Should start with "#" to indicate a hex color value. Example '#AC7400'
+        pattern: "^#[0-9A-Fa-f]{6}$"
       thickness:
         type: number
-        description: Used if wall_material is not defined. thickness in meters of the wall.
+        description: Used if wall_material is not defined. Thickness in meters of the wall.
+        minimum: 0
       height:
         type: number
-        description: Used if wall_material is not defined. height of the top of the wall from the floor.
+        description: Used if wall_material is not defined. Height of the top of the wall from the floor.
+        minimum: 0
       bottom_height:
         type: number
-        description: Used if wall_material is not defined. If wall does not start at floor, define at what height from floor   
+        description: Used if wall_material is not defined. If wall does not start at floor, define at what height from floor
+        minimum: 0
+
   wall_point:
     type: object
     required:
@@ -538,6 +608,7 @@ definitions:
       y:
         type: number
         description: y-coordinate of the point
+
   reference_marker:
     type: object
     description: >
@@ -545,27 +616,15 @@ definitions:
       Can be used to provide notes, or a translation between coordinate
       systems.
     properties:
-    # Do we need an ID?  or does the reference text work for uniqueness?
       name:
         type: string
-        description: unique name of the reference marker.
+        description: Unique name of the reference marker.
       coordinate:
-        "$ref": "#/definitions/coordinate"
-      coordinate_xyz:
-        "$ref": "#/definitions/coordinate_xyz"
-        description: >
-          Deprecated in 2.0 in favor of coordinates_xyz array
-      coordinates_xyz:
-        type: array
-        items:
-          "$ref": "#/definitions/coordinate_xyz"
-        description: deprecated in 2.0 in favor of coordinate
-      coordinate_latlong:
-        "$ref": "#/definitions/coordinate_lat_long"
-        description: deprecated in 2.0 in favor of coordinate
+        $ref: "#/definitions/coordinate"
       reference_text:
         type: string
-        description: text string from reference
+        description: Text string from reference
+
   material:
     type: object
     description: Object that defines the properties of wall material
@@ -577,29 +636,34 @@ definitions:
         type: string
         description: ITU Wall Material if known
       rf_properties:
-        "$ref": "#/definitions/rf_properties"
+        $ref: "#/definitions/rf_properties"
       thickness_m:
         type: number
         description: >
-          Thickness of the wall in meters.  Do not fake wall thickness with arbitrary formulas.
+          Thickness of the wall in meters. Do not fake wall thickness with arbitrary formulas.
           If wall thickness is not defined, omit and use flat attenuation values.
+        minimum: 0
       bottom_height:
         type: number
         description: >
           For walls, if the wall does not start at the floor, this
           allows you to specify the height the bottom of the wall is
           at.
+        minimum: 0
       top_height:
         type: number
         description: >
           For walls, the top_height is the height in meters of the top
           of the wall.
+        minimum: 0
       display_color:
         type: string
         description: >
           Used if wall_material is not defined. Hex color code for visualizing access points.
-          Has no inherint intent, but for visualization purposes.
+          Has no inherent intent, but for visualization purposes.
           Should start with "#" to indicate a hex color value. Example '#AC7400'
+        pattern: "^#[0-9A-Fa-f]{6}$"
+
   rf_properties:
     type: object
     properties:
@@ -610,7 +674,8 @@ definitions:
       attenuation_per_m:
         type: number
         description: >
-          Attenuation in dB per meter of thickness.  Should multiple by thickness to calculate flat attenuation
+          Attenuation in dB per meter of thickness. Should multiply by thickness to calculate flat attenuation
+
   area:
     type: object
     description: >
@@ -622,9 +687,10 @@ definitions:
     properties:
       coordinates:
         type: array
+        minItems: 3
         items:
           $ref: "#/definitions/coordinate"
-          min_items: 3
+
   attenuation_area:
     type: object
     required:
@@ -632,45 +698,35 @@ definitions:
       - area_material
     properties:
       area:
-        ref: "#/definitions/area"
+        $ref: "#/definitions/area"
       area_material:
-        ref: "#/definitions/material"
+        $ref: "#/definitions/material"
+
   coverage_area:
+    type: object
     required:
       - area
-    type: object
     description: Area included/excluded for wifi coverage
     properties:
       area:
-        ref: "#/definitions/area"
+        $ref: "#/definitions/area"
       exclusion:
         description: >
           For exclusion areas, the flag would be true.
         type: boolean
+
   hole_in_floor:
     type: object
     required:
       - area
     properties:
       area:
-        ref: "#/definitions/area"
+        $ref: "#/definitions/area"
       inverted:
         description: >
           Inverted hole-in-floor objects are used to describe a hole
-          that is everywhere but the defined area.  Example would be
+          that is everywhere but the defined area. Example would be
           If you wanted to show a building, but wanted a hole in floor
           for to indicate that exterior to the building was a hole.
           When not present, assumption is the value is false.
         type: boolean
-  # TODO define properties for capacity, list of device types and qty.
-    # define device capabilities. 
-
-  # TODO floor to floor attenuation values.
-  # TODO break area types into it's own top-level property under floorplan
-  # TODO Define raised floor.
-  # TODO Backlog concept for ceiling. area type with material properties.
-  # TODO Building top level object introduce floorplan offset. ()
-  # TODO Backlog: define properties for application requirements.
-  # TODO Backlog: define rf requirement profile, apply to floorplans.
-  # TODO Backlog: discuss if we need this per-area.  Does anyone do this?
-  # TODO Backlog: Capacity/Device Demand or load.  Peak mbps?  Per app?
