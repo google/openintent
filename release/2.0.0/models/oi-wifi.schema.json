@@ -16,14 +16,14 @@
       "description": "An array of access_points",
       "minItems": 1,
       "items": {
-        "$ref": "#/definitions/accesspoint"
+        "$ref": "#/$defs/accesspoint"
       }
     },
     "switches": {
       "type": "array",
       "description": "An array of network switches",
       "items": {
-        "$ref": "#/definitions/switch"
+        "$ref": "#/$defs/switch"
       }
     },
     "floorplans": {
@@ -31,7 +31,7 @@
       "description": "An array of floorplans",
       "minItems": 1,
       "items": {
-        "$ref": "#/definitions/floorplan"
+        "$ref": "#/$defs/floorplan"
       }
     },
     "floorplan_version": {
@@ -41,13 +41,13 @@
     "wall_materials": {
       "type": "array",
       "items": {
-        "$ref": "#/definitions/material"
+        "$ref": "#/$defs/material"
       }
     },
     "area_materials": {
       "type": "array",
       "items": {
-        "$ref": "#/definitions/material"
+        "$ref": "#/$defs/material"
       }
     },
     "openintent_version": {
@@ -55,7 +55,7 @@
       "type": "string"
     }
   },
-  "definitions": {
+  "$defs": {
     "accesspoint": {
       "type": "object",
       "description": "Representation of an access-point",
@@ -135,7 +135,7 @@
           "minItems": 1,
           "description": "Array of dot11_radio elements.",
           "items": {
-            "$ref": "#/definitions/dot11_radio"
+            "$ref": "#/$defs/dot11_radio"
           }
         },
         "ssids": {
@@ -149,20 +149,20 @@
           "type": "array",
           "description": "Array of antennas connected to this access-point.",
           "items": {
-            "$ref": "#/definitions/antenna"
+            "$ref": "#/$defs/antenna"
           }
         },
         "rf_connectors": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/rf_connector"
+            "$ref": "#/$defs/rf_connector"
           }
         },
         "reference_markers": {
           "type": "array",
           "description": "List of reference markers",
           "items": {
-            "$ref": "#/definitions/reference_marker"
+            "$ref": "#/$defs/reference_marker"
           }
         },
         "regulatory_domain": {
@@ -176,13 +176,13 @@
         },
         "orientation": {
           "description": "If there are no antennas defined, or the antennas are integrated, the orientation for access-point should be used.",
-          "$ref": "#/definitions/orientation"
+          "$ref": "#/$defs/orientation"
         },
         "coordinates": {
           "description": "Array of coordinate objects which contain both xyz and lat_long coordinate systems. This allows all objects to share multi-coordinate systems.\n",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/coordinate"
+            "$ref": "#/$defs/coordinate"
           }
         },
         "display_color": {
@@ -244,7 +244,7 @@
           "description": "Array of coordinate objects which contain both xyz and lat_long coordinate systems.",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/coordinate"
+            "$ref": "#/$defs/coordinate"
           }
         },
         "display_color": {
@@ -311,7 +311,7 @@
           "description": "Dimensions of the floorplan",
           "minItems": 1,
           "items": {
-            "$ref": "#/definitions/dimension"
+            "$ref": "#/$defs/dimension"
           }
         },
         "wall_segments": {
@@ -319,42 +319,42 @@
           "description": "Segments of wall on floorplan",
           "minItems": 1,
           "items": {
-            "$ref": "#/definitions/wall_segment"
+            "$ref": "#/$defs/wall_segment"
           }
         },
         "reference_markers": {
           "type": "array",
           "description": "List of reference markers",
           "items": {
-            "$ref": "#/definitions/reference_marker"
+            "$ref": "#/$defs/reference_marker"
           }
         },
         "attenuation_areas": {
           "type": "array",
           "description": "List of areas on the floorplan",
           "items": {
-            "$ref": "#/definitions/attenuation_area"
+            "$ref": "#/$defs/attenuation_area"
           }
         },
         "coverage_areas": {
           "type": "array",
           "description": "List of coverage areas on the floorplan",
           "items": {
-            "$ref": "#/definitions/coverage_area"
+            "$ref": "#/$defs/coverage_area"
           }
         },
         "holes_in_floor": {
           "type": "array",
           "description": "List of areas on the floorplan",
           "items": {
-            "$ref": "#/definitions/hole_in_floor"
+            "$ref": "#/$defs/hole_in_floor"
           }
         },
         "closets": {
           "type": "array",
           "description": "array of closet objects.",
           "items": {
-            "$ref": "#/definitions/closet"
+            "$ref": "#/$defs/closet"
           }
         }
       }
@@ -385,7 +385,7 @@
           "description": "Array of coordinate objects which contain both xyz and lat_long coordinate systems. This allows all objects to share multi-coordinate systems.\n",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/coordinate"
+            "$ref": "#/$defs/coordinate"
           }
         }
       }
@@ -412,14 +412,14 @@
           ]
         },
         "band": {
-          "$ref": "#/definitions/frequency_bands"
+          "$ref": "#/$defs/frequency_bands"
         },
         "channel": {
           "type": "integer",
           "description": "Channel is the primary 20MHZ channel\n"
         },
         "channel_width": {
-          "$ref": "#/definitions/channel_width"
+          "$ref": "#/$defs/channel_width"
         },
         "channel_assignment": {
           "description": "This defines if radios channels are manually assigned (human) or dynamically assigned by tooling.\n",
@@ -500,7 +500,7 @@
                     "description": "Loss in dB/100m\n"
                   },
                   "frequency": {
-                    "$ref": "#/definitions/frequency_bands"
+                    "$ref": "#/$defs/frequency_bands"
                   }
                 }
               }
@@ -521,7 +521,7 @@
             "type": "object",
             "properties": {
               "band": {
-                "$ref": "#/definitions/frequency_bands"
+                "$ref": "#/$defs/frequency_bands"
               },
               "gain": {
                 "type": "number",
@@ -533,14 +533,14 @@
         "rf_connectors": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/rf_connector"
+            "$ref": "#/$defs/rf_connector"
           }
         },
         "orientation": {
-          "$ref": "#/definitions/orientation"
+          "$ref": "#/$defs/orientation"
         },
         "coordinate": {
-          "$ref": "#/definitions/coordinate"
+          "$ref": "#/$defs/coordinate"
         }
       }
     },
@@ -569,7 +569,7 @@
         "frequency_bands": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/frequency_bands"
+            "$ref": "#/$defs/frequency_bands"
           }
         }
       }
@@ -651,10 +651,10 @@
       "description": "A coordinate with both sets of x/y/z and lat/long",
       "properties": {
         "coordinate_xyz": {
-          "$ref": "#/definitions/coordinate_xyz"
+          "$ref": "#/$defs/coordinate_xyz"
         },
         "coordinate_lat_long": {
-          "$ref": "#/definitions/coordinate_lat_long"
+          "$ref": "#/$defs/coordinate_lat_long"
         }
       }
     },
@@ -734,11 +734,11 @@
           "description": "Name of wall type. Can be standalone or match a wall_material defined in main oi-wifi Preference is to define a wall type instead of specifying each value for each wall type.\n"
         },
         "start_point": {
-          "$ref": "#/definitions/wall_point",
+          "$ref": "#/$defs/wall_point",
           "description": "Starting point of the segment"
         },
         "end_point": {
-          "$ref": "#/definitions/wall_point",
+          "$ref": "#/$defs/wall_point",
           "description": "Ending point of the segment"
         },
         "display_color": {
@@ -790,7 +790,7 @@
           "description": "Unique name of the reference marker."
         },
         "coordinate": {
-          "$ref": "#/definitions/coordinate"
+          "$ref": "#/$defs/coordinate"
         },
         "reference_text": {
           "type": "string",
@@ -811,7 +811,7 @@
           "description": "ITU Wall Material if known"
         },
         "rf_properties": {
-          "$ref": "#/definitions/rf_properties"
+          "$ref": "#/$defs/rf_properties"
         },
         "thickness_m": {
           "type": "number",
@@ -859,7 +859,7 @@
           "type": "array",
           "minItems": 3,
           "items": {
-            "$ref": "#/definitions/coordinate"
+            "$ref": "#/$defs/coordinate"
           }
         }
       }
@@ -872,10 +872,10 @@
       ],
       "properties": {
         "area": {
-          "$ref": "#/definitions/area"
+          "$ref": "#/$defs/area"
         },
         "area_material": {
-          "$ref": "#/definitions/material"
+          "$ref": "#/$defs/material"
         }
       }
     },
@@ -887,7 +887,7 @@
       "description": "Area included/excluded for wifi coverage",
       "properties": {
         "area": {
-          "$ref": "#/definitions/area"
+          "$ref": "#/$defs/area"
         },
         "exclusion": {
           "description": "For exclusion areas, the flag would be true.\n",
@@ -902,7 +902,7 @@
       ],
       "properties": {
         "area": {
-          "$ref": "#/definitions/area"
+          "$ref": "#/$defs/area"
         },
         "inverted": {
           "description": "Inverted hole-in-floor objects are used to describe a hole that is everywhere but the defined area. Example would be If you wanted to show a building, but wanted a hole in floor for to indicate that exterior to the building was a hole. When not present, assumption is the value is false.\n",
