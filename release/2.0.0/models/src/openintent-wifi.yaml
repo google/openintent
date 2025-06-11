@@ -18,19 +18,11 @@ properties:
     minItems: 1
     items:
       $ref: "#/definitions/accesspoint"
-  accesspoint_version:
-    description: Version of the openintent-wifi-accesspoint model
-    type: string
-
   switches:
     type: array
     description: An array of network switches
     items:
       $ref: "#/definitions/switch"
-  switch_version:
-    description: Version of the openintent-wifi-switch model
-    type: string
-
   floorplans:
     type: array
     description: An array of floorplans
@@ -48,6 +40,9 @@ properties:
     type: array
     items:
       $ref: "#/definitions/material"
+  openintent_version:
+    description: Version of the openintent-wifi model
+    type: string
 
 definitions:
   accesspoint:
@@ -104,9 +99,12 @@ definitions:
           vlan:
             type: integer
             description: VLAN ID assigned to this access point connection
-          idf_name:
+          closet_name:
             type: string
-            description: Name or identifier of the IDF where the connected switch is located
+            description: Name or identifier of the closet where the connected switch is located
+          switch_id:
+            type: string
+            description: vendor id of the switch which this access point is connected.
       dot11_radios:
         type: array
         minItems: 1
@@ -187,9 +185,9 @@ definitions:
         type: string
         description: Management IP address of the switch
         format: ipv4
-      idf_name:
+      closet_name:
         type: string
-        description: Name or identifier of the IDF (Intermediate Distribution Frame) room/closet where this switch is located
+        description: Name or identifier of the closet (Intermediate Distribution Frame) room/closet where this switch is located
       coordinates:
         description: Array of coordinate objects which contain both xyz and lat_long coordinate systems.
         type: array
@@ -199,6 +197,22 @@ definitions:
         type: string
         description: Hex color code for visualizing the switch. Has no inherent intent, but for visualization purposes.
         pattern: "^#[0-9A-Fa-f]{6}$"
+      vendor_id:
+        type: string
+        description: >
+          Unique idenfier of the switch.
+      copper_port_count:
+        type: number
+        description: number of RJ-45 copper ports.
+      modular_port_count:
+        type: number
+        description: number of modular ports (SFP/SFP+/SFP28/QSFP)
+      poe_budget:
+        type: number
+        description: total available power in watts.
+      rack_units:
+        type: number
+        description: number of rack units (RU) required for the device.
   floorplan:
     type: object
     required:
@@ -257,7 +271,37 @@ definitions:
         description: List of areas on the floorplan
         items:
           $ref: "#/definitions/hole_in_floor"
-
+      closets:
+        type: array
+        # TODO: Implement closet
+        description: array of closet objects.
+        items:
+          $ref: "#/definitions/closet"
+  closet:
+    type: object
+    description: Representation of an equipment closet (IDF/MDF)
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        description: Name of closet
+      vendor_id:
+        type: string
+        description: Vendor ID for the closet
+      type:
+        enum:
+          - IDF
+          - MDF
+          - OTHER
+      coordinates:
+        description: >
+          Array of coordinate objects which contain both xyz and
+          lat_long coordinate systems. This allows all objects to
+          share multi-coordinate systems.
+        type: array
+        items:
+          $ref: "#/definitions/coordinate"
   dot11_radio:
     type: object
     description: A dot11 radio object
