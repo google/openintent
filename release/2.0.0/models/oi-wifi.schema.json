@@ -8,7 +8,7 @@
     "accesspoints",
     "accesspoint_version",
     "floorplans",
-    "floorplan_version"
+    "openintent_version"
   ],
   "properties": {
     "accesspoints": {
