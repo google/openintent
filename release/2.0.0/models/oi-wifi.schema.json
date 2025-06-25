@@ -6,7 +6,6 @@
   "type": "object",
   "required": [
     "accesspoints",
-    "accesspoint_version",
     "floorplans",
     "openintent_version"
   ],

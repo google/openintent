@@ -7,9 +7,8 @@ $id: oi_wifi
 type: object
 required:
   - accesspoints
-  - accesspoint_version
   - floorplans
-  - floorplan_version
+  - openintent_version
 
 properties:
   accesspoints:
