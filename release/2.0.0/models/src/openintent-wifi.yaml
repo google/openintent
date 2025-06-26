@@ -247,7 +247,6 @@ $defs:
       wall_segments:
         type: array
         description: Segments of wall on floorplan
-        minItems: 1
         items:
           $ref: "#/$defs/wall_segment"
       reference_markers:
