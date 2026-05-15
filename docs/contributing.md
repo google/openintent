@@ -31,3 +31,14 @@ All submissions, including submissions by project members, require review. We
 use GitHub pull requests for this purpose. Consult
 [GitHub Help](https://help.github.com/articles/about-pull-requests/) for more
 information on using pull requests.
+
+
+### Editing models
+You should edit the yaml files instead of the json files.  This is more human
+readable and editable vs the json.
+
+To convert the yaml to json, i use the following:
+
+```
+yq eval openintent-wifi.yaml -ojson -P > ../oi-wifi.schema.json
+```
