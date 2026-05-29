@@ -26,9 +26,9 @@ properties:
     minItems: 1
     items:
       $ref: "#/$defs/floorplan"
-  floorplan_version:
-    description: Version of the openintent-floorplan model
-    type: string
+  building:
+    description: A building that groups floorplans together with vertical ordering and transformation capabilities
+    $ref: "#/$defs/building"
   wall_materials:
     type: array
     items:
@@ -142,6 +142,7 @@ $defs:
           lat_long coordinate systems. This allows all objects to
           share multi-coordinate systems.
         type: array
+        minItems: 1
         items:
           $ref: "#/$defs/coordinate"
       display_color:
@@ -181,13 +182,14 @@ $defs:
       ip_address:
         type: string
         description: Management IP address of the switch
-        # format: ipv4
+        format: ipv4
       closet_name:
         type: string
         description: Name or identifier of the closet (Intermediate Distribution Frame) room/closet where this switch is located
       coordinates:
         description: Array of coordinate objects which contain both xyz and lat_long coordinate systems.
         type: array
+        minItems: 1
         items:
           $ref: "#/$defs/coordinate"
       display_color:
@@ -199,16 +201,19 @@ $defs:
         description: >
           Unique identifier of the switch.
       copper_port_count:
-        type: number
+        type: integer
+        minimum: 0
         description: number of RJ-45 copper ports.
       modular_port_count:
-        type: number
+        type: integer
+        minimum: 0
         description: number of modular ports (SFP/SFP+/SFP28/QSFP)
       poe_budget:
         type: number
         description: total available power in watts.
       rack_units:
-        type: number
+        type: integer
+        minimum: 0
         description: number of rack units (RU) required for the device.
   floorplan:
     type: object
@@ -273,7 +278,6 @@ $defs:
           $ref: "#/$defs/hole_in_floor"
       closets:
         type: array
-        # TODO: Implement closet
         description: array of closet objects.
         items:
           $ref: "#/$defs/closet"
@@ -295,6 +299,8 @@ $defs:
         type: string
         description: Vendor ID for the closet
       type:
+        type: string
+        description: Type of network equipment closet (IDF=Intermediate Distribution Frame, MDF=Main Distribution Frame)
         enum:
           - IDF
           - MDF
@@ -305,6 +311,7 @@ $defs:
           lat_long coordinate systems. This allows all objects to
           share multi-coordinate systems.
         type: array
+        minItems: 1
         items:
           $ref: "#/$defs/coordinate"
   dot11_radio:
@@ -514,13 +521,9 @@ $defs:
       latitude:
         type: number
         description: "Latitude expressed as ISO 6709 in degrees"
-        minimum: -90
-        maximum: 90
       longitude:
         type: number
         description: "Longitude expressed as ISO 6709 in degrees"
-        minimum: -180
-        maximum: 180
       elevation:
         type: number
         description: "Height in meters above sea level"
@@ -550,6 +553,8 @@ $defs:
     properties:
       rotation:
         type: number
+        minimum: -360
+        maximum: 360
         description: >
           Describes the rotation of the device in degrees where 0 is up on
           the floorplan orientation. For omnidirectional APs, if looking
@@ -558,6 +563,8 @@ $defs:
           beamwidth should point in this direction. AKA yaw.
       tilt:
         type: number
+        minimum: -360
+        maximum: 360
         description: >
           Describes the tilt of the device in degrees. For integrated
           antenna APs or omnidirectional antenna, 0 describes the default
@@ -566,6 +573,8 @@ $defs:
           negative values pointing down. AKA pitch.
       roll:
         type: number
+        minimum: -360
+        maximum: 360
         description: >
           Describes the rotation of the device in axis of rotation/tilt.
           0 describes the devices default orientation. This will normally
@@ -619,11 +628,11 @@ $defs:
           Name of wall type. Can be standalone or match a wall_material defined in main oi-wifi
           Preference is to define a wall type instead of specifying each value for each wall type.
       start_point:
-        $ref: "#/$defs/wall_point"
         description: Starting point of the segment
-      end_point:
         $ref: "#/$defs/wall_point"
+      end_point:
         description: Ending point of the segment
+        $ref: "#/$defs/wall_point"
       display_color:
         type: string
         description: >
@@ -860,6 +869,160 @@ $defs:
         items:
           $ref: "#/$defs/path_point"
         minItems: 2
-      
 
+  offset_value:
+    type: object
+    description: >
+      A distance value with unit, used for translation/offset operations.
+    required:
+      - value
+      - unit
+    properties:
+      value:
+        type: number
+        description: The offset distance value (can be positive or negative)
+      unit:
+        type: string
+        description: Unit for the offset value
+        enum:
+          - pixels
+          - meters
+          - feet
+
+  floor_transform:
+    type: object
+    description: >
+      2D transformation parameters for positioning and orienting a floorplan
+      within a building coordinate system. Transformations are applied in order:
+      scale, then rotation, then translation (offset).
+    properties:
+      scale_x:
+        type: number
+        description: >
+          Horizontal scale factor to apply to the floorplan. A value of 1.0 means
+          no scaling. Values greater than 1.0 enlarge, values less than 1.0 shrink.
+          Must be a positive number.
+        minimum: 0
+        exclusiveMinimum: true
+      scale_y:
+        type: number
+        description: >
+          Vertical scale factor to apply to the floorplan. A value of 1.0 means
+          no scaling. Values greater than 1.0 enlarge, values less than 1.0 shrink.
+          Must be a positive number.
+        minimum: 0
+        exclusiveMinimum: true
+      rotation:
+        type: number
+        description: >
+          Rotation in degrees to apply to the floorplan around its origin
+          (lower-left corner). Positive values rotate counter-clockwise.
+          This is applied after scaling and before translation.
+        minimum: -360
+        maximum: 360
+      x_offset:
+        description: >
+          Horizontal (X-axis) offset to shift the floorplan. Applied after
+          scaling and rotation. Positive values shift right.
+        $ref: "#/$defs/offset_value"
+      y_offset:
+        description: >
+          Vertical (Y-axis) offset to shift the floorplan. Applied after
+          scaling and rotation. Positive values shift up.
+        $ref: "#/$defs/offset_value"
+
+  building_floor:
+    type: object
+    description: >
+      A floor within a building that references a floorplan and provides
+      transformation parameters for positioning the floorplan within the
+      building coordinate system.
+    required:
+      - floorplan_name
+      - floor_level
+    properties:
+      floorplan_name:
+        type: string
+        description: >
+          Reference to the name of a floorplan defined in the floorplans array.
+          The floorplan must exist and its name must be unique.
+      floor_level:
+        type: integer
+        description: >
+          Integer representing the vertical position of this floor within the
+          building. Higher values represent floors higher in the building.
+          Floors are stacked top to bottom based on this value.
+          Example: Ground floor = 0, First floor = 1, Basement = -1
+      floor_label:
+        type: string
+        description: >
+          Human-readable label for the floor (e.g., "Ground", "Mezzanine",
+          "Basement", "Roof"). Used for display purposes.
+      transform:
+        description: >
+          2D transformation parameters for positioning and orienting this
+          floorplan within the building coordinate system.
+        $ref: "#/$defs/floor_transform"
+
+  building_address:
+    type: object
+    description: >
+      Physical address information for a building. Uses international-friendly
+      field names to support addresses worldwide.
+    properties:
+      address_lines:
+        type: array
+        description: >
+          Flexible array of address lines (e.g., street address, suite number,
+          building name). Supports any international address format.
+        items:
+          type: string
+      locality:
+        type: string
+        description: City, town, village, or equivalent locality name.
+      administrative_area:
+        type: string
+        description: State, province, region, prefecture, or equivalent administrative division.
+      postal_code:
+        type: string
+        description: Postal code, ZIP code, or equivalent.
+      country:
+        type: string
+        description: >
+          Country name or ISO 3166-1 alpha-2 code (e.g., "US", "JP", "DE").
+          ISO alpha-2 codes are recommended for interoperability.
+
+  building:
+    type: object
+    description: >
+      Representation of a building that groups multiple floorplans together
+      with vertical ordering and transformation capabilities.
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        description: >
+          Unique name of the building (must be unique in the openintent payload).
+          This name is referenced by floorplan.building_name, accesspoint.building_name,
+          and switch.building_name properties.
+      vendor_id:
+        type: string
+        description: Vendor's ID for this building.
+      address:
+        description: Physical address information for the building.
+        $ref: "#/$defs/building_address"
+      coordinates:
+        description: >
+          Geospatial coordinate for the building location. Typically represents
+          the building centroid position.
+        $ref: "#/$defs/coordinates"
+      floors:
+        type: array
+        description: >
+          Array of floor references with transformation properties. Floors are
+          ordered top to bottom (highest floor_level is at the top of the building).
+        minItems: 1
+        items:
+          $ref: "#/$defs/building_floor"
 
