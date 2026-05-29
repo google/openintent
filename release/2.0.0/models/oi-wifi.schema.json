@@ -35,10 +35,6 @@
       "description": "A building that groups floorplans together with vertical ordering and transformation capabilities",
       "$ref": "#/$defs/building"
     },
-    "floorplan_version": {
-      "description": "Version of the openintent-floorplan model",
-      "type": "string"
-    },
     "wall_materials": {
       "type": "array",
       "items": {
@@ -1147,12 +1143,13 @@
           "$ref": "#/$defs/building_address"
         },
         "coordinate": {
-          "description": "Geospatial coordinate for the building location. Typically represents the building entrance or centroid position.\n",
+          "description": "Geospatial coordinate for the building location. Typically represents the building centroid position.\n",
           "$ref": "#/$defs/coordinate"
         },
         "floors": {
           "type": "array",
           "description": "Array of floor references with transformation properties. Floors are ordered top to bottom (highest floor_level is at the top of the building).\n",
+          "minItems": 1,
           "items": {
             "$ref": "#/$defs/building_floor"
           }

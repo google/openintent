@@ -521,13 +521,9 @@ $defs:
       latitude:
         type: number
         description: "Latitude expressed as ISO 6709 in degrees"
-        minimum: -90
-        maximum: 90
       longitude:
         type: number
         description: "Longitude expressed as ISO 6709 in degrees"
-        minimum: -180
-        maximum: 180
       elevation:
         type: number
         description: "Height in meters above sea level"
@@ -557,7 +553,7 @@ $defs:
     properties:
       rotation:
         type: number
-        minimum: 0
+        minimum: -360
         maximum: 360
         description: >
           Describes the rotation of the device in degrees where 0 is up on
@@ -567,8 +563,8 @@ $defs:
           beamwidth should point in this direction. AKA yaw.
       tilt:
         type: number
-        minimum: -90
-        maximum: 90
+        minimum: -360
+        maximum: 360
         description: >
           Describes the tilt of the device in degrees. For integrated
           antenna APs or omnidirectional antenna, 0 describes the default
@@ -577,8 +573,8 @@ $defs:
           negative values pointing down. AKA pitch.
       roll:
         type: number
-        minimum: -180
-        maximum: 180
+        minimum: -360
+        maximum: 360
         description: >
           Describes the rotation of the device in axis of rotation/tilt.
           0 describes the devices default orientation. This will normally
@@ -922,7 +918,7 @@ $defs:
           Rotation in degrees to apply to the floorplan around its origin
           (lower-left corner). Positive values rotate counter-clockwise.
           This is applied after scaling and before translation.
-        minimum: 0
+        minimum: -360
         maximum: 360
       x_offset:
         description: >
@@ -1016,11 +1012,11 @@ $defs:
       address:
         description: Physical address information for the building.
         $ref: "#/$defs/building_address"
-      coordinate:
+      coordinates:
         description: >
           Geospatial coordinate for the building location. Typically represents
           the building centroid position.
-        $ref: "#/$defs/coordinate"
+        $ref: "#/$defs/coordinates"
       floors:
         type: array
         description: >
@@ -1029,5 +1025,4 @@ $defs:
         minItems: 1
         items:
           $ref: "#/$defs/building_floor"
-
 
