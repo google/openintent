@@ -1,2 +1,7 @@
+Unreleased: Add vendor-neutral Wi-Fi survey scan events, RSSI observations,
+time-referenced trajectories, collector provenance, and external survey data
+resources. Correct Draft 2020-12 `exclusiveMinimum` usage and the building
+coordinate schema reference.
+
 Oct-19-2023: 1.0.0 - Initial release of OpenIntent Models
 Jan-x-2023: 1.0.1 - Add coordinates to antenna

@@ -40,3 +40,7 @@ appear in other repositories.
 
 For information on how to contribute to OpenIntent see
 [Contributing](docs/contributing.md)
+
+## Model documentation
+
+* [Vendor-neutral Wi-Fi survey measurements](docs/survey_measurements.md)
