@@ -1,0 +1,154 @@
+{
+  "openintent_version": "2.1.0",
+  "floorplans": [
+    {
+      "name": "Warehouse level 1",
+      "project_name": "Warehouse validation survey",
+      "floor_id": "level-1",
+      "dimensions": [
+        {
+          "length": 40,
+          "width": 60,
+          "height": 4,
+          "unit": "meters"
+        }
+      ],
+      "survey_paths": [
+        {
+          "id": "survey-2026-08-15-a",
+          "name": "North aisle continuous survey",
+          "start_time": "2026-08-15T07:30:00.123456Z",
+          "end_time": "2026-08-15T07:30:10.123456Z",
+          "path_type": "CONTINUOUS",
+          "position_interpolation": "LINEAR_BY_TIME",
+          "collection_method": "PLATFORM_SCAN_API",
+          "survey_device": {
+            "identifier": "survey-device-7",
+            "manufacturer": "Example Labs",
+            "model": "Android survey handset",
+            "software_name": "Example Survey",
+            "software_version": "3.2.0",
+            "host_platform": "Android",
+            "host_software_version": "16",
+            "wifi_adapters": [
+              {
+                "identifier": "integrated-wifi",
+                "manufacturer": "Example Radio",
+                "model": "XR-7",
+                "firmware_version": "2026.04",
+                "regulatory_domain": "US",
+                "rssi_calibration_offset_db": 1.5
+              }
+            ]
+          },
+          "path_points": [
+            {
+              "time_offset_us": 0,
+              "path_indicator": "START",
+              "coordinate": {
+                "coordinate_xyz": {
+                  "x": 2,
+                  "y": 3,
+                  "unit": "meters"
+                }
+              }
+            },
+            {
+              "time_offset_us": 5000000,
+              "coordinate": {
+                "coordinate_xyz": {
+                  "x": 12,
+                  "y": 3,
+                  "unit": "meters"
+                }
+              }
+            },
+            {
+              "time_offset_us": 10000000,
+              "path_indicator": "END",
+              "coordinate": {
+                "coordinate_xyz": {
+                  "x": 22,
+                  "y": 3,
+                  "unit": "meters"
+                }
+              }
+            }
+          ],
+          "scan_events": [
+            {
+              "id": "scan-1",
+              "adapter_identifier": "integrated-wifi",
+              "started_offset_us": 2000000,
+              "duration_us": 810000,
+              "result_status": "COMPLETE",
+              "position_accuracy_m": 0.8,
+              "wifi_observations": [
+                {
+                  "observed_offset_us": 2180000,
+                  "bssid": "02:11:22:33:44:50",
+                  "ssid": "Warehouse Wi-Fi",
+                  "rssi_dbm": -54.5,
+                  "frequency_mhz": 5180,
+                  "channel_width": "80_MHz",
+                  "center_frequency_0_mhz": 5210,
+                  "security_modes": [
+                    "WPA2_PERSONAL",
+                    "WPA3_PERSONAL"
+                  ],
+                  "phy_types": [
+                    "IEEE80211_AX"
+                  ]
+                },
+                {
+                  "observed_offset_us": 2410000,
+                  "bssid": "02:11:22:33:44:60",
+                  "ap_mld_mac_address": "02:11:22:33:44:6f",
+                  "mlo_link_id": 0,
+                  "ssid": "Warehouse Wi-Fi",
+                  "rssi_dbm": -61,
+                  "frequency_mhz": 5975,
+                  "channel_width": "20_MHz",
+                  "security_modes": [
+                    "WPA3_PERSONAL"
+                  ],
+                  "phy_types": [
+                    "IEEE80211_BE"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "scan-2",
+              "adapter_identifier": "integrated-wifi",
+              "started_offset_us": 8000000,
+              "duration_us": 790000,
+              "result_status": "COMPLETE",
+              "position_accuracy_m": 0.8,
+              "wifi_observations": [
+                {
+                  "observed_offset_us": 8170000,
+                  "bssid": "02:11:22:33:44:50",
+                  "ssid": "Warehouse Wi-Fi",
+                  "rssi_dbm": -67,
+                  "noise_dbm": -94,
+                  "snr_db": 27,
+                  "frequency_mhz": 5180,
+                  "channel_width": "80_MHz",
+                  "center_frequency_0_mhz": 5210,
+                  "security_modes": [
+                    "WPA2_PERSONAL",
+                    "WPA3_PERSONAL"
+                  ],
+                  "phy_types": [
+                    "IEEE80211_AX"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
