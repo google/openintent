@@ -34,6 +34,9 @@ If your vendor has a feature request portal, consider voting for support:
 [**Aruba**](https://innovationzone.arubanetworking.hpe.com/ideas/CNX-I-155)
 
 ## Contributing
+For the positioning semantics of survey measurements, see
+[Survey path interpolation](docs/survey_path_interpolation.md).
+
 This repository is primarily for publishing the models, documents and other
 material developed by the OpenIntent group.  As tooling is developed, it will
 appear in other repositories.
