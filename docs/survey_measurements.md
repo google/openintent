@@ -1,196 +1,138 @@
-# Vendor-neutral Wi-Fi survey measurements
+# External Wi-Fi survey measurements (proposal)
 
-## Problem
+This proposal defines a small shared model for passive Wi-Fi scan results and
+an initial JSON representation. Dense measurements live outside the main
+OpenIntent Wi-Fi project and are referenced through the existing
+`survey_path.path_data_uri` field.
 
-OpenIntent can currently describe a survey path and associate it with a PCAP,
-but it cannot represent the most common survey result directly: a BSSID, RSSI,
-frequency, time, and position. Consequently, two conforming implementations can
-exchange the floorplan and trajectory while still being unable to exchange the
-measurements used to calculate coverage.
+The released Wi-Fi schema is unchanged. The proposal lives under
+[`proposals/wifi-survey`](../proposals/wifi-survey/) with its own draft version
+`0.1.0`; this is not a new released OpenIntent project version.
 
-A PCAP reference is valuable, but it is not a complete interoperability model:
+## Project and measurement resource
 
-* many mobile operating systems expose structured scan results without raw
-  802.11 frames;
-* packet capture metadata and RSSI availability differ between adapters and
-  capture formats;
-* a packet capture does not define the indoor position of a received frame;
-* consumers should not have to reproduce a vendor-specific scan-window
-  algorithm to obtain the observations that the producer used; and
-* raw captures can be much larger than the normalized observations required by
-  planning, validation, and visualization tools.
+The project owns floor plans, path points, timestamps, and the existing
+`host_device_*` and `survey_device_*` metadata. The host is the controlling
+computer or phone; the survey device is the measurement adapter or chipset.
+Only report device details that the collector actually exposes.
 
-This extension makes normalized observations interoperable while retaining raw
-captures as optional evidence and as a source for future reprocessing.
+The external document owns `scan_events`, each containing `wifi_observations`.
+Each resource represents one survey device. A project using multiple devices
+uses separate resources and survey paths so observations cannot be attributed
+to the wrong device merely because their timestamps match.
 
-For example, Android's public
-[`ScanResult`](https://developer.android.com/reference/android/net/wifi/ScanResult)
-model exposes BSSID, RSSI in dBm, frequency, microsecond timestamps, channel
-geometry, security types, information elements, and Wi-Fi 7 MLO identity. A
-portable survey model should be able to preserve those results without requiring
-a packet capture that the platform does not provide.
+Use the existing `path_data_type: OTHER` for this proposal. The external
+document identifies itself with `survey_format: openintent-wifi-survey` and
+`survey_version: 0.1.0`. A consumer must inspect and support that format/version
+before interpreting it; `OTHER` alone is not a format discriminator.
 
-## Design goals
+The existing URI constraint remains unchanged. The example uses an absolute
+HTTPS URI on `example.org` as a placeholder, not a hosted resource. A local
+consumer can explicitly map that URI to the supplied example file. Archive
+packaging, relative URI support, fetching, and resource discovery are separate
+concerns, not requirements of this proposal.
 
-The model is intended to:
+Multiple survey paths may reference the same resource, as they can with PCAP.
+For each path, consider observation timestamps within its START–END intervals.
+Do not assume that the entire resource belongs to every referencing path.
+Resource sharing does not merge devices or coordinate systems.
 
-1. represent stop-and-go and continuous passive Wi-Fi surveys;
-2. preserve the measured RSSI for each BSS, including 2.4, 5, and 6 GHz BSSs;
-3. bind every usable observation to a time and an indoor position;
-4. record enough collector provenance to compare measurements responsibly;
-5. work for platform scan APIs, monitor-mode captures, and vendor APIs;
-6. support small inline projects and large externally stored datasets; and
-7. remain backward compatible with existing `survey_path` documents.
+## Scan events and observations
 
-The first version deliberately does not standardize spectrum traces, active
-throughput/latency tests, derived heatmaps, interpolation algorithms beyond
-trajectory positioning, or a project archive/container. Those can be added as
-separate profiles without changing the Wi-Fi observation core.
+A scan event preserves one collector result set. Its required `timestamp` is
+the time when that result set became available to the collector. A result set
+does not imply that all channels were visited, that every BSS was found, or
+that all observations were made simultaneously. An empty array means no
+observations were supplied; it does not prove that no Wi-Fi signal was present.
 
-## Logical model
+Each observation requires:
 
-The model has four layers:
+| Field | Meaning |
+| --- | --- |
+| `bssid` | Lowercase colon-separated BSSID |
+| `rssi_dbm` | Unmodified collector-reported RSSI in dBm |
+| `frequency_mhz` | Primary channel center frequency in MHz |
 
-```text
-floorplan
-  survey_path (time origin, trajectory, collection provenance)
-    path_point[] (position over time)
-    scan_event[] (one scan result set)
-      wifi_observation[] (one observed BSS)
-    data_resource[] (optional raw or high-volume payloads)
+An observation can also include its own `timestamp`, losslessly representable
+`ssid`, and collector-reported `noise_dbm` or `snr_db`. Missing optional fields
+mean unavailable, not zero. Use omission rather than `null`. Do not infer
+noise from RSSI or populate unavailable values with sentinel numbers.
+
+“Unmodified” refers to the value exposed by the measurement API or driver, not
+raw RF samples. Exporters must not apply compensation or averaging to these
+values. Visualization and subsequent processing can use separate settings.
+
+The schema intentionally permits additional properties for experimentation.
+Consumers must not rely on unknown properties to interpret the defined core.
+Future incompatible changes require a different survey version; permissive
+JSON validation is not a promise of semantic compatibility.
+
+## Time and position
+
+All timestamps use the existing Unix epoch seconds representation, allowing
+fractional seconds. There is no new time origin, relative offset system, or
+deprecation of `path_point.timestamp`. Numeric precision is not a guarantee of
+measurement clock accuracy. Producers must map any monotonic device clock to
+the epoch time reference used by the path.
+
+Use the observation's timestamp when present. Otherwise, use the scan event
+timestamp as an explicitly approximate positioning time. This fallback is
+useful when a platform supplies only result-set timing; it must not be
+interpreted as an exact reception time. Consumers requiring precise timing
+can leave such observations unpositioned.
+
+Cached observations may predate the result set or the current path interval.
+Preserve known observation timestamps instead of replacing them with delivery
+time. A cached observation outside the path interval must not be moved to a
+path endpoint or positioned using the newer event timestamp.
+
+The existing path determines position: POINT segments hold a fixed coordinate;
+CONTINUOUS segments interpolate linearly by time between consecutive points.
+Do not interpolate across END–START gaps or extrapolate beyond a segment.
+See the separate [interpolation documentation PR](https://github.com/google/openintent/pull/30)
+for examples and boundary handling. Coordinates are not duplicated per scan.
+An observation without an unambiguous path position remains in the external
+resource without an assigned position.
+
+## Initial JSON representation
+
+The YAML source is
+[`openintent-wifi-survey.yaml`](../proposals/wifi-survey/src/openintent-wifi-survey.yaml).
+Its generated JSON Schema is
+[`oi-wifi-survey.schema.json`](../proposals/wifi-survey/oi-wifi-survey.schema.json).
+Examples are provided as a pair:
+
+- [Wi-Fi project](../proposals/wifi-survey/examples/project.json)
+- [External measurements](../proposals/wifi-survey/examples/measurements.json)
+
+In these examples, the first observation was received at `1700000005` and
+maps to `(15, 20)`, although its result set arrived one second later. The
+second observation is cached from before START and remains unpositioned. The
+last observation has no individual timestamp and uses result-set time
+`1700000020` for the approximate position `(20, 30)`.
+
+JSON Schema checks structure and field types. It does not verify clock
+synchronization, path membership, device identity across files, or the physical
+plausibility of radio readings. Those require consumer-side semantic checks.
+
+This JSON representation makes the initial model concrete and reviewable. It
+is not a requirement to use JSON for every dataset size. Additional encodings
+can be proposed with explicit mappings that preserve units, time semantics,
+missing values, device association, and scan grouping. This proposal specifies
+no binary encoding or performance claim.
+
+## Scope and open questions
+
+The initial core excludes compensation, active tests, spectrum data, derived
+heatmaps, raw frame storage, security/PHY normalization, and MLO-specific
+metadata. These can be discussed as extensions after the core is agreed.
+
+Review feedback is particularly useful on the observation-time fallback, the
+one-device-per-resource boundary, and whether a future dedicated
+`path_data_type` should replace `OTHER` for discovery.
+
+Run the focused validation with Python, PyYAML, and jsonschema installed:
+
+```sh
+python3 proposals/wifi-survey/validate.py
 ```
-
-`survey_path` remains the aggregate associated with a floorplan. A
-`scan_event` preserves the collection boundary instead of flattening all BSS
-records into an unordered list. This matters because scanning is not
-instantaneous, scan results can be incomplete, and one scan result set is the
-natural unit returned by many platform APIs.
-
-`wifi_observation` identifies a BSS by BSSID and carries the observed RSSI and
-primary channel frequency. SSID, PHY type, security mode, channel geometry,
-noise, SNR, MLO identity, and raw information elements are optional because
-collector capabilities vary. BSSID is used rather than SSID because multiple
-BSSs can advertise the same SSID and their RSSI values must not be conflated.
-
-## Time representation
-
-New survey data uses an RFC 3339 `survey_path.start_time` as an absolute time
-anchor and non-negative integer microsecond offsets within the path. This avoids
-the precision loss caused by representing a large Unix epoch plus sub-second
-precision as one JSON number. This follows the interoperability guidance in
-[RFC 8259, section 6](https://www.rfc-editor.org/rfc/rfc8259#section-6), which
-notes that commonly used binary64 implementations limit exact numeric
-interchange.
-
-The existing floating-point `path_point.timestamp` remains valid for backward
-compatibility, but it is deprecated for new producers. When both forms are
-present, the integer offset is authoritative.
-
-An observation can have its own `observed_offset_us`. If it is absent, the
-parent `scan_event.started_offset_us` applies. This permits both snapshot-style
-platform results and frame-derived observations with distinct receive times.
-
-## Position representation
-
-A scan event obtains its position in one of two ways:
-
-* it contains `coordinate`; or
-* the path declares `position_interpolation: LINEAR_BY_TIME`, and the position
-  is linearly interpolated between the adjacent time-referenced path points.
-
-With `position_interpolation: NONE`, every scan event must contain `coordinate`.
-With `LINEAR_BY_TIME`, every path point must contain `coordinate` and
-`time_offset_us`. Interpolation must use coordinates with the same unit and
-coordinate system. A consumer must not interpolate across an `END` to `START`
-path discontinuity.
-
-For a stop-and-go survey, producers are encouraged to store the coordinate on
-each scan event even when matching point-path entries are also present. For a
-continuous survey, time-based path interpolation avoids duplicating a coordinate
-for every BSS observation.
-
-## Collector provenance and RSSI
-
-RSSI values are device-dependent. `survey_device` and `survey_wifi_adapter`
-therefore record the hardware, software, driver, firmware, and optional
-calibration information that produced the values.
-
-`scan_event.adapter_identifier` associates a result set with the adapter that
-produced it. It should be present whenever a survey device declares more than
-one adapter. Simultaneous result sets from different adapters remain separate
-scan events even when their time windows overlap.
-
-`wifi_observation.rssi_dbm` is the collector-reported value after applying
-`rssi_calibration_offset_db`, if an offset is declared. For example, a raw value
-of -67 dBm with an offset of +2 dB is stored as -65 dBm. This convention lets a
-consumer compare the normalized values without silently applying an offset a
-second time.
-
-The schema does not impose an artificial RSSI range. Out-of-range values are
-better preserved and flagged by an application than discarded during exchange.
-
-When both `ssid` and `ssid_bytes_base64` are present, the raw byte value is
-authoritative and `ssid` is its display representation.
-
-## Inline observations and external resources
-
-`scan_events` is the vendor-neutral, schema-defined interchange representation.
-It is suitable for mobile surveys and modest datasets and is sufficient to
-reconstruct point RSSI maps without a PCAP.
-
-`data_resources` complements it with document-relative or absolute resources.
-Typical roles include:
-
-* `RAW_80211_CAPTURE` for PCAP or PCAPNG evidence;
-* `WIFI_OBSERVATIONS` for a high-volume structured representation;
-* `TRAJECTORY` for a higher-frequency positioning stream; and
-* future `SPECTRUM` or `ACTIVE_MEASUREMENTS` profiles.
-
-`media_type` describes the physical encoding. A vendor-neutral external
-structured resource that is not defined by the OpenIntent schema also supplies
-`schema_uri`; for example, an implementation can use JSON, CBOR, Apache Arrow,
-or Parquet without making any of those encodings mandatory for all producers.
-`sha256` and `byte_length` allow a portable project archive to verify that the
-resource has not been substituted or truncated.
-
-Raw and normalized forms may coexist. When they do, `scan_events` records the
-measurements selected by the producer for analysis, while the raw resource is
-the lossless source material. Consumers are not expected to regenerate
-`scan_events` byte-for-byte from the raw resource because scan windowing and
-platform filtering can differ.
-
-## Minimum interoperability profile
-
-A producer claiming support for OpenIntent Wi-Fi survey measurements should:
-
-1. provide `survey_path.start_time` and at least one `scan_event`;
-2. give each spatially usable scan event a direct coordinate or a position
-   derivable by `LINEAR_BY_TIME` from time-referenced path points;
-3. provide `bssid`, `rssi_dbm`, and `frequency_mhz` for every Wi-Fi observation;
-4. use canonical lowercase colon-separated MAC addresses;
-5. provide survey device and adapter provenance when it is known; and
-6. use `data_resources.schema_uri` for external normalized records whose schema
-   is not part of OpenIntent.
-
-A raw capture alone remains a valid legacy survey path, but it does not claim
-support for the normalized survey-measurement profile.
-
-## Backward compatibility
-
-All previously defined `survey_path` fields remain accepted. In particular,
-`path_data_uri`, `path_data_type`, the flattened device fields, floating-point
-timestamps, and PCAP-only paths remain valid.
-
-Existing producers need no migration. New producers should use the structured
-`survey_device`, `start_time` plus integer offsets, `scan_events`, and
-`data_resources`. A producer may emit both legacy and new fields during a
-transition; consumers that only understand the earlier model will ignore the
-new properties under the current extensible schema policy.
-
-## Privacy and security
-
-Survey data can reveal precise indoor paths, device identifiers, network names,
-BSSIDs, and raw management frames. Producers should minimize identifiers that
-are not required for the exchange, obtain appropriate consent, and protect the
-OpenIntent document and linked resources as sensitive operational data. A
-resource digest provides integrity, not confidentiality or authenticity.

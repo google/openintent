@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:openintent:proposal:wifi-survey:0.1.0",
+  "title": "OpenIntent external Wi-Fi survey measurements (proposal)",
+  "description": "Proposed JSON representation of passive Wi-Fi scan results from one survey device, referenced by an existing survey_path.path_data_uri.\n",
+  "type": "object",
+  "required": [
+    "survey_format",
+    "survey_version",
+    "scan_events"
+  ],
+  "properties": {
+    "survey_format": {
+      "const": "openintent-wifi-survey"
+    },
+    "survey_version": {
+      "const": "0.1.0"
+    },
+    "scan_events": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/scan_event"
+      }
+    }
+  },
+  "$defs": {
+    "timestamp": {
+      "type": "number",
+      "description": "Unix epoch seconds with optional fractional seconds, using the same time reference as path_point.timestamp. Precision depends on the collector and numeric implementation.\n"
+    },
+    "scan_event": {
+      "type": "object",
+      "description": "One result set from the survey device associated with the referencing path. Grouping does not imply simultaneous observations or full coverage.\n",
+      "required": [
+        "timestamp",
+        "wifi_observations"
+      ],
+      "properties": {
+        "timestamp": {
+          "$ref": "#/$defs/timestamp",
+          "description": "Time when this result set became available to the collector."
+        },
+        "wifi_observations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/wifi_observation"
+          }
+        }
+      }
+    },
+    "wifi_observation": {
+      "type": "object",
+      "description": "One BSS observation with an unmodified collector-reported RSSI.",
+      "required": [
+        "bssid",
+        "rssi_dbm",
+        "frequency_mhz"
+      ],
+      "properties": {
+        "timestamp": {
+          "$ref": "#/$defs/timestamp",
+          "description": "Observation time when known. Takes precedence over event time for positioning and may precede it for cached results. When absent, event time is an approximate fallback, not an exact reception time.\n"
+        },
+        "bssid": {
+          "type": "string",
+          "pattern": "^([a-f0-9]{2}:){5}[a-f0-9]{2}$",
+          "description": "BSSID in lowercase colon-separated hexadecimal notation."
+        },
+        "rssi_dbm": {
+          "type": "number",
+          "description": "Received signal strength in dBm as reported by the collector, without exporter-applied compensation, averaging, or normalization.\n"
+        },
+        "frequency_mhz": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Primary channel center frequency in MHz."
+        },
+        "ssid": {
+          "type": "string",
+          "description": "Optional lossless UTF-8 rendering of the reported SSID bytes. Omit when unavailable or not representable losslessly. An empty string represents a reported zero-length SSID, not proof of a hidden network.\n"
+        },
+        "noise_dbm": {
+          "type": "number",
+          "description": "Noise floor in dBm, only when reported by the collector."
+        },
+        "snr_db": {
+          "type": "number",
+          "description": "Signal-to-noise ratio in dB, only when reported by the collector."
+        }
+      }
+    }
+  }
+}

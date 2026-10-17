@@ -1,0 +1,62 @@
+{
+  "openintent_version": "2.0.2",
+  "floorplans": [
+    {
+      "name": "Example floor",
+      "dimensions": [
+        {
+          "length": 40,
+          "width": 60,
+          "height": 4,
+          "unit": "meters"
+        }
+      ],
+      "survey_paths": [
+        {
+          "path_data_uri": "https://example.org/surveys/measurements.json",
+          "path_data_type": "OTHER",
+          "path_type": "CONTINUOUS",
+          "host_device_platform": "Example Android handset",
+          "host_device_sw_version": "Android 16; Example Survey 1.0",
+          "survey_device_model": "Example integrated Wi-Fi adapter",
+          "survey_device_sw_version": "Example firmware 1.0",
+          "survey_device_identifier": "survey-radio-1",
+          "path_points": [
+            {
+              "timestamp": 1700000000,
+              "path_indicator": "START",
+              "coordinate": {
+                "coordinate_xyz": {
+                  "x": 10,
+                  "y": 20,
+                  "unit": "meters"
+                }
+              }
+            },
+            {
+              "timestamp": 1700000010,
+              "coordinate": {
+                "coordinate_xyz": {
+                  "x": 20,
+                  "y": 20,
+                  "unit": "meters"
+                }
+              }
+            },
+            {
+              "timestamp": 1700000030,
+              "path_indicator": "END",
+              "coordinate": {
+                "coordinate_xyz": {
+                  "x": 20,
+                  "y": 40,
+                  "unit": "meters"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "survey_format": "openintent-wifi-survey",
+  "survey_version": "0.1.0",
+  "scan_events": [
+    {
+      "timestamp": 1700000006,
+      "wifi_observations": [
+        {
+          "timestamp": 1700000005,
+          "bssid": "02:11:22:33:44:50",
+          "ssid": "Example Wi-Fi",
+          "rssi_dbm": -54,
+          "frequency_mhz": 5180
+        },
+        {
+          "timestamp": 1699999999,
+          "bssid": "02:11:22:33:44:60",
+          "rssi_dbm": -70,
+          "frequency_mhz": 2412
+        }
+      ]
+    },
+    {
+      "timestamp": 1700000020,
+      "wifi_observations": [
+        {
+          "bssid": "02:11:22:33:44:50",
+          "ssid": "Example Wi-Fi",
+          "rssi_dbm": -67,
+          "frequency_mhz": 5180,
+          "noise_dbm": -94,
+          "snr_db": 27
+        }
+      ]
+    }
+  ]
+}
