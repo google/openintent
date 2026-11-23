@@ -57,12 +57,6 @@ $defs:
       building_name:
         type: string
         description: Name of the building with which to look for floorplan_name
-      elevated_area_name:
-        type: string
-        description: >
-          Optional name of the elevated_area on the floorplan that this access
-          point stands on or is associated with. The access point's coordinate
-          z remains absolute above the floorplan floor datum (z = 0).
       asset_tag:
         type: string
         description: Assigned asset tag
@@ -192,12 +186,6 @@ $defs:
       closet_name:
         type: string
         description: Name or identifier of the closet (Intermediate Distribution Frame) room/closet where this switch is located
-      elevated_area_name:
-        type: string
-        description: >
-          Optional name of the elevated_area on the floorplan that this switch
-          stands on or is associated with. The switch's coordinate z remains
-          absolute above the floorplan floor datum (z = 0).
       coordinates:
         description: Array of coordinate objects which contain both xyz and lat_long coordinate systems.
         type: array

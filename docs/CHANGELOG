@@ -1,3 +1,3 @@
 Oct-19-2023: 1.0.0 - Initial release of OpenIntent Models
 Jan-x-2023: 1.0.1 - Add coordinates to antenna
-Nov-20-2026: 2.0.5 - Add floorplan.elevated_areas ($defs/elevated_area) for raised, sunken, and sloped surfaces, with surface height derived from vertex z (equal z = flat, varying z = sloped, negative z = below datum), plus optional elevated_area_name associations on accesspoint, switch, and wall_segment
+Nov-20-2026: 2.0.5 - Add floorplan.elevated_areas ($defs/elevated_area) for raised, sunken, and sloped surfaces, with surface height derived from vertex z (equal z = flat, varying z = sloped, negative z = below datum), plus an optional elevated_area_name association on wall_segment

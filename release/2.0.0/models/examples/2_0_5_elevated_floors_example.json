@@ -4,7 +4,6 @@
     {
       "name": "AP-DataHall-01",
       "floorplan_name": "main_hall_floor_1",
-      "elevated_area_name": "data_hall_raised_floor",
       "manufacturer": "arista",
       "model": "c360",
       "coordinates": [
