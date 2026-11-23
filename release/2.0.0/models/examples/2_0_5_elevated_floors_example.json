@@ -1,0 +1,133 @@
+{
+  "openintent_version": "2.0.5",
+  "accesspoints": [
+    {
+      "name": "AP-DataHall-01",
+      "floorplan_name": "main_hall_floor_1",
+      "elevated_area_name": "data_hall_raised_floor",
+      "manufacturer": "arista",
+      "model": "c360",
+      "coordinates": [
+        {
+          "coordinate_xyz": {
+            "x": 15.0,
+            "y": 10.0,
+            "z": 3.6,
+            "unit": "meters"
+          }
+        }
+      ],
+      "display_color": "#4687f0"
+    }
+  ],
+  "floorplans": [
+    {
+      "name": "main_hall_floor_1",
+      "floor_id": "1",
+      "dimensions": [
+        {
+          "length": 30.0,
+          "width": 40.0,
+          "height": 4.5,
+          "unit": "meters"
+        }
+      ],
+      "wall_segments": [
+        {
+          "wall_type": "Drywall",
+          "elevated_area_name": "main_stage",
+          "start_point": {
+            "x": 2.0,
+            "y": 12.0
+          },
+          "end_point": {
+            "x": 10.0,
+            "y": 12.0
+          },
+          "height": 2.4,
+          "bottom_height": 0.0
+        }
+      ],
+      "elevated_areas": [
+        {
+          "name": "main_stage",
+          "label": "Main Stage",
+          "open_below": false,
+          "display_color": "#d97706",
+          "area": {
+            "coordinates": [
+              { "coordinate_xyz": { "x": 2.0, "y": 4.0, "z": 1.0, "unit": "meters" } },
+              { "coordinate_xyz": { "x": 10.0, "y": 4.0, "z": 1.0, "unit": "meters" } },
+              { "coordinate_xyz": { "x": 10.0, "y": 12.0, "z": 1.0, "unit": "meters" } },
+              { "coordinate_xyz": { "x": 2.0, "y": 12.0, "z": 1.0, "unit": "meters" } }
+            ]
+          }
+        },
+        {
+          "name": "stage_ramp",
+          "label": "Stage Access Ramp",
+          "display_color": "#2563eb",
+          "area": {
+            "coordinates": [
+              { "coordinate_xyz": { "x": 10.0, "y": 4.0, "z": 1.0, "unit": "meters" } },
+              { "coordinate_xyz": { "x": 16.0, "y": 4.0, "z": 0.0, "unit": "meters" } },
+              { "coordinate_xyz": { "x": 16.0, "y": 6.0, "z": 0.0, "unit": "meters" } },
+              { "coordinate_xyz": { "x": 10.0, "y": 6.0, "z": 1.0, "unit": "meters" } }
+            ]
+          }
+        },
+        {
+          "name": "data_hall_raised_floor",
+          "label": "Data Hall Raised Access Floor",
+          "open_below": true,
+          "display_color": "#059669",
+          "area": {
+            "coordinates": [
+              { "coordinate_xyz": { "x": 12.0, "y": 8.0, "z": 0.6, "unit": "meters" } },
+              { "coordinate_xyz": { "x": 28.0, "y": 8.0, "z": 0.6, "unit": "meters" } },
+              { "coordinate_xyz": { "x": 28.0, "y": 20.0, "z": 0.6, "unit": "meters" } },
+              { "coordinate_xyz": { "x": 12.0, "y": 20.0, "z": 0.6, "unit": "meters" } }
+            ]
+          }
+        },
+        {
+          "name": "sunken_lounge",
+          "label": "Sunken Seating Pit",
+          "open_below": false,
+          "display_color": "#7c3aed",
+          "area": {
+            "coordinates": [
+              { "coordinate_xyz": { "x": 20.0, "y": 2.0, "z": -0.45, "unit": "meters" } },
+              { "coordinate_xyz": { "x": 26.0, "y": 2.0, "z": -0.45, "unit": "meters" } },
+              { "coordinate_xyz": { "x": 26.0, "y": 6.0, "z": -0.45, "unit": "meters" } },
+              { "coordinate_xyz": { "x": 20.0, "y": 6.0, "z": -0.45, "unit": "meters" } }
+            ]
+          }
+        }
+      ],
+      "survey_paths": [
+        {
+          "path_data_uri": "file://surveys/ramp_survey.pcap",
+          "path_data_type": "PCAP",
+          "path_type": "CONTINUOUS",
+          "path_points": [
+            {
+              "timestamp": 1700000000.0,
+              "path_indicator": "START",
+              "coordinate": {
+                "coordinate_xyz": { "x": 16.0, "y": 5.0, "z": 1.2, "unit": "meters" }
+              }
+            },
+            {
+              "timestamp": 1700000005.0,
+              "path_indicator": "END",
+              "coordinate": {
+                "coordinate_xyz": { "x": 10.0, "y": 5.0, "z": 2.2, "unit": "meters" }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
