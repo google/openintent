@@ -521,16 +521,27 @@ $defs:
       latitude:
         type: number
         description: "Latitude expressed as ISO 6709 in degrees"
+        minimum: -90
+        maximum: 90
       longitude:
         type: number
         description: "Longitude expressed as ISO 6709 in degrees"
+        minimum: -180
+        maximum: 180
       elevation:
         type: number
         description: "Height in meters above sea level"
 
   coordinate:
     type: object
-    description: A coordinate with both sets of x/y/z and lat/long
+    description: >
+      A coordinate with both sets of x/y/z and lat/long.
+      At least one coordinate system must be present.
+    anyOf:
+      - required:
+          - coordinate_xyz
+      - required:
+          - coordinate_lat_long
     properties:
       coordinate_xyz:
         $ref: "#/$defs/coordinate_xyz"
@@ -553,7 +564,7 @@ $defs:
     properties:
       rotation:
         type: number
-        minimum: -360
+        minimum: 0
         maximum: 360
         description: >
           Describes the rotation of the device in degrees where 0 is up on
@@ -563,8 +574,8 @@ $defs:
           beamwidth should point in this direction. AKA yaw.
       tilt:
         type: number
-        minimum: -360
-        maximum: 360
+        minimum: -90
+        maximum: 90
         description: >
           Describes the tilt of the device in degrees. For integrated
           antenna APs or omnidirectional antenna, 0 describes the default
@@ -573,8 +584,8 @@ $defs:
           negative values pointing down. AKA pitch.
       roll:
         type: number
-        minimum: -360
-        maximum: 360
+        minimum: -180
+        maximum: 180
         description: >
           Describes the rotation of the device in axis of rotation/tilt.
           0 describes the devices default orientation. This will normally
@@ -902,23 +913,21 @@ $defs:
           Horizontal scale factor to apply to the floorplan. A value of 1.0 means
           no scaling. Values greater than 1.0 enlarge, values less than 1.0 shrink.
           Must be a positive number.
-        minimum: 0
-        exclusiveMinimum: true
+        exclusiveMinimum: 0
       scale_y:
         type: number
         description: >
           Vertical scale factor to apply to the floorplan. A value of 1.0 means
           no scaling. Values greater than 1.0 enlarge, values less than 1.0 shrink.
           Must be a positive number.
-        minimum: 0
-        exclusiveMinimum: true
+        exclusiveMinimum: 0
       rotation:
         type: number
         description: >
           Rotation in degrees to apply to the floorplan around its origin
           (lower-left corner). Positive values rotate counter-clockwise.
           This is applied after scaling and before translation.
-        minimum: -360
+        minimum: 0
         maximum: 360
       x_offset:
         description: >
@@ -1012,11 +1021,11 @@ $defs:
       address:
         description: Physical address information for the building.
         $ref: "#/$defs/building_address"
-      coordinates:
+      coordinate:
         description: >
           Geospatial coordinate for the building location. Typically represents
           the building centroid position.
-        $ref: "#/$defs/coordinates"
+        $ref: "#/$defs/coordinate"
       floors:
         type: array
         description: >

@@ -664,7 +664,19 @@
     },
     "coordinate": {
       "type": "object",
-      "description": "A coordinate with both sets of x/y/z and lat/long",
+      "description": "A coordinate with both sets of x/y/z and lat/long. At least one coordinate system must be present.\n",
+      "anyOf": [
+        {
+          "required": [
+            "coordinate_xyz"
+          ]
+        },
+        {
+          "required": [
+            "coordinate_lat_long"
+          ]
+        }
+      ],
       "properties": {
         "coordinate_xyz": {
           "$ref": "#/$defs/coordinate_xyz"
@@ -1043,14 +1055,12 @@
         "scale_x": {
           "type": "number",
           "description": "Horizontal scale factor to apply to the floorplan. A value of 1.0 means no scaling. Values greater than 1.0 enlarge, values less than 1.0 shrink. Must be a positive number.\n",
-          "minimum": 0,
-          "exclusiveMinimum": true
+          "exclusiveMinimum": 0
         },
         "scale_y": {
           "type": "number",
           "description": "Vertical scale factor to apply to the floorplan. A value of 1.0 means no scaling. Values greater than 1.0 enlarge, values less than 1.0 shrink. Must be a positive number.\n",
-          "minimum": 0,
-          "exclusiveMinimum": true
+          "exclusiveMinimum": 0
         },
         "rotation": {
           "type": "number",
