@@ -356,6 +356,13 @@
             "$ref": "#/$defs/hole_in_floor"
           }
         },
+        "elevated_areas": {
+          "type": "array",
+          "description": "Raised, sunken, or sloped walkable surfaces on this floorplan. Use a separate floorplan with its own floor_level when a level has its own drawing or walls; use an elevated_area for a partial-height surface sharing the parent floor's drawing.\n",
+          "items": {
+            "$ref": "#/$defs/elevated_area"
+          }
+        },
         "closets": {
           "type": "array",
           "description": "array of closet objects.",
@@ -624,7 +631,7 @@
         },
         "z": {
           "type": "number",
-          "description": "Coordinate in Z dimension as height from floor represented as a number\n"
+          "description": "Height above the floorplan floor datum (z = 0), in the coordinate's own unit. Not relative to any elevated_area surface. Negative values denote below-datum (sunken) positions. When unit is pixels, pixel heights scale via the floorplan dimension (same scaling as x and y).\n"
         },
         "unit": {
           "type": "string",
@@ -782,6 +789,10 @@
           "type": "number",
           "description": "Used if wall_material is not defined. If wall does not start at floor, define at what height from floor",
           "minimum": 0
+        },
+        "elevated_area_name": {
+          "type": "string",
+          "description": "Optional name of the elevated_area on the floorplan that this wall stands on. When present, height and bottom_height are measured from that surface instead of the floorplan floor datum.\n"
         }
       }
     },
@@ -872,7 +883,7 @@
     },
     "area": {
       "type": "object",
-      "description": "An area is defined as a polygon with a list of coordinates. These coordinates must be colinear in order and the first and last must be colinear with each other.\n",
+      "description": "An area is defined as a polygon with an ordered list of coordinates, where the polygon is implicitly closed between the last and first coordinates. z on vertices is ignored except where a containing object defines it (see elevated_area).\n",
       "required": [
         "coordinates"
       ],
@@ -929,6 +940,41 @@
         "inverted": {
           "description": "Inverted hole-in-floor objects are used to describe a hole that is everywhere but the defined area. Example would be If you wanted to show a building, but wanted a hole in floor for to indicate that exterior to the building was a hole. When not present, assumption is the value is false.\n",
           "type": "boolean"
+        }
+      }
+    },
+    "elevated_area": {
+      "type": "object",
+      "description": "A walkable surface on a floorplan whose height differs from the floor datum (z = 0), such as a stage, raised access floor, mezzanine deck, platform, sunken pit, ramp, or raked seating. The surface height comes from the z values of the vertices in area; a vertex without z is treated as z = 0. When all vertices share the same z the surface is horizontal (flat); when z varies between vertices the surface is sloped. Negative z denotes below-datum (sunken) surfaces. Heights are measured from the floorplan floor datum (z = 0), consistent with coordinate_xyz.z. Ceiling height belongs to the floorplan (dimension.height); clear height above a raised surface is derived as dimension.height minus the surface z. Behavior of overlapping elevated_areas (including over a hole_in_floor) is implementation-defined.\n",
+      "required": [
+        "name",
+        "area"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Unique name of the elevated area within its floorplan."
+        },
+        "vendor_id": {
+          "type": "string",
+          "description": "Vendor's ID for this elevated area."
+        },
+        "label": {
+          "type": "string",
+          "description": "Human-readable label (e.g. \"Main Stage\", \"Loading Ramp\")."
+        },
+        "area": {
+          "description": "Footprint and height profile of the surface. Each vertex MAY carry coordinate_xyz.z; vertices without z are treated as z = 0. All vertices SHOULD use the same unit (pixel heights scale via the floorplan dimension). Sloped surfaces (vertices with differing z) MUST be coplanar (within implementation tolerance). Model non-planar surfaces as several adjacent elevated_areas.\n",
+          "$ref": "#/$defs/area"
+        },
+        "open_below": {
+          "type": "boolean",
+          "description": "True when the space under the surface is open air (e.g. a mezzanine or catwalk) rather than solid (e.g. a plinth or stage). If omitted, treat as false.\n"
+        },
+        "display_color": {
+          "type": "string",
+          "description": "Hex color code for visualizing the elevated area. Has no inherent intent, but for visualization purposes.",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
         }
       }
     },
