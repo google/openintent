@@ -707,14 +707,14 @@
         },
         "tilt": {
           "type": "number",
-          "minimum": -90,
-          "maximum": 90,
+          "minimum": -360,
+          "maximum": 360,
           "description": "Describes the tilt of the device in degrees. For integrated antenna APs or omnidirectional antenna, 0 describes the default orientation. For directional APs, 0 describes the antenna as pointed horizontal, with positive values tilting up, and negative values pointing down. AKA pitch.\n"
         },
         "roll": {
           "type": "number",
-          "minimum": -180,
-          "maximum": 180,
+          "minimum": -360,
+          "maximum": 360,
           "description": "Describes the rotation of the device in axis of rotation/tilt. 0 describes the devices default orientation. This will normally be zero in most scenarios. Would be used to rotate and antenna from vertical to horizontal polarization. AKA roll.\n"
         }
       }

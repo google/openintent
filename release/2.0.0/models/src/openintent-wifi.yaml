@@ -574,8 +574,8 @@ $defs:
           beamwidth should point in this direction. AKA yaw.
       tilt:
         type: number
-        minimum: -90
-        maximum: 90
+        minimum: -360
+        maximum: 360
         description: >
           Describes the tilt of the device in degrees. For integrated
           antenna APs or omnidirectional antenna, 0 describes the default
@@ -584,8 +584,8 @@ $defs:
           negative values pointing down. AKA pitch.
       roll:
         type: number
-        minimum: -180
-        maximum: 180
+        minimum: -360
+        maximum: 360
         description: >
           Describes the rotation of the device in axis of rotation/tilt.
           0 describes the devices default orientation. This will normally
