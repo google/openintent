@@ -521,16 +521,27 @@ $defs:
       latitude:
         type: number
         description: "Latitude expressed as ISO 6709 in degrees"
+        minimum: -90
+        maximum: 90
       longitude:
         type: number
         description: "Longitude expressed as ISO 6709 in degrees"
+        minimum: -180
+        maximum: 180
       elevation:
         type: number
         description: "Height in meters above sea level"
 
   coordinate:
     type: object
-    description: A coordinate with both sets of x/y/z and lat/long
+    description: >
+      A coordinate with both sets of x/y/z and lat/long.
+      At least one coordinate system must be present.
+    anyOf:
+      - required:
+          - coordinate_xyz
+      - required:
+          - coordinate_lat_long
     properties:
       coordinate_xyz:
         $ref: "#/$defs/coordinate_xyz"
@@ -902,16 +913,14 @@ $defs:
           Horizontal scale factor to apply to the floorplan. A value of 1.0 means
           no scaling. Values greater than 1.0 enlarge, values less than 1.0 shrink.
           Must be a positive number.
-        minimum: 0
-        exclusiveMinimum: true
+        exclusiveMinimum: 0
       scale_y:
         type: number
         description: >
           Vertical scale factor to apply to the floorplan. A value of 1.0 means
           no scaling. Values greater than 1.0 enlarge, values less than 1.0 shrink.
           Must be a positive number.
-        minimum: 0
-        exclusiveMinimum: true
+        exclusiveMinimum: 0
       rotation:
         type: number
         description: >
@@ -1012,11 +1021,11 @@ $defs:
       address:
         description: Physical address information for the building.
         $ref: "#/$defs/building_address"
-      coordinates:
+      coordinate:
         description: >
           Geospatial coordinate for the building location. Typically represents
           the building centroid position.
-        $ref: "#/$defs/coordinates"
+        $ref: "#/$defs/coordinate"
       floors:
         type: array
         description: >
