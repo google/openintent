@@ -701,7 +701,7 @@
       "properties": {
         "rotation": {
           "type": "number",
-          "minimum": 0,
+          "minimum": -360,
           "maximum": 360,
           "description": "Describes the rotation of the device in degrees where 0 is up on the floorplan orientation. For omnidirectional APs, if looking at the AP on the ceiling, the direction points toward the top of the vendor logo. For directional antennas/APs, the peak beamwidth should point in this direction. AKA yaw.\n"
         },
@@ -1065,7 +1065,7 @@
         "rotation": {
           "type": "number",
           "description": "Rotation in degrees to apply to the floorplan around its origin (lower-left corner). Positive values rotate counter-clockwise. This is applied after scaling and before translation.\n",
-          "minimum": 0,
+          "minimum": -360,
           "maximum": 360
         },
         "x_offset": {

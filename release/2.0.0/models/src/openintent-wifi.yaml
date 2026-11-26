@@ -564,7 +564,7 @@ $defs:
     properties:
       rotation:
         type: number
-        minimum: 0
+        minimum: -360
         maximum: 360
         description: >
           Describes the rotation of the device in degrees where 0 is up on
@@ -927,7 +927,7 @@ $defs:
           Rotation in degrees to apply to the floorplan around its origin
           (lower-left corner). Positive values rotate counter-clockwise.
           This is applied after scaling and before translation.
-        minimum: 0
+        minimum: -360
         maximum: 360
       x_offset:
         description: >
